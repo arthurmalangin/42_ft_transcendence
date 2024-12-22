@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="terminal">
+        <div class="header">TERMINAL v7.1.0</div>
+        <div class="subtitle">ENTER CREDENTIALS</div>
+        <form class="form">
+            <label for="username">> IDENTIFIANT VAULT-TEC</label>
+            <input type="text" id="username" placeholder="_">
+            <label for="password">> MOT DE PASSE</label>
+            <input type="password" id="password" placeholder="********">
+            <button type="submit">CONNEXION</button>
+        </form>
+        <div class="footer">VAULT-TEC SECURE TERMINAL</div>
+    </div>
+</body>
+</html>

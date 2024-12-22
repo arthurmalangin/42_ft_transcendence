@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, parser_classes
 from .models import Credential
 
 def index(request):
-	return HttpResponse("Hello, world. You're at the polls index.")
+	return render(request, 'index.html')
 
 @api_view(['POST'])
 def register(request):
