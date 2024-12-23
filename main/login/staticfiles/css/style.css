@@ -19,6 +19,10 @@ body {
     background-color: #001a00;
 }
 
+.terminal #register:hover {
+	color: #009900;
+}
+
 .header {
     font-weight: bold;
     font-size: 20px;
@@ -32,17 +36,17 @@ body {
     margin-bottom: 20px;
 }
 
-.form {
+.formlogin {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.form label {
+.formlogin label {
     font-size: 14px;
 }
 
-.form input {
+.formlogin input {
     background-color: #001a00;
     border: 2px solid #00ff00;
     color: #00ff00;
@@ -51,7 +55,7 @@ body {
     font-family: 'Courier New', Courier, monospace;
 }
 
-.form button {
+.formlogin button {
     background-color: #00ff00;
     color: #001a00;
     font-size: 16px;
@@ -61,7 +65,7 @@ body {
     cursor: pointer;
 }
 
-.form button:hover {
+.formlogin button:hover {
     background-color: #009900;
 }
 

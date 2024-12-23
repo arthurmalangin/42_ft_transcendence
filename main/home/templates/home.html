@@ -1,0 +1,99 @@
+<!-- 
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/stylehome.css' %}" />
+-->
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROBCO INDUSTRIES TERMINAL</title>
+  <link rel="stylesheet" href="{% static 'css/stylehome.css' %}" />
+  <script src="{% static 'js/home.js' %}" defer></script>
+</head>
+<body>
+  <div class="scanline"></div>
+  <div class="crt"></div>
+
+  <div class="container phosphor">
+    <header class="header">
+      <h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+      <p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
+    </header>
+
+    <main class="main-content">
+      <!-- Navigation -->
+      <nav class="nav">
+        <div class="nav-item active">
+          <span>&gt; HOME</span>
+        </div>
+        <div class="nav-item">
+          <span>&gt; PLAY PONG</span>
+        </div>
+        <div class="nav-item">
+          <span>&gt; FRIENDS</span>
+        </div>
+        <div class="nav-item">
+          <span>&gt; LEADERBOARD</span>
+        </div>
+        <div class="nav-item">
+          <span>&gt; SETTINGS</span>
+        </div>
+        <div id="btn_logout" class="nav-item">
+          <span>&gt; LOG OUT</span>
+        </div>
+      </nav>
+
+      <!-- Main content panel -->
+      <div class="panel">
+        <h2 class="panel-header">&gt; WELCOME BACK, PLAYER_42</h2>
+        
+        <!-- Stats -->
+        <div class="grid">
+          <div class="card">
+            <h3>RANK</h3>
+            <p>#42</p>
+          </div>
+          <div class="card">
+            <h3>MATCHES</h3>
+            <p>128</p>
+          </div>
+          <div class="card">
+            <h3>WIN RATE</h3>
+            <p>76%</p>
+          </div>
+        </div>
+
+        <!-- Quick Play -->
+        <div class="card" style="margin-top: 1rem;">
+          <h3>QUICK PLAY</h3>
+          <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button class="btn">CLASSIC MODE</button>
+            <button class="btn">TOURNAMENT MODE</button>
+          </div>
+        </div>
+
+        <!-- Recent Matches -->
+        <div class="card" style="margin-top: 1rem;">
+          <h3>RECENT MATCHES</h3>
+          <table class="table">
+            <tr>
+              <td>vs PLAYER_1</td>
+              <td style="color: var(--terminal-green);">WIN 11-7</td>
+            </tr>
+            <tr>
+              <td>vs PLAYER_2</td>
+              <td style="color: #ff0000;">LOSS 9-11</td>
+            </tr>
+            <tr>
+              <td>vs PLAYER_3</td>
+              <td style="color: var(--terminal-green);">WIN 11-5</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
