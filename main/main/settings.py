@@ -34,6 +34,7 @@ LOGIN_URL = '/login/'
 INSTALLED_APPS = [
 	"login.apps.LoginConfig",
 	"home.apps.HomeConfig",
+	"leaderboard.apps.LeaderboardConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,8 +79,12 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ft_transcendence',
+        'USER': 'ft_user',
+        'PASSWORD': 'ft_password',
+        'HOST': 'db',  # Nom du service Docker pour PostgreSQL
+        'PORT': '5432',
     }
 }
 
@@ -123,6 +128,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "login/staticfiles",
 	BASE_DIR / "home/staticfiles",
+	BASE_DIR / "leaderboard/staticfiles",
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

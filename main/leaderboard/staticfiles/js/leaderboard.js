@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		logout();
 	});
 
-	const leaderboardLabel = document.getElementById('btn_leaderboard');
-	leaderboardLabel.addEventListener('click', () => {
-		window.location.href = '/leaderboard/';
+	const homeLabel = document.getElementById('btn_home');
+	homeLabel.addEventListener('click', () => {
+		window.location.href = '/';
 	});
 });
+
+
 
 function logout() {
     fetch('/login/logout/', { // URL de votre endpoint logout

@@ -1,0 +1,45 @@
+services:
+  nginx:
+    build:
+      context: ..
+      dockerfile: ./docker/src/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - web
+    networks:
+      - backend_network
+
+  web:
+    container_name: backend
+    build:
+      context: ..
+      dockerfile: ./docker/src/django/Dockerfile
+    # ports:
+      # - "127.0.0.1:8000:8000"
+    volumes:
+      - ../main:/app/main
+    environment:
+      - DEBUG=True
+    networks:
+      - backend_network
+  db:
+    container_name: db_backend
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ft_user
+      POSTGRES_PASSWORD: ft_password
+      POSTGRES_DB: ft_transcendence
+    networks:
+      - backend_network
+      
+volumes:
+  postgres_data:
+
+networks:
+  backend_network:
+    driver: bridge
