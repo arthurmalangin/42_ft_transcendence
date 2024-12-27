@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					alert(data);
 				}
             } else {
-				alert('Nom d\'utilisateur ou mot de passe incorrect.');
+				alert(data);
                 // errorMessage.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
             }
         } catch (error) {

@@ -13,7 +13,7 @@ services:
       - backend_network
 
   web:
-    container_name: backend
+    container_name: web
     build:
       context: ..
       dockerfile: ./docker/src/django/Dockerfile
@@ -23,10 +23,12 @@ services:
       - ../main:/app/main
     environment:
       - DEBUG=True
+    depends_on:
+      - db
     networks:
       - backend_network
   db:
-    container_name: db_backend
+    container_name: db
     image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -34,6 +36,8 @@ services:
       POSTGRES_USER: ft_user
       POSTGRES_PASSWORD: ft_password
       POSTGRES_DB: ft_transcendence
+    ports:
+      - "5432:5432"
     networks:
       - backend_network
       

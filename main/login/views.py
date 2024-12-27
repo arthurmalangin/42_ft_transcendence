@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, parser_classes
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+
 
 def index(request):
 	return render(request, 'index.html')
@@ -11,6 +13,7 @@ def index(request):
 def register(request):
 	return render(request, 'register.html')
 
+@csrf_exempt
 @api_view(['POST'])
 def reqlogout(request):
     logout(request)
@@ -22,6 +25,7 @@ def reqlogout(request):
 # 		return HttpResponse("user deja pris.", status=400)
 # 	crednetial = Credential(user_name=username, password=password)
 # 	crednetial.save()
+@csrf_exempt
 @api_view(['POST'])
 def reqregister(request):
 	username = request.data.get("username")
@@ -39,6 +43,7 @@ def reqregister(request):
 			return HttpResponse("success")
 		else:
 			print("register fail ?")
+			return HttpResponse("register Fail ?")
 		# return HttpResponse("user registered")
 	else:
 		print("Error: missing password or username.")
