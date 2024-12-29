@@ -8,7 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
-	return render(request, 'index.html')
+	print("login render html call !")
+	return render(request, 'login.html')
 
 def register(request):
 	return render(request, 'register.html')
