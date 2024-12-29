@@ -8,3 +8,9 @@ def is_auth(request):
         return JsonResponse({'is_authenticated': True, 'username': request.user.username})
     else:
         return JsonResponse({'is_authenticated': False})
+    
+def get_username(request):
+	if request.user.is_authenticated:
+		return JsonResponse({'username': request.user.username})
+	else:
+		return JsonResponse({'username': None})

@@ -9,9 +9,34 @@ function homeEvent() {
 		history.pushState(null, '', '/leaderboard');
 		loadPage('/leaderboard');
 	});
+	updateWelcomeMessage();
 }
 
 homeEvent();
+
+async function updateWelcomeMessage() {
+    try {
+        const response = await fetch('/api/get_username/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+		
+		if (response.ok) {
+			const data = await response.json();
+			const welcomeMessageElement = document.querySelector('.panel-header');
+			if (data.username) {
+				welcomeMessageElement.textContent = `> WELCOME BACK, ${data.username}`;
+			} else {
+				welcomeMessageElement.textContent = '> WELCOME BACK, GUEST';
+			}
+		}
+    } catch (error) {
+        console.error('Error updating welcome message:', error);
+    }
+}
 
 function logout() {
     fetch('/srclogin/logout/', {
