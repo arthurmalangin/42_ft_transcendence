@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+function homeEvent() {
 	const registerLabel = document.getElementById('btn_logout');
 	registerLabel.addEventListener('click', () => {
 		logout();
@@ -6,21 +6,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const leaderboardLabel = document.getElementById('btn_leaderboard');
 	leaderboardLabel.addEventListener('click', () => {
-		window.location.href = '/leaderboard/';
+		history.pushState(null, '', '/leaderboard');
+		loadPage('/leaderboard');
 	});
-});
+}
+
+homeEvent();
 
 function logout() {
-    fetch('/login/logout/', { // URL de votre endpoint logout
-        method: 'POST', // Méthode POST
+    fetch('/srclogin/logout/', {
+        method: 'POST',
         headers: {
-            'X-CSRFToken': getCSRFToken() // Ajoutez le CSRF token
+            'X-CSRFToken': getCSRFToken()
         },
     })
     .then(response => {
         if (response.ok) {
-            // Redirection après le logout
-            window.location.href = '/login/'; // Redirige vers la page de connexion
+            history.pushState(null, '', '/login');
+			loadPage('/login');
         } else {
             console.error("Erreur lors de la déconnexion.");
         }

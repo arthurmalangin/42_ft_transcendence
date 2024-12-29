@@ -1,103 +1,88 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transcendence</title>
-  <link rel="stylesheet" href="{% static 'css/stylehome.css' %}">
-  <script src="{% static 'js/leaderboard.js' %}" defer></script>
-</head>
-<body>
-  <div class="scanline"></div>
-  <div class="crt"></div>
+<div class="scanline"></div>
+<div class="crt"></div>
+<div class="container phosphor">
+<header class="header">
+	<h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+	<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
+</header>
+<main class="main-content">
+	<!-- Navigation -->
+	<nav class="nav">
+		<div id="btn_home" class="nav-item">
+			<span>&gt; HOME</span>
+		</div>
+		<div class="nav-item">
+			<span>&gt; PLAY PONG</span>
+		</div>
+		<div class="nav-item">
+			<span>&gt; FRIENDS</span>
+		</div>
+		<div class="nav-item active">
+			<span>&gt; LEADERBOARD</span>
+		</div>
+		<div class="nav-item">
+			<span>&gt; SETTINGS</span>
+		</div>
+		<div id="btn_logout" class="nav-item">
+			<span>&gt; LOG OUT</span>
+		</div>
+	</nav>
 
-  <div class="container phosphor">
-    <header class="header">
-      <h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
-      <p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
-    </header>
+	<!-- Main content panel -->
+	<div class="panel">
+		<h2 class="panel-header">&gt; GLOBAL RANKINGS</h2>
 
-    <main class="main-content">
-      <!-- Navigation -->
-      <nav class="nav">
-        <div id="btn_home" class="nav-item">
-          <span>&gt; HOME</span>
-        </div>
-        <div class="nav-item">
-          <span>&gt; PLAY PONG</span>
-        </div>
-        <div class="nav-item">
-          <span>&gt; FRIENDS</span>
-        </div>
-        <div class="nav-item active">
-          <span>&gt; LEADERBOARD</span>
-        </div>
-        <div class="nav-item">
-          <span>&gt; SETTINGS</span>
-        </div>
-        <div id="btn_logout" class="nav-item">
-          <span>&gt; LOG OUT</span>
-        </div>
-      </nav>
+		<div class="grid">
+			<div class="card">
+				<h3>TOP PLAYER</h3>
+				<p>PLAYER_1</p>
+			</div>
+			<div class="card">
+				<h3>HIGHEST WINRATE</h3>
+				<p>85%</p>
+			</div>
+			<div class="card">
+				<h3>TOTAL MATCHES</h3>
+				<p>1,337</p>
+			</div>
+		</div>
 
-      <!-- Main content panel -->
-      <div class="panel">
-        <h2 class="panel-header">&gt; GLOBAL RANKINGS</h2>
-
-        <div class="grid">
-          <div class="card">
-            <h3>TOP PLAYER</h3>
-            <p>PLAYER_1</p>
-          </div>
-          <div class="card">
-            <h3>HIGHEST WINRATE</h3>
-            <p>85%</p>
-          </div>
-          <div class="card">
-            <h3>TOTAL MATCHES</h3>
-            <p>1,337</p>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top: 1rem;">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>RANK</th>
-                <th>NAME</th>
-                <th>WINS</th>
-                <th>LOSSES</th>
-                <th>WIN RATE</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#1</td>
-                <td>PLAYER_1</td>
-                <td>245</td>
-                <td>42</td>
-                <td>85%</td>
-              </tr>
-              <tr>
-                <td>#2</td>
-                <td>PLAYER_2</td>
-                <td>198</td>
-                <td>51</td>
-                <td>79%</td>
-              </tr>
-              <tr>
-                <td>#3</td>
-                <td>PLAYER_3</td>
-                <td>167</td>
-                <td>58</td>
-                <td>74%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </main>
-  </div>
-</body>
-</html>
+		<div class="card" style="margin-top: 1rem;">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>RANK</th>
+						<th>NAME</th>
+						<th>WINS</th>
+						<th>LOSSES</th>
+						<th>WIN RATE</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>#1</td>
+						<td>PLAYER_1</td>
+						<td>245</td>
+						<td>42</td>
+						<td>85%</td>
+					</tr>
+					<tr>
+						<td>#2</td>
+						<td>PLAYER_2</td>
+						<td>198</td>
+						<td>51</td>
+						<td>79%</td>
+					</tr>
+					<tr>
+						<td>#3</td>
+						<td>PLAYER_3</td>
+						<td>167</td>
+						<td>58</td>
+						<td>74%</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</main>
+</div>

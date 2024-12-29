@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 	"login.apps.LoginConfig",
 	"home.apps.HomeConfig",
 	"leaderboard.apps.LeaderboardConfig",
+	"API.apps.ApiConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
