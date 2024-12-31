@@ -1,0 +1,90 @@
+<div class="scanline"></div>
+<div class="crt"></div>
+
+<div class="container phosphor">
+	<header class="header">
+		<h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+		<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
+	</header>
+
+	<main class="main-content">
+		<nav class="nav">
+			<div id="btn_home" class="nav-item" data-page="home">
+				<span>&gt; HOME</span>
+			</div>
+			<div class="nav-item" data-page="play">
+				<span>&gt; PLAY PONG</span>
+			</div>
+			<div class="nav-item" data-page="friends">
+				<span>&gt; FRIENDS</span>
+			</div>
+			<div id="btn_leaderboard" class="nav-item" data-page="leaderboard">
+				<span>&gt; LEADERBOARD</span>
+			</div>
+			<div id="btn_settings" class="nav-item active" data-page="settings">
+				<span>&gt; SETTINGS</span>
+			</div>
+			<div id="btn_logout" class="nav-item" data-page="logout">
+				<span>&gt; LOG OUT</span>
+			</div>
+		</nav>
+
+		<div class="panel">
+			<h2 class="panel-header">&gt; SYSTEM SETTINGS</h2>
+
+			<div class="card">
+				<h3>PROFILE</h3>
+				<div class="form-group">
+					<label>USERNAME</label>
+					<input id="input_username" type="text" class="input" placeholder="Loading...">
+					<button id="btn_username" class="btn">CHANGE USERNAME</button>
+				</div>
+				<div class="form-group">
+					<label>PASSWORD</label>
+					<input id="input_password" type="text" class="input" placeholder="Enter New Password">
+					<button id="btn_password" class="btn">CHANGE PASSWORD</button>
+				</div>
+				<div class="form-group">
+					<label>AVATAR</label>
+					<button class="btn">UPLOAD</button>
+				</div>
+			</div>
+
+			<div class="card" style="margin-top: 1rem;">
+				<h3>AUDIO</h3>
+				<div class="form-group">
+					<label>MASTER VOLUME</label>
+					<input type="range" class="input" value="80">
+				</div>
+				<div class="form-group">
+					<label>EFFECTS VOLUME</label>
+					<input type="range" class="input" value="100">
+				</div>
+			</div>
+
+			<div class="card" style="margin-top: 1rem;">
+				<h3>DISPLAY</h3>
+				<div class="form-group">
+					<label>SCANLINES</label>
+					<button class="btn">ON</button>
+				</div>
+				<div class="form-group">
+					<label>CRT EFFECT</label>
+					<button class="btn">ON</button>
+				</div>
+			</div>
+
+			<div class="card" style="margin-top: 1rem;">
+				<h3>PRIVACY</h3>
+				<div class="form-group">
+					<label>ONLINE STATUS</label>
+					<button class="btn">VISIBLE</button>
+				</div>
+				<div class="form-group">
+					<label>GAME HISTORY</label>
+					<button class="btn">FRIENDS</button>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>

@@ -1,4 +1,5 @@
 function homeEvent() {
+	updateWelcomeMessage();
 	const registerLabel = document.getElementById('btn_logout');
 	registerLabel.addEventListener('click', () => {
 		logout();
@@ -9,7 +10,13 @@ function homeEvent() {
 		history.pushState(null, '', '/leaderboard');
 		loadPage('/leaderboard');
 	});
-	updateWelcomeMessage();
+
+	const settingsLabel = document.getElementById('btn_settings');
+	settingsLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/');
+		loadPage('/settings');
+	});
+	
 }
 
 homeEvent();

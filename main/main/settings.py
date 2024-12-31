@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 	"login.apps.LoginConfig",
 	"home.apps.HomeConfig",
 	"leaderboard.apps.LeaderboardConfig",
+	"settings.apps.SettingsConfig",
 	"API.apps.ApiConfig",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -140,6 +141,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "login/staticfiles",
 	BASE_DIR / "home/staticfiles",
 	BASE_DIR / "leaderboard/staticfiles",
+	BASE_DIR / "settings/staticfiles",
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

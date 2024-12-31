@@ -26,6 +26,13 @@ const routes = {
 		js: '/static/js/leaderboard.js',
 		needLogin: true
 	},
+
+	'/settings': {
+		html: '/srcsettings',
+		css: '/static/css/settings.css',
+		js: '/static/js/settings.js',
+		needLogin: true
+	},
 }
 
 async function is_auth() {

@@ -9,6 +9,12 @@ function leaderboardEvent() {
 		history.pushState(null, '', '/');
 		loadPage('/');
 	});
+
+	const settingsLabel = document.getElementById('btn_settings');
+	settingsLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/');
+		loadPage('/settings');
+	});
 }
 
 leaderboardEvent();
