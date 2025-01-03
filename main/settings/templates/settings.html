@@ -9,22 +9,22 @@
 
 	<main class="main-content">
 		<nav class="nav">
-			<div id="btn_home" class="nav-item" data-page="home">
+			<div id="btn_home" class="nav-item">
 				<span>&gt; HOME</span>
 			</div>
-			<div class="nav-item" data-page="play">
+			<div id="btn_pong" class="nav-item">
 				<span>&gt; PLAY PONG</span>
 			</div>
-			<div class="nav-item" data-page="friends">
+			<div id="btn_friends" class="nav-item">
 				<span>&gt; FRIENDS</span>
 			</div>
-			<div id="btn_leaderboard" class="nav-item" data-page="leaderboard">
+			<div id="btn_leaderboard" class="nav-item">
 				<span>&gt; LEADERBOARD</span>
 			</div>
-			<div id="btn_settings" class="nav-item active" data-page="settings">
+			<div id="btn_settings" class="nav-item active">
 				<span>&gt; SETTINGS</span>
 			</div>
-			<div id="btn_logout" class="nav-item" data-page="logout">
+			<div id="btn_logout" class="nav-item">
 				<span>&gt; LOG OUT</span>
 			</div>
 		</nav>
@@ -46,7 +46,8 @@
 				</div>
 				<div class="form-group">
 					<label>AVATAR</label>
-					<button class="btn">UPLOAD</button>
+					<input type="file" id="avatar_upload" class="btn" accept="image/*">
+					<button id="btn_upload_avatar" class="btn">UPLOAD</button>
 				</div>
 			</div>
 

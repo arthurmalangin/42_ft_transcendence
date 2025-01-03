@@ -11,10 +11,22 @@ function settingsRenderEvent() {
 		loadPage('/leaderboard');
 	});
 
+	const settingsLabel = document.getElementById('btn_settings');
+	settingsLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/');
+		loadPage('/settings');
+	});
+
 	const homeLabel = document.getElementById('btn_home');
 	homeLabel.addEventListener('click', () => {
 		history.pushState(null, '', '/');
 		loadPage('/');
+	});
+
+	const friendsLabel = document.getElementById('btn_friends');
+	friendsLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/friends');
+		loadPage('/friends');
 	});
 
 	const btn_username = document.getElementById('btn_username');

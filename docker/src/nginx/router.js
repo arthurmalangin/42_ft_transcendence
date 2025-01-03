@@ -27,6 +27,13 @@ const routes = {
 		needLogin: true
 	},
 
+	'/friends': {
+		html: '/srcfriends',
+		css: '/static/css/friends.css',
+		js: '/static/js/friends.js',
+		needLogin: true
+	},
+
 	'/settings': {
 		html: '/srcsettings',
 		css: '/static/css/settings.css',

@@ -16,6 +16,18 @@ function homeEvent() {
 		history.pushState(null, '', '/');
 		loadPage('/settings');
 	});
+
+	const homeLabel = document.getElementById('btn_home');
+	homeLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/');
+		loadPage('/');
+	});
+
+	const friendsLabel = document.getElementById('btn_friends');
+	friendsLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/friends');
+		loadPage('/friends');
+	});
 	
 }
 

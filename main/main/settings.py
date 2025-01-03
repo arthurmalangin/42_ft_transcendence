@@ -33,6 +33,7 @@ LOGIN_URL = '/login/'
 
 INSTALLED_APPS = [
 	"login.apps.LoginConfig",
+	"friends.apps.FriendsConfig",
 	"home.apps.HomeConfig",
 	"leaderboard.apps.LeaderboardConfig",
 	"settings.apps.SettingsConfig",
@@ -142,6 +143,7 @@ STATICFILES_DIRS = [
 	BASE_DIR / "home/staticfiles",
 	BASE_DIR / "leaderboard/staticfiles",
 	BASE_DIR / "settings/staticfiles",
+	BASE_DIR / "friends/staticfiles",
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

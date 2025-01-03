@@ -1,4 +1,5 @@
-function leaderboardEvent() {
+function friendsEvent() {
+	// updateWelcomeMessage();
 	const registerLabel = document.getElementById('btn_logout');
 	registerLabel.addEventListener('click', () => {
 		logout();
@@ -27,9 +28,34 @@ function leaderboardEvent() {
 		history.pushState(null, '', '/friends');
 		loadPage('/friends');
 	});
+	
 }
 
-leaderboardEvent();
+friendsEvent();
+
+async function updateWelcomeMessage() {
+    try {
+        const response = await fetch('/api/get_username/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            }
+        });
+		
+		if (response.ok) {
+			const data = await response.json();
+			const welcomeMessageElement = document.querySelector('.panel-header');
+			if (data.username) {
+				welcomeMessageElement.textContent = `> WELCOME BACK, ${data.username}`;
+			} else {
+				welcomeMessageElement.textContent = '> WELCOME BACK, GUEST';
+			}
+		}
+    } catch (error) {
+        console.error('Error updating welcome message:', error);
+    }
+}
 
 function logout() {
     fetch('/srclogin/logout/', {
@@ -40,7 +66,8 @@ function logout() {
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = '/login/';
+            history.pushState(null, '', '/login');
+			loadPage('/login');
         } else {
             console.error("Erreur lors de la déconnexion.");
         }
