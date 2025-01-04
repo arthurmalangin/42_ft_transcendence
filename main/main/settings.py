@@ -32,12 +32,12 @@ LOGIN_URL = '/login/'
 # Application definition
 
 INSTALLED_APPS = [
-	"login.apps.LoginConfig",
-	"friends.apps.FriendsConfig",
-	"home.apps.HomeConfig",
-	"leaderboard.apps.LeaderboardConfig",
-	"settings.apps.SettingsConfig",
-	"API.apps.ApiConfig",
+	"login",
+	"friends",
+	"home",
+	"leaderboard",
+	"settings",
+	"API",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

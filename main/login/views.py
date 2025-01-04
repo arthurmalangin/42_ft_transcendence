@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
+from settings.models import PlayerData
 
 
 def index(request):
@@ -30,7 +31,7 @@ def reqlogout(request):
 @api_view(['POST'])
 def reqregister(request):
 	username = request.data.get("username")
-	email = request.data.get("email") #todo
+	email = username
 	password = request.data.get("password")
 	if username and password:
 		if User.objects.filter(username=username).exists():
@@ -38,6 +39,8 @@ def reqregister(request):
 			return HttpResponse("User déjà pris.")
 		user = User.objects.create_user(username=username, password=password)
 		user.save()
+		player_data = PlayerData.objects.create(username=user.username, email=email)
+		player_data.save()
 		userd = authenticate(request, username=username, password=password)
 		if userd is not None:
 			login(request, userd)

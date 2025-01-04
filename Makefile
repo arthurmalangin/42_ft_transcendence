@@ -7,7 +7,7 @@ up:
 
 clear: down stop
 	@echo "Clear volumes..."
-	@docker volume rm -f `docker volume ls
+	@docker volume rm -f `docker volume ls`
 
 prune:
 	@docker system prune -af

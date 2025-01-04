@@ -32,7 +32,21 @@
 		<div class="panel">
 			<h2 class="panel-header">&gt; FRIENDS LIST</h2>
 			
-			<button class="btn" style="margin-bottom: 1rem;">ADD FRIEND</button>
+			<button class="btn" id="addFriendBtn" style="margin-bottom: 1rem;">ADD FRIEND</button>
+
+			<!-- <div class="card">
+				<div class="friend-item">
+					<div>
+						<span class="status-indicator status-online"></span>
+						PLAYER_1
+						<span class="status-text">[ IN GAME ]</span>
+					</div>
+					<div class="friend-actions">
+						<button class="btn">MESSAGE</button>
+						<button class="btn">INVITE</button>
+					</div>
+				</div>
+			</div> -->
 
 			<div class="card">
 				<div class="friend-item">
@@ -75,4 +89,22 @@
 			</div>
 		</div>
 	</main>
+</div>
+
+<div class="popup-overlay" id="addFriendPopup">
+    <div class="popup phosphor">
+      <button class="popup-close" id="closePopup">×</button>
+      <div class="popup-header">
+        <h2>&gt; ADD FRIEND</h2>
+      </div>
+      <div class="form-group">
+        <input type="text" 
+               id="friendSearch" 
+               class="input" 
+               style="width: 100%"
+               placeholder="SEARCH PLAYERS...">
+      </div>
+      <div id="searchResults" class="search-results">
+      </div>
+    </div>
 </div>

@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 import json
-
+from settings.models import PlayerData
 
 def is_auth(request):
     if request.user.is_authenticated:
@@ -64,3 +64,35 @@ def update_username(request):
             return JsonResponse({"error": f"Failed to update username: {str(e)}"}, status=400)
     else:
         return HttpResponse("Invalid request method.", status=405)
+    
+def upload_avatar(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            avatar_base64 = data.get('avatar', None)
+            
+            if not avatar_base64:
+                return JsonResponse({'error': 'No avatar uploaded'}, status=400)
+
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            user_profile.avatar_base64 = avatar_base64
+            user_profile.save()
+
+            return JsonResponse({'success': 'Avatar uploaded successfully!'})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': f'Failed to upload avatar: {str(e)}'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+def get_avatar(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user)
+            return JsonResponse({'avatar_base64': user_profile.avatar_base64})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'Failed to get avatar: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+

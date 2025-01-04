@@ -1,5 +1,6 @@
 function settingsRenderEvent() {
 	updatePlayerInfo()
+	updateImage();
 	const registerLabel = document.getElementById('btn_logout');
 	registerLabel.addEventListener('click', () => {
 		logout();
@@ -50,9 +51,57 @@ function settingsRenderEvent() {
 			alert("Le mot de passe ne peut pas être vide.");
 		}
 	});
+
+	document.getElementById('btn_upload_avatar').addEventListener('click', function () {
+		const fileInput = document.getElementById('avatar_upload');
+		const file = fileInput.files[0];
+	
+		if (file) {
+			const reader = new FileReader();
+			
+			reader.onloadend = function () {
+				const base64Image = reader.result.split(',')[1];
+				console.log(base64Image);
+				uploadAvatar(base64Image);
+			};
+			
+			reader.readAsDataURL(file);
+		} else {
+			alert("Select file first !");
+		}
+	});
+	
 }
 
 settingsRenderEvent();
+
+async function uploadAvatar(base64Image) {
+	try {
+		const response = await fetch('/api/upload_avatar/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': getCSRFToken(),
+			},
+			body: JSON.stringify({
+				avatar: base64Image
+			})
+		});
+
+		const data = await response.json();
+
+		if (response.ok) {
+			console.log('Avatar upload success:', data.success);
+			alert('Avatar Update success !');
+		} else {
+			console.error('Error Download Avatar:', data.error);
+			alert('Error update avatar.');
+		}
+	} catch (error) {
+		console.error('Error:', error);
+		alert('Error update avatar');
+	}
+}
 
 async function changeUsername(newUsername) {
     try {
@@ -79,6 +128,22 @@ async function changeUsername(newUsername) {
     } catch (error) {
         console.error('Erreur request:', error);
         alert('Update Username Error.');
+    }
+}
+
+async function updateImage() {
+    const avatarDisplay = document.getElementById('avatar_display');
+
+    try {
+        const response = await fetch('/api/get_avatar/');
+        const data = await response.json();
+
+        if (response.ok && data.avatar_base64) {
+            avatarDisplay.src = `data:image/png;base64,${data.avatar_base64}`;
+        }
+    } catch (error) {
+        console.error('Error get avatar img:', error);
+        // avatarDisplay.src = '{% static "default_avatar.png" %}';
     }
 }
 

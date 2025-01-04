@@ -7,6 +7,7 @@ done
 echo "PostgreSQL is up and running - executing command"
 
 python manage.py makemigrations login
+python manage.py makemigrations settings
 python manage.py migrate
 
 exec "$@"
