@@ -9,4 +9,13 @@ urlpatterns = [
 	path("update_username/", views.update_username, name="update_username"),
 	path("get_avatar/", views.get_avatar, name="get_avatar"),
 	path("upload_avatar/", views.upload_avatar, name="upload_avatar"),
+	path("user_is_online/", views.user_is_online, name="user_is_online"),
+	path("acceptFriendsRequest/", views.acceptFriendsRequest, name="acceptFriendsRequest"),
+	path("denyFriendsRequest/", views.denyFriendsRequest, name="denyFriendsRequest"),
+	path("removeFriends/", views.removeFriends, name="removeFriends"),
+	path("getFriendsList/", views.getFriendsList, name="getFriendsList"),
+	path("getRequestFriendsList/", views.getRequestFriendsList, name="getRequestFriendsList"),
+	path("user_exist/", views.user_exist, name="user_exist"),
+	path("user_not_friend_exist/", views.user_not_friend_exist, name="user_not_friend_exist"),
+	path("sendRequestFriends/", views.sendRequestFriends, name="sendRequestFriends"),
 ]

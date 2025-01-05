@@ -96,3 +96,171 @@ def get_avatar(request):
             return JsonResponse({'error': f'Failed to get avatar: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
+def user_exist(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            username_to_check = data.get('username', None)
+            user = User.objects.filter(username=username_to_check).first()
+            if user is not None:
+                return JsonResponse({"user_exist": True})
+            else:
+                return JsonResponse({"user_exist": False})
+        except Exception as e:
+            return JsonResponse({"error": f"blblbl: {str(e)}"}, status=400)
+        
+def user_not_friend_exist(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            username_to_check = data.get('username', None)
+            user = User.objects.filter(username=username_to_check).first()
+            selfUserData = PlayerData.objects.filter(username=request.user.username).first()
+            if selfUserData is not None:
+                if user is not None and username_to_check not in selfUserData.friendsList:
+                    return JsonResponse({"user_exist": True})
+                else:
+                    return JsonResponse({"user_exist": False})
+            else:
+                return JsonResponse({"error": f"blblbl: {str(e)}"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blblbl: {str(e)}"}, status=400)
+        
+def user_is_online(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            username_to_check = data.get('username', None)
+			
+            if username_to_check is None:
+                return JsonResponse({"error": "Username are required."}, status=400)
+            user_profile = PlayerData.objects.get(username=username_to_check)
+            if user_profile.is_online:
+                return JsonResponse({'is_online': True})
+            else:
+                return JsonResponse({'is_online': False})
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+
+def sendRequestFriends(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            new_friend = data.get('new_friend', None)
+			
+            if new_friend is None:
+                return JsonResponse({"error": "Provide name for new friend."}, status=400)
+            user_profile = PlayerData.objects.get(username=new_friend)
+            if user_profile:
+                if user_profile.requestFriendsList:
+                    request_friends_list = user_profile.requestFriendsList.split(',')
+                    if request.user.username not in request_friends_list:
+                        user_profile.requestFriendsList += "," + request.user.username
+                        user_profile.save()
+                    else:
+                        return JsonResponse({"error": "Request Already Send"}, status=400)
+                else:
+                    user_profile.requestFriendsList = request.user.username
+                    user_profile.save()
+                return JsonResponse({"success": "okay"})
+            else:
+                return JsonResponse({"error": "Can't find profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+    
+def acceptFriendsRequest(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            new_friend = data.get('new_friend', None)
+			
+            if new_friend is None:
+                return JsonResponse({"error": "Provide name for new friend."}, status=400)
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            toAdd_profile = PlayerData.objects.get(username=new_friend)
+            if user_profile and user_profile.requestFriendsList is not None:
+                newRequestFriendsList = user_profile.requestFriendsList.split(',')
+                if new_friend in newRequestFriendsList:
+                    if user_profile.friendsList:
+                        user_profile.friendsList += "," + new_friend
+                    else:
+                        user_profile.friendsList = new_friend
+                    newRequestFriendsList.remove(new_friend)
+                    user_profile.requestFriendsList = ",".join(newRequestFriendsList)
+                    user_profile.save()
+                    if toAdd_profile.friendsList:
+                        toAdd_profile.friendsList += "," + request.user.username
+                    else:
+                        toAdd_profile.friendsList = request.user.username
+                    toAdd_profile.save()
+                return JsonResponse({"success": "okay"})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+        
+def denyFriendsRequest(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            deny_friend = data.get('deny_friend', None)
+			
+            if deny_friend is None:
+                return JsonResponse({"error": "Provide name for sad no-friend."}, status=400)
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                if user_profile.requestFriendsList:
+                    newRequestFriendsList = user_profile.requestFriendsList.split(',')
+                    if deny_friend in newRequestFriendsList:
+                        newRequestFriendsList.remove(deny_friend)
+                        user_profile.requestFriendsList = ",".join(newRequestFriendsList)
+                        user_profile.save()
+                        return JsonResponse({'success': 'Rm friend success!'})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+        
+def removeFriends(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            bye_friend = data.get('old_friend', None)
+			
+            if bye_friend is None:
+                return JsonResponse({"error": "Provide name for sad old friend."}, status=400)
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                if user_profile.friendsList:
+                    newFriendsList = user_profile.friendsList.split(',')
+                    if bye_friend in newFriendsList:
+                        newFriendsList.remove(bye_friend)
+                        user_profile.friendsList = ",".join(newFriendsList)
+                        user_profile.save()
+                        return JsonResponse({'success': 'Rm friend success!'})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+        
+def getFriendsList(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                return JsonResponse({"friendsList": user_profile.friendsList})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+        
+def getRequestFriendsList(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                return JsonResponse({"requestFriendsList": user_profile.requestFriendsList})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
