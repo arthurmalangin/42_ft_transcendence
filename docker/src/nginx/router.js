@@ -40,6 +40,13 @@ const routes = {
 		js: '/static/js/settings.js',
 		needLogin: true
 	},
+
+	'/game': {
+		html: '/srcgame',
+		css: '/static/css/game.css',
+		js: '/static/js/game.js',
+		needLogin: true
+	},
 }
 
 async function is_auth() {
