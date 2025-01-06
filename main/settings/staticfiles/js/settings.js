@@ -30,6 +30,12 @@ function settingsRenderEvent() {
 		loadPage('/friends');
 	});
 
+	const gameLabel = document.getElementById('btn_game');
+	gameLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/game');
+		loadPage('/game');
+	});
+
 	const btn_username = document.getElementById('btn_username');
 	btn_username.addEventListener('click', () => {
 		const usernameValue = document.getElementById('input_username').value;

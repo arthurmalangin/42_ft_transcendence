@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 	"friends",
 	"home",
 	"leaderboard",
+    'game',
 	"settings",
 	"API",
     'django.contrib.admin',
@@ -144,6 +145,7 @@ STATICFILES_DIRS = [
 	BASE_DIR / "leaderboard/staticfiles",
 	BASE_DIR / "settings/staticfiles",
 	BASE_DIR / "friends/staticfiles",
+	BASE_DIR / "game/staticfiles",
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

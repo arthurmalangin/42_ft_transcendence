@@ -1,0 +1,68 @@
+/* Base styles */
+:root {
+	--terminal-green: #00ff00;
+	--terminal-bg: #001800;
+}
+  
+body {
+	margin: 0;
+	font-family: monospace;
+	background-color: var(--terminal-bg);
+	color: var(--terminal-green);
+	line-height: 1.5;
+}
+
+/* Layout */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.header {
+	margin-bottom: 2rem;
+	border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+	padding-bottom: 1rem;
+}
+
+.main-content {
+	display: flex;
+	gap: 2rem;
+}
+
+/* Navigation */
+.nav {
+	width: 200px;
+	flex-shrink: 0;
+}
+
+.nav-item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.nav-item:hover {
+	background-color: rgba(0, 255, 0, 0.1);
+}
+
+.nav-item.active {
+	border-left: 2px solid var(--terminal-green);
+}
+
+/* Buttons */
+.btn {
+	background: transparent;
+	border: 1px solid var(--terminal-green);
+	color: var(--terminal-green);
+	padding: 0.5rem 1rem;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.btn:hover {
+	background-color: rgba(0, 255, 0, 0.1);
+}
