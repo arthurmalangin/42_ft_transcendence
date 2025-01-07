@@ -1,3 +1,7 @@
+# rooting.py is used to define the routing configuration for websockets
+# it matches specific URLS or URL patterns to a specific consumer.
+# as_asgi wraps the base consumer class with ASGI-compatible methods.
+
 from consumers import GameConsumer
 from django.urls import re_path
 
