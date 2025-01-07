@@ -32,19 +32,32 @@ LOGIN_URL = '/login/'
 # Application definition
 
 INSTALLED_APPS = [
-	"login",
-	"friends",
-	"home",
-	"leaderboard",
-	"settings",
-	"API",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'channels',
+	"login",
+	"friends",
+	"home",
+	"leaderboard",
+	"settings",
+	"API",
+	"pong",
 ]
+
+ASGI_APPLICATION = 'main.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
