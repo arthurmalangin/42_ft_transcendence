@@ -125,6 +125,36 @@ function init_pong() {
 		document.getElementById('opponentScore').innerText = "Opponent: " + opponentScore;
 	}
 
+	// let previousPlayerScore = 0;
+	// let previousOpponentScore = 0;
+
+	function draw() {
+		context.fillStyle = "#ffffff";
+		context.fillRect(player.x, player.y, player.width, player.height);
+
+		context.fillStyle = "#00ff00";
+		context.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
+
+		context.fillStyle = "#00ff00";
+		context.beginPath();
+		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
+		context.fill();
+
+		// const playerScoreElement = document.getElementById('playerScore');
+		// const opponentScoreElement = document.getElementById('opponentScore');
+
+		// if (playerScoreElement && opponentScoreElement) {
+			// if (playerScore !== previousPlayerScore) {
+				// playerScoreElement.innerText = "Player: " + playerScore;
+				// previousPlayerScore = playerScore;
+			// }
+			// if (opponentScore !== previousOpponentScore) {
+				// opponentScoreElement.innerText = "Opponent: " + opponentScore;
+				// previousOpponentScore = opponentScore;
+			// }
+		// }
+	}
+
 	function startGame() {
 		board = document.getElementById('board');
 		context = board.getContext('2d');
