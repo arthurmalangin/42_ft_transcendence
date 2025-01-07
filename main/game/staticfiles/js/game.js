@@ -78,9 +78,6 @@ function init_pong() {
 		y: boardHeight / 2 - ballHeight / 2
 	};
 
-	let playerScore = 0;
-	let opponentScore = 0;
-
 	let keys = {};
 
 	window.addEventListener('keydown', function (e) {
@@ -119,40 +116,7 @@ function init_pong() {
 		context.fillStyle = "#00ff00";
 		context.beginPath();
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
-		context.fill();
-
-		document.getElementById('playerScore').innerText = "Player: " + playerScore;
-		document.getElementById('opponentScore').innerText = "Opponent: " + opponentScore;
-	}
-
-	// let previousPlayerScore = 0;
-	// let previousOpponentScore = 0;
-
-	function draw() {
-		context.fillStyle = "#ffffff";
-		context.fillRect(player.x, player.y, player.width, player.height);
-
-		context.fillStyle = "#00ff00";
-		context.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
-
-		context.fillStyle = "#00ff00";
-		context.beginPath();
-		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
-		context.fill();
-
-		// const playerScoreElement = document.getElementById('playerScore');
-		// const opponentScoreElement = document.getElementById('opponentScore');
-
-		// if (playerScoreElement && opponentScoreElement) {
-			// if (playerScore !== previousPlayerScore) {
-				// playerScoreElement.innerText = "Player: " + playerScore;
-				// previousPlayerScore = playerScore;
-			// }
-			// if (opponentScore !== previousOpponentScore) {
-				// opponentScoreElement.innerText = "Opponent: " + opponentScore;
-				// previousOpponentScore = opponentScore;
-			// }
-		// }
+		context.fill();	
 	}
 
 	function startGame() {
@@ -177,13 +141,6 @@ function init_pong() {
 
 		player.y = boardHeight / 2 - player.height / 2;
 		opponent.y = boardHeight / 2 - opponent.height / 2;
-	}
-
-	function isNextOutOfBounds(paddle, sign) {
-		if ((sign == '-' && paddle.y - paddle.speed < 0) ||
-			(sign == '+' && paddle.y + paddle.height + paddle.speed > boardHeight))
-			return true;
-		return false;
 	}
 
 	function moveBall() {
@@ -219,11 +176,9 @@ function init_pong() {
 
 		// check for point
 		if (ball.x <= 0) {
-			opponentScore++;
 			resetGame(false);
 		}
 		if (ball.x + ball.width >= boardWidth) {
-			playerScore++;
 			resetGame(true);
 		}
 	}
