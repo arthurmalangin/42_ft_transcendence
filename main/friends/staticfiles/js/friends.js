@@ -27,6 +27,12 @@ function friendsEvent() {
 		history.pushState(null, '', '/friends');
 		loadPage('/friends');
 	});
+
+	const gameLabel = document.getElementById('btn_game');
+	gameLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/game');
+		loadPage('/game');
+	});
 }
 
 friendsEvent();

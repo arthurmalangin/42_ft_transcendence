@@ -24,6 +24,7 @@ urlpatterns = [
 	path('srclogin/', include("login.urls")),
 	path('srcsettings/', include("settings.urls")),
 	path('srcfriends/', include("friends.urls")),
+	path('srcgame/', include("game.urls")),
 	path('api/', include("API.urls")),
     path('admin/', admin.site.urls),
 ]
