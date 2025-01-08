@@ -147,6 +147,12 @@ function init_pong() {
 		updateBallSpeed(newSpeed);
 	});
 
+	const paddleSpeedSlider = document.getElementById('paddleSpeedSlider');
+	paddleSpeedSlider.addEventListener('input', function() {
+		const newSpeed = paddleSpeedSlider.value;
+		updatePaddleSpeed(newSpeed);
+	});
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -335,9 +341,20 @@ function updateBallSpeed(speed) {
 	ball.speed = ballSpeed;
 }
 
+function updatePaddleSpeed(speed) {
+    player.speed = parseFloat(speed);
+    opponent.speed = parseFloat(speed);
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                   POWER-UPS FUNCTIONS                   ////////////
 //////////////////////////////////////////////////////////////////////////////////
+
+function togglePowerups() {
+    powerupsEnabled = !powerupsEnabled;
+    const button = document.getElementById('enablePowerupsButton');
+    button.textContent = powerupsEnabled ? 'Disable Powerups' : 'Enable Powerups';
+}
 
 function spawnPowerUp() {
 	const powerUp = {
@@ -419,7 +436,7 @@ function checkPowerUpCollisions() { // with player/opponent
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 	
-		prevTargetY = calculateTargetY(predictedY, playerDistanceFromTop, playerDistanceFromBottom) + (Math.random() - 0.5) * 20;
+		prevTargetY = calculateTargetY(predictedY, playerDistanceFromTop, playerDistanceFromBottom) + (Math.random() - 0.5) * 10;
 	
 		moveTowardsPredictedBall(prevTargetY);
 	}
@@ -461,7 +478,7 @@ function checkPowerUpCollisions() { // with player/opponent
 
 	function moveTowardsPredictedBall(targetY) {
 		const diff = calculateDiff(targetY, opponent.y);
-		const threshold = paddleSpeed * 2; // threshold to prevent small movements/wiggling
+		const threshold = paddleSpeed; // threshold to prevent wiggling
 	
 		updateKeys(diff, threshold);
 	
