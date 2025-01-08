@@ -100,28 +100,66 @@ function init_pong() {
 			opponent.y += opponent.speed;
 	}
 
+	let lastDrawTime = 0;
+
 	function gameLoop() {
-		updatePaddlePositions();
 		updateOpponentPosition();
 		moveBall();
-
+	
 		context.clearRect(0, 0, boardWidth, boardHeight);
 		draw();
-
+	
+		const currentTime = Date.now();
+		if (currentTime - lastDrawTime >= 1000) {
+			drawPredictedTrajectory();
+			lastDrawTime = currentTime;
+		}
+	
 		requestAnimationFrame(gameLoop);
 	}
-
+	
 	function draw() {
 		context.fillStyle = "#ffffff";
 		context.fillRect(player.x, player.y, player.width, player.height);
-
+	
 		context.fillStyle = "#00ff00";
 		context.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
-
+	
 		context.fillStyle = "#00ff00";
 		context.beginPath();
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
-		context.fill();	
+		context.fill();
+	}
+	
+	function drawPredictedTrajectory() {
+		let predictedX = ball.x + ball.width / 2;
+		let predictedY = ball.y + ball.height / 2;
+		let velocityX = ball.velocityX;
+		let velocityY = ball.velocityY;
+	
+		context.strokeStyle = "#ff0000";
+		context.lineWidth = 1;
+		context.beginPath();
+		context.moveTo(predictedX, predictedY);
+	
+		while (predictedX <= 475 && predictedX >= 25) {
+			predictedX += velocityX;
+			predictedY += velocityY;
+	
+			if (predictedY <= 0 + ball.height / 2 || predictedY >= boardHeight - ball.height / 2) {
+				velocityY = -velocityY;
+			}
+	
+			context.lineTo(predictedX, predictedY);
+		}
+	
+		context.stroke();
+	
+		// predicted ball position when hitting opponent's paddle 
+		context.fillStyle = "#ff0000";
+		context.beginPath();
+		context.arc(predictedX, predictedY, ball.width / 2, 0, 2 * Math.PI);
+		context.fill();
 	}
 
 	function startGame() {
@@ -190,7 +228,15 @@ function init_pong() {
 
 	// AI opponent
 
+	let lastUpdateTime = 0;
+
 	function updateOpponentPosition() {
+		const currentTime = Date.now();
+		if (currentTime - lastUpdateTime < 1000) {
+			return; // Only update once every second
+		}
+
+		lastUpdateTime = currentTime;
 		const predictedY = predictBallYAtX(475);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
@@ -269,11 +315,10 @@ function init_pong() {
 		let predictedY = ball.y + ball.height / 2;
 		let velocityX = ball.velocityX;
 		let velocityY = ball.velocityY;
-		const predictionInterval = 1000; // prediction interval
 
 		while (predictedX < targetX) {
-			predictedX += velocityX * (predictionInterval / 1000);
-			predictedY += velocityY * (predictionInterval / 1000);
+			predictedX += velocityX;
+			predictedY += velocityY;
 
 			// top and bottom walls collision check
 			if (predictedY - ball.height / 2 <= 0 || predictedY + ball.height / 2 >= boardHeight) {
