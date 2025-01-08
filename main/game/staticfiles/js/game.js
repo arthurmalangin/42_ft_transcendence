@@ -101,13 +101,13 @@ function init_pong() {
 	}
 
 	function gameLoop() {
-		updateOpponentPosition();
-		moveBall();
-	
 		context.clearRect(0, 0, boardWidth, boardHeight);
-		draw();
 	
+		moveBall();
+		draw();
+		updateOpponentPosition();
 		updatePaddlePositions();
+	
 		requestAnimationFrame(gameLoop);
 	}
 	
@@ -122,19 +122,15 @@ function init_pong() {
 		context.beginPath();
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 		context.fill();
-
-		drawPredictedTrajectory();
-		drawHighlightedPositions();
-
 	}
 	
 	function drawHighlightedPositions() {
 		// player's position
-		context.fillStyle = "255, 255, 0";
+		context.fillStyle = "rgba(255, 0, 0, 0.5)";
 		context.fillRect(player.x, player.y, player.width, player.height);
 	
 		// ball's position
-		context.fillStyle = "255, 255, 0";
+		context.fillStyle = "rgba(255, 0, 0, 0.5)";
 		context.beginPath();
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 		context.fill();
@@ -146,7 +142,7 @@ function init_pong() {
 		let velocityX = ball.velocityX;
 		let velocityY = ball.velocityY;
 	
-		context.strokeStyle = "#ff0000";
+		context.strokeStyle = "rgba(255, 0, 0, 0.5)";
 		context.lineWidth = 1;
 		context.beginPath();
 		context.moveTo(predictedX, predictedY);
@@ -165,7 +161,7 @@ function init_pong() {
 		context.stroke();
 	
 		// predicted ball position when hitting opponent's paddle 
-		context.fillStyle = "#ff0000";
+		context.fillStyle = "rgba(255, 0, 0, 0.5)";
 		context.beginPath();
 		context.arc(predictedX, predictedY, ball.width / 2, 0, 2 * Math.PI);
 		context.fill();
@@ -238,6 +234,9 @@ function init_pong() {
 	// AI opponent
 
 	function updateOpponentPosition() {
+		drawPredictedTrajectory();
+		drawHighlightedPositions();
+
 		const predictedY = predictBallYAtX(475);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
