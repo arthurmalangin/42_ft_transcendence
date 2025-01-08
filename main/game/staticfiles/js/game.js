@@ -109,12 +109,7 @@ function init_pong() {
 		context.clearRect(0, 0, boardWidth, boardHeight);
 		draw();
 	
-		const currentTime = Date.now();
-		if (currentTime - lastDrawTime >= 1000) {
-			drawPredictedTrajectory();
-			lastDrawTime = currentTime;
-		}
-	
+		updatePaddlePositions();
 		requestAnimationFrame(gameLoop);
 	}
 	
@@ -129,6 +124,8 @@ function init_pong() {
 		context.beginPath();
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 		context.fill();
+
+		drawPredictedTrajectory();
 	}
 	
 	function drawPredictedTrajectory() {
@@ -233,43 +230,9 @@ function init_pong() {
 	function updateOpponentPosition() {
 		const currentTime = Date.now();
 		if (currentTime - lastUpdateTime < 1000) {
-			return; // Only update once every second
+			return; // update once every second
 		}
 
-		lastUpdateTime = currentTime;
-		const predictedY = predictBallYAtX(475);
-		const playerDistanceFromTop = player.y;
-		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
-		const playerDistanceFromEdge = Math.min(playerDistanceFromTop, playerDistanceFromBottom) / (boardHeight / 2);
-
-		let targetY;
-
-		if (ball.velocityX > 0) { // ball was last hit by player
-			// aim where player isn't
-			let offset = (1 - playerDistanceFromEdge) * 0.5 * opponent.height;
-
-			// offset paddle accordingly
-			if (playerDistanceFromTop < playerDistanceFromBottom) {
-				targetY = predictedY - offset; // aim for bottom
-			} else {
-				targetY = predictedY + offset; // aim for top
-			}
-		} else {
-			targetY = boardHeight / 2;
-		}
-
-		const diff = targetY - (opponent.y + opponent.height / 2);
-
-		if (diff > 0) {
-			opponent.y += paddleSpeed;
-		} else if (diff < 0) {
-			opponent.y -= paddleSpeed;
-		}
-
-		opponent.y = Math.max(0, Math.min(opponent.y, boardHeight - opponent.height));
-	}
-
-	function updateOpponentPosition() {
 		const predictedY = predictBallYAtX(475);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
