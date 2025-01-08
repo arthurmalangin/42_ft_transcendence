@@ -93,6 +93,11 @@ function init_pong() {
 			player.y -= player.speed;
 		if (keys['s'] && player.y < boardHeight - player.height)
 			player.y += player.speed;
+	
+		if (keys['ArrowUp'] && opponent.y > 0)
+			opponent.y -= opponent.speed;
+		if (keys['ArrowDown'] && opponent.y < boardHeight - opponent.height)
+			opponent.y += opponent.speed;
 	}
 
 	function gameLoop() {
@@ -223,13 +228,13 @@ function init_pong() {
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 		const playerDistanceFromEdge = Math.min(playerDistanceFromTop, playerDistanceFromBottom) / (boardHeight / 2);
-
+	
 		let targetY;
-
+	
 		if (ball.velocityX > 0) { // ball was last hit by the player
 			// aim where player isn't
 			let offset = (1 - playerDistanceFromEdge) * 0.5 * opponent.height;
-
+	
 			// offset paddle accordingly
 			if (playerDistanceFromTop < playerDistanceFromBottom) {
 				targetY = predictedY - offset; // aim for bottom
@@ -239,18 +244,23 @@ function init_pong() {
 		} else {
 			targetY = boardHeight / 2;
 		}
-
+	
 		const diff = targetY - (opponent.y + opponent.height / 2);
 		const threshold = paddleSpeed * 2; // threshold to prevent small movements/wiggling
-
+	
 		if (Math.abs(diff) > threshold) {
 			if (diff > 0) {
-				opponent.y += paddleSpeed;
+				keys['ArrowDown'] = true;
+				keys['ArrowUp'] = false;
 			} else if (diff < 0) {
-				opponent.y -= paddleSpeed;
+				keys['ArrowUp'] = true;
+				keys['ArrowDown'] = false;
 			}
+		} else {
+			keys['ArrowUp'] = false;
+			keys['ArrowDown'] = false;
 		}
-
+	
 		opponent.y = Math.max(0, Math.min(opponent.y, boardHeight - opponent.height));
 	}
 
