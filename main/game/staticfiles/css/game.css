@@ -30,6 +30,56 @@ body {
 	gap: 2rem;
 }
 
+  /* Terminal effects */
+  .scanline {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+  }
+  
+  .scanline::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	background: rgba(0, 255, 0, 0.1);
+	animation: scan 6s linear infinite;
+  }
+  
+  @keyframes scan {
+	0% { transform: translateY(-100%); }
+	100% { transform: translateY(100%); }
+  }
+  
+  .phosphor {
+	animation: glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes glow {
+	0% { text-shadow: 0 0 1px var(--terminal-green); }
+	50% { text-shadow: 0 0 2px var(--terminal-green); }
+	100% { text-shadow: 0 0 1px var(--terminal-green); }
+  }
+  
+  .crt::before {
+	content: " ";
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: 
+	  linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+	  linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+	background-size: 100% 2px, 3px 100%;
+	pointer-events: none;
+	z-index: 2;
+  }
+
 /* Navigation */
 .nav {
 	width: 200px;
@@ -51,13 +101,6 @@ body {
 
 .nav-item.active {
 	border-left: 2px solid var(--terminal-green);
-}
-
-/* Right Sidebar */
-.right-nav {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
 }
 
 .right-nav .nav-item {
@@ -82,14 +125,14 @@ body {
 /* Pong game */
 
 #board {
-	background-color: #001a00;
-	border-top: 5px solid #00ff00;
-	border-bottom: 5px solid #00ff00;
+	background-color: var(--terminal-bg);
+	border-top: 5px solid var(--terminal-green);
+	border-bottom: 5px solid var(--terminal-green);
 }
 
 #scoreboard {
-    text-align: center;
-    margin-top: 40px;
+	text-align: center;
+	margin-top: 40px;
 	font-family: 'Courier New', Courier, monospace;
 }
 
@@ -99,4 +142,35 @@ body {
 
 #opponentScore {
 	color: #00ff00;
+}
+
+/* Settings */
+.overlay {
+    position: fixed;
+    top: 400px;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-content {
+	background: var(--terminal-bg);
+	padding: 2rem;
+	border: 1px solid var(--terminal-green);
+	color: var(--terminal-green);
+}
+
+.input {
+	background: transparent;
+	border: 1px solid var(--terminal-green);
+	color: var(--terminal-green);
+	padding: 0.5rem;
+	font-family: monospace;
+	width: 200px;
+  }
+  
+input[type="range"] {
+	accent-color: var(--terminal-green);
 }

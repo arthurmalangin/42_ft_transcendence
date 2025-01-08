@@ -100,6 +100,36 @@ function init_pong() {
 		}
 	});
 
+	document.getElementById('btn_settings_pong').addEventListener('click', function() {
+		if (!isPaused)
+			pauseGame();
+		document.getElementById('settingsOverlay').style.display = 'flex';
+	});
+	
+	document.getElementById('btn_close_settings_pong').addEventListener('click', function() {
+		document.getElementById('settingsOverlay').style.display = 'none';
+		pauseGame();
+	});
+	
+	function stopEventPropagation(event) {
+		const overlay = document.getElementById('settingsOverlay');
+		if (overlay.style.display === 'flex') {
+			if (event.type === 'click' && event.target.id !== 'btn_close_settings_pong') {
+				event.stopPropagation();
+				event.preventDefault();
+			} else if (event.type === 'keydown') {
+				const blockedKeys = ['s', 'w', ' ', 'ArrowUp', 'ArrowDown'];
+				if (blockedKeys.includes(event.key)) {
+					event.stopPropagation();
+					event.preventDefault();
+				}
+			}
+		}
+	}
+	
+	document.addEventListener('keydown', stopEventPropagation, true);
+	document.addEventListener('click', stopEventPropagation, true);
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
 //////////////////////////////////////////////////////////////////////////////////

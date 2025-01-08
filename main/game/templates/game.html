@@ -29,12 +29,22 @@
 		</nav>
 		<canvas id="board"></canvas>
 		<nav class="nav right-nav">
-            <div id="btn_pause" class="nav-item">
-                <span>&gt; PAUSE</span>
-            </div>
-            <div id="btn_settings" class="nav-item">
-                <span>&gt; SETTINGS</span>
-            </div>
-        </nav>
+			<div id="btn_pause" class="nav-item">
+				<span>&gt; PAUSE</span>
+			</div>
+			<div id="btn_settings_pong" class="nav-item">
+				<span>&gt; SETTINGS</span>
+			</div>
+		</nav>
 	</main>
+	<div id="settingsOverlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Settings</h2>
+			<div class="form-group">
+				<label>ball speed</label>
+				<input type="range" class="input" value="20">
+			</div>
+            <button id="btn_close_settings_pong" class="btn">Close</button>
+        </div>
+    </div>
 </div>
