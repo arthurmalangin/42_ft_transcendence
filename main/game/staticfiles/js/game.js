@@ -233,10 +233,38 @@ function init_pong() {
 
 	// AI opponent
 
+	let lastUpdateTime = 0;
+	let prevTargetY = boardHeight / 2;
+
 	function updateOpponentPosition() {
+		const currentTime = Date.now();
+	
+		if (currentTime - lastUpdateTime < 1000) {
+			const diff = prevTargetY - (opponent.y + opponent.height / 2);
+			const threshold = paddleSpeed * 2; // threshold to prevent small movements/wiggling
+	
+			if (Math.abs(diff) > threshold) {
+				if (diff > 0) {
+					keys['ArrowDown'] = true;
+					keys['ArrowUp'] = false;
+				} else if (diff < 0) {
+					keys['ArrowUp'] = true;
+					keys['ArrowDown'] = false;
+				}
+			} else {
+				keys['ArrowUp'] = false;
+				keys['ArrowDown'] = false;
+			}
+	
+			opponent.y = Math.max(0, Math.min(opponent.y, boardHeight - opponent.height));
+			return;
+		}
+		
+		lastUpdateTime = currentTime;
+	
 		drawPredictedTrajectory();
 		drawHighlightedPositions();
-
+	
 		const predictedY = predictBallYAtX(475);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
@@ -257,6 +285,8 @@ function init_pong() {
 		} else {
 			targetY = boardHeight / 2;
 		}
+	
+		prevTargetY = targetY;
 	
 		const diff = targetY - (opponent.y + opponent.height / 2);
 		const threshold = paddleSpeed * 2; // threshold to prevent small movements/wiggling
