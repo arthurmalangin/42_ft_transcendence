@@ -100,8 +100,6 @@ function init_pong() {
 			opponent.y += opponent.speed;
 	}
 
-	let lastDrawTime = 0;
-
 	function gameLoop() {
 		updateOpponentPosition();
 		moveBall();
@@ -126,8 +124,22 @@ function init_pong() {
 		context.fill();
 
 		drawPredictedTrajectory();
+		drawHighlightedPositions();
+
 	}
 	
+	function drawHighlightedPositions() {
+		// player's position
+		context.fillStyle = "255, 255, 0";
+		context.fillRect(player.x, player.y, player.width, player.height);
+	
+		// ball's position
+		context.fillStyle = "255, 255, 0";
+		context.beginPath();
+		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
+		context.fill();
+	}
+
 	function drawPredictedTrajectory() {
 		let predictedX = ball.x + ball.width / 2;
 		let predictedY = ball.y + ball.height / 2;
@@ -225,14 +237,7 @@ function init_pong() {
 
 	// AI opponent
 
-	let lastUpdateTime = 0;
-
 	function updateOpponentPosition() {
-		const currentTime = Date.now();
-		if (currentTime - lastUpdateTime < 1000) {
-			return; // update once every second
-		}
-
 		const predictedY = predictBallYAtX(475);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
