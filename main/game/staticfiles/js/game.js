@@ -84,6 +84,10 @@ function init_pong() {
 
 	let keys = {};
 
+//////////////////////////////////////////////////////////////////////////////////
+/////////////                         EVENTS                          ////////////
+//////////////////////////////////////////////////////////////////////////////////
+
 	window.addEventListener('keydown', function (e) {
 		keys[e.key] = true;
 	});
@@ -109,6 +113,7 @@ function init_pong() {
 	document.getElementById('btn_close_settings_pong').addEventListener('click', function() {
 		document.getElementById('settingsOverlay').style.display = 'none';
 		pauseGame();
+		resetGame(true);
 	});
 	
 	function stopEventPropagation(event) {
@@ -118,7 +123,7 @@ function init_pong() {
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (event.type === 'keydown') {
-				const blockedKeys = ['s', 'w', ' ', 'ArrowUp', 'ArrowDown'];
+				const blockedKeys = ['s', 'w', ' '];
 				if (blockedKeys.includes(event.key)) {
 					event.stopPropagation();
 					event.preventDefault();
@@ -129,6 +134,12 @@ function init_pong() {
 	
 	document.addEventListener('keydown', stopEventPropagation, true);
 	document.addEventListener('click', stopEventPropagation, true);
+
+	const ballSpeedSlider = document.getElementById('ballSpeedSlider');
+	ballSpeedSlider.addEventListener('input', function() {
+		const newSpeed = ballSpeedSlider.value;
+		updateBallSpeed(newSpeed);
+	});
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
@@ -297,6 +308,15 @@ function init_pong() {
 			resetGame(true);
 		}
 	}
+
+//////////////////////////////////////////////////////////////////////////////////
+/////////////                    SETTINGS FUNCS                       ////////////
+//////////////////////////////////////////////////////////////////////////////////
+
+function updateBallSpeed(speed) {
+	ballSpeed = parseFloat(speed);
+	ball.speed = ballSpeed;
+}
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                      AI OPPONENT                        ////////////
