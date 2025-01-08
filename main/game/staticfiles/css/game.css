@@ -53,6 +53,18 @@ body {
 	border-left: 2px solid var(--terminal-green);
 }
 
+/* Right Sidebar */
+.right-nav {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+}
+
+.right-nav .nav-item {
+    border-left: none;
+    border-right: 2px solid var(--terminal-green);
+}
+
 /* Buttons */
 .btn {
 	background: transparent;

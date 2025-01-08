@@ -92,9 +92,20 @@ function init_pong() {
 		keys[e.key] = false;
 	});
 
+	document.getElementById('btn_pause').addEventListener('click', pauseGame);
+
+	document.addEventListener('keydown', function(event) {
+		if (event.code === 'Space') {
+			pauseGame();
+		}
+	});
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
 //////////////////////////////////////////////////////////////////////////////////
+
+	let isPaused = false;
+	let animationFrameId;
 
 	function gameLoop() {
 		context.clearRect(0, 0, boardWidth, boardHeight);
@@ -104,7 +115,7 @@ function init_pong() {
 		updateOpponentPosition();
 		updatePaddlePositions();
 	
-		requestAnimationFrame(gameLoop);
+		animationFrameId = requestAnimationFrame(gameLoop);
 	}
 
 	function startGame() {
@@ -113,7 +124,7 @@ function init_pong() {
 		board.width = boardWidth;
 		board.height = boardHeight;
 
-		requestAnimationFrame(gameLoop);
+		animationFrameId = requestAnimationFrame(gameLoop);
 	}
 
 	function resetGame(playerLost) {
@@ -129,6 +140,16 @@ function init_pong() {
 
 		player.y = boardHeight / 2 - player.height / 2;
 		opponent.y = boardHeight / 2 - opponent.height / 2;
+	}
+
+	function pauseGame() {
+		if (isPaused) {
+			isPaused = false;
+			animationFrameId = requestAnimationFrame(gameLoop);
+		} else {
+			isPaused = true;
+			cancelAnimationFrame(animationFrameId);
+		}
 	}
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -257,14 +278,8 @@ function init_pong() {
 	function updateOpponentPosition() {
 		const currentTime = Date.now();
 	
-		if (OneSecElapsed(currentTime)) {
+		if (!OneSecElapsed(currentTime)) {
 			moveTowardsPredictedBall(prevTargetY);
-			// const diff = calculateDiff(prevTargetY, opponent.y);
-			// const threshold = paddleSpeed * 2; // threshold to prevent small movements/wiggling
-	
-			// updateKeys(diff, threshold);
-	
-			// opponent.y = Math.max(0, Math.min(opponent.y, boardHeight - opponent.height));
 			return;
 		}
 	
@@ -277,15 +292,9 @@ function init_pong() {
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 	
-		prevTargetY = calculateTargetY(predictedY, playerDistanceFromTop, playerDistanceFromBottom);
+		prevTargetY = calculateTargetY(predictedY, playerDistanceFromTop, playerDistanceFromBottom) + (Math.random() - 0.5) * 20;
 	
 		moveTowardsPredictedBall(prevTargetY);
-		// const diff = calculateDiff(prevTargetY, opponent.y);
-		// const threshold = paddleSpeed * 2; // threshold to prevent small movements/wiggling
-	
-		// updateKeys(diff, threshold);
-	
-		// opponent.y = Math.max(0, Math.min(opponent.y, boardHeight - opponent.height));
 	}
 
 	function predictBallYAtX(targetX) {
@@ -316,7 +325,7 @@ function init_pong() {
 //////////////////////////////////////////////////////////////////////////////////
 
 	function OneSecElapsed(currentTime) {
-		return currentTime - lastUpdateTime < 1000;
+		return currentTime - lastUpdateTime >= 1000;
 	}
 	
 	function calculateDiff(targetY, opponentY) {
