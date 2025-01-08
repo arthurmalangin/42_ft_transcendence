@@ -84,6 +84,8 @@ function init_pong() {
 
 	let keys = {};
 
+	let powerupsEnabled = false;
+
 	let powerUps = [];
 	const powerUpTypes = {
 		ENLARGE_PADDLE: 'enlarge_paddle',
@@ -119,13 +121,13 @@ function init_pong() {
 	document.getElementById('btn_close_settings_pong').addEventListener('click', function() {
 		document.getElementById('settingsOverlay').style.display = 'none';
 		pauseGame();
-		resetGame(true);
+		resetGame(true, false);
 	});
 	
 	function stopEventPropagation(event) {
 		const overlay = document.getElementById('settingsOverlay');
 		if (overlay.style.display === 'flex') {
-			if (event.type === 'click' && event.target.id !== 'btn_close_settings_pong') {
+			if (event.type === 'click' && event.target.id !== 'btn_close_settings_pong' && event.target.id !== 'enablePowerupsButton') {
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (event.type === 'keydown') {
@@ -137,7 +139,7 @@ function init_pong() {
 			}
 		}
 	}
-	
+
 	document.addEventListener('keydown', stopEventPropagation, true);
 	document.addEventListener('click', stopEventPropagation, true);
 
@@ -152,6 +154,9 @@ function init_pong() {
 		const newSpeed = paddleSpeedSlider.value;
 		updatePaddleSpeed(newSpeed);
 	});
+
+	const enablePowerupsButton = document.getElementById('enablePowerupsButton');
+	enablePowerupsButton.addEventListener('click', togglePowerups);
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
@@ -182,7 +187,7 @@ function init_pong() {
 		animationFrameId = requestAnimationFrame(gameLoop);
 	}
 
-	function resetGame(playerLost) {
+	function resetGame(playerLost, spawnPowerUpFlag = true) {
 		ball.x = boardWidth / 2 - ball.width / 2;
 		ball.y = boardHeight / 2 - ball.height / 2;
 		ball.speed = ballSpeed;
@@ -198,7 +203,9 @@ function init_pong() {
 		player.y = boardHeight / 2 - player.height / 2;
 		opponent.y = boardHeight / 2 - opponent.height / 2;
 
-		spawnPowerUp();
+		if (spawnPowerUpFlag) {
+			spawnPowerUp();
+		}
 	}
 
 	function pauseGame() {
@@ -342,8 +349,8 @@ function updateBallSpeed(speed) {
 }
 
 function updatePaddleSpeed(speed) {
-    player.speed = parseFloat(speed);
-    opponent.speed = parseFloat(speed);
+	player.speed = parseFloat(speed);
+	opponent.speed = parseFloat(speed);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -351,12 +358,17 @@ function updatePaddleSpeed(speed) {
 //////////////////////////////////////////////////////////////////////////////////
 
 function togglePowerups() {
-    powerupsEnabled = !powerupsEnabled;
-    const button = document.getElementById('enablePowerupsButton');
-    button.textContent = powerupsEnabled ? 'Disable Powerups' : 'Enable Powerups';
+	powerupsEnabled = !powerupsEnabled;
+	const button = document.getElementById('enablePowerupsButton');
+	button.textContent = powerupsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
+
+	if (!powerupsEnabled) {
+		powerUps = []; // rm all active powerups
+	}
 }
 
 function spawnPowerUp() {
+	if (!powerupsEnabled) return;
 	const powerUp = {
 		type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
 		x: boardWidth / 2,
