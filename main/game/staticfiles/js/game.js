@@ -84,6 +84,12 @@ function init_pong() {
 
 	let keys = {};
 
+	let powerUps = [];
+	const powerUpTypes = {
+		ENLARGE_PADDLE: 'enlarge_paddle',
+		FREEZE_OPPONENT: 'freeze_opponent'
+	};
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                         EVENTS                          ////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -152,9 +158,11 @@ function init_pong() {
 		context.clearRect(0, 0, boardWidth, boardHeight);
 	
 		moveBall();
+		movePowerUps();
 		draw();
 		updateOpponentPosition();
 		updatePaddlePositions();
+		checkPowerUpCollisions();
 	
 		animationFrameId = requestAnimationFrame(gameLoop);
 	}
@@ -172,6 +180,8 @@ function init_pong() {
 		ball.x = boardWidth / 2 - ball.width / 2;
 		ball.y = boardHeight / 2 - ball.height / 2;
 		ball.speed = ballSpeed;
+		player.height = paddleHeight;
+		opponent.height = paddleHeight;
 
 		if (playerLost)
 			ball.velocityX = ballSpeed;
@@ -181,6 +191,8 @@ function init_pong() {
 
 		player.y = boardHeight / 2 - player.height / 2;
 		opponent.y = boardHeight / 2 - opponent.height / 2;
+
+		spawnPowerUp();
 	}
 
 	function pauseGame() {
@@ -208,6 +220,11 @@ function init_pong() {
 		context.beginPath();
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 		context.fill();
+
+		powerUps.forEach(powerUp => {
+			context.fillStyle = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? "#ff0000" : "#0000ff";
+			context.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+		});
 	}
 	
 	function drawHighlightedPositions() {
@@ -319,6 +336,66 @@ function updateBallSpeed(speed) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+/////////////                   POWER-UPS FUNCTIONS                   ////////////
+//////////////////////////////////////////////////////////////////////////////////
+
+function spawnPowerUp() {
+	const powerUp = {
+		type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
+		x: boardWidth / 2,
+		y: boardHeight / 2,
+		width: 10,
+		height: 10,
+		velocityX: Math.random() < 0.5 ? 1 : -1,
+		velocityY: Math.random() < 0.5 ? 1 : -1 
+	};
+	powerUps.push(powerUp);
+}
+
+function applyPowerUp(powerUp, player) {
+	if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
+		if (player.y + player.height / 2 >= boardHeight / 2) {
+			player.y -= 25;
+		}
+		player.height += 25;
+	} else if (powerUp.type === powerUpTypes.FREEZE_OPPONENT) {
+		opponent.speed = 0;
+		setTimeout(() => {
+			opponent.speed = paddleSpeed;
+		}, 3000);
+	}
+}
+
+function movePowerUps() {
+	powerUps.forEach(powerUp => {
+		powerUp.x += powerUp.velocityX;
+		powerUp.y += powerUp.velocityY;
+
+		// collision check
+		if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
+			powerUp.velocityX *= -1;
+		}
+		if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
+			powerUp.velocityY *= -1;
+		}
+	});
+}
+
+function checkPowerUpCollisions() { // with player/opponent
+	powerUps = powerUps.filter(powerUp => {
+		if (powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y && powerUp.y <= player.y + player.height) {
+			applyPowerUp(powerUp, player);
+			return false;
+		}
+		if (powerUp.x + powerUp.width >= opponent.x && powerUp.y + powerUp.height >= opponent.y && powerUp.y <= opponent.y + opponent.height) {
+			applyPowerUp(powerUp, opponent);
+			return false;
+		}
+		return true;
+	});
+}
+
+//////////////////////////////////////////////////////////////////////////////////
 /////////////                      AI OPPONENT                        ////////////
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -425,7 +502,7 @@ function updateBallSpeed(speed) {
 		return targetY;
 	}
 
-	startGame();
+startGame();
 }
 
 init_pong();
