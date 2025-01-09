@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from settings.models import PlayerData
-
+import requests
+from django.contrib.auth.hashers import make_password
 
 def index(request):
 	print("login render html call !")
@@ -70,3 +71,53 @@ def reqlogin(request):
 	else:
 		print("Error: missing password or username.")
 		return HttpResponse("Error: missing password or username.")
+
+@api_view(['GET'])
+def reqlogin42(request):
+	token = _getToken("https://127.0.0.1/srclogin/reqlogin42/", request.query_params["code"])
+	user_info = _get42Info(token)
+	username = user_info['login']
+	print("login 42 is :" + username)
+	user = _login42(username, token)
+	if user:
+		print("yes")
+		login(request, user)
+		return (redirect('https://127.0.0.1/'))
+	else:
+		print("Error: user not set.")
+		return HttpResponse("Error: user not set.")
+
+def _login42(username, token):
+	if User.objects.filter(username=username).exists():
+		user = User.objects.get(username=username)
+		user.set_password(make_password(token))
+		user.save()
+		return (user)
+	else:
+		user = User.objects.create_user(username=username, email=username, password=make_password(token))
+		pdata = PlayerData.objects.create(username=user.username, email=username)
+		pdata.save()
+		return (user)
+
+def _get42Info(token):
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
+    return (response.json())
+
+def _getToken(reurl, code):
+    # POST https://api.intra.42.fr/oauth/token
+    # in body:
+    # 	grant_type = client_credentials
+    #	client_id = u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174
+    #	client_secret = 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
+    # return access_token
+    body = {
+        "grant_type": "authorization_code",
+        "client_id": "u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174",
+        "client_secret": "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",
+        "code": code,
+        "redirect_uri": reurl
+    }
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    response = requests.post('https://api.intra.42.fr/oauth/token', headers=headers, json=body)
+    return (response.json().get("access_token"))
