@@ -1,0 +1,47 @@
+<style>
+	.error-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: calc(100vh - 200px);
+		text-align: center;
+	}
+
+	.error-code {
+		font-size: 8rem;
+		margin-bottom: 1rem;
+		text-shadow: 0 0 10px var(--terminal-green);
+	}
+
+	.error-message {
+		font-size: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.error-gif {
+		margin: 2rem 0;
+		border: 2px solid var(--terminal-green);
+		max-width: 100%;
+	}
+
+	.home-btn {
+		font-size: 1.2rem;
+		padding: 1rem 2rem;
+	}
+</style>
+<div class="scanline"></div>
+<div class="crt"></div>
+
+<div class="container phosphor">
+	<header class="header">
+		<h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+		<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
+		<div class="error-code">404</div>
+	</header>
+
+	<main class="error-container">
+		<img src="https://127.0.0.1/static/404.gif" alt="Error GIF" class="error-gif">
+		<div class="error-message">&gt; ERROR: PAGE NOT FOUND</div>
+	</main>
+</div>

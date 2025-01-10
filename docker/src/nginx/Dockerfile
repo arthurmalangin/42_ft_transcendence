@@ -14,6 +14,7 @@ COPY ./docker/src/nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY ./docker/src/nginx/index.html /var/www/html/index.html
 COPY ./docker/src/nginx/router.js /var/www/html/router.js
+COPY ./docker/src/nginx/favicon.ico /var/www/html/favicon.ico
 # COPY ./docker/src/nginx/tools /var/www/html/tools
 
 EXPOSE 80 443

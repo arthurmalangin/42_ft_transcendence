@@ -18,4 +18,5 @@ urlpatterns = [
 	path("user_exist/", views.user_exist, name="user_exist"),
 	path("user_not_friend_exist/", views.user_not_friend_exist, name="user_not_friend_exist"),
 	path("sendRequestFriends/", views.sendRequestFriends, name="sendRequestFriends"),
+	path("user_is_42/", views.user_is_42, name="user_is_42"),
 ]

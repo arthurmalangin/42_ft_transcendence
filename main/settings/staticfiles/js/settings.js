@@ -37,24 +37,32 @@ function settingsRenderEvent() {
 	});
 
 	const btn_username = document.getElementById('btn_username');
-	btn_username.addEventListener('click', () => {
+	btn_username.addEventListener('click', async () => {
 		const usernameValue = document.getElementById('input_username').value;
-
-		if (usernameValue.trim() !== "") {
-			changeUsername(usernameValue);
+		const isUser42 = await user_is_42();
+		if (!isUser42) {
+			if (usernameValue.trim() !== "") {
+				changeUsername(usernameValue);
+			} else {
+				alert("Le nom d'utilisateur ne peut pas être vide.");
+			}
 		} else {
-			alert("Le nom d'utilisateur ne peut pas être vide.");
+			alert("Auth with 42, you cannot change username !");
 		}
 	});
 
 	const btn_password = document.getElementById('btn_password');
-	btn_password.addEventListener('click', () => {
+	btn_password.addEventListener('click', async () => {
 		const passwordValue = document.getElementById('input_password').value;
 		console.log("btn_password event: " + passwordValue);
-		if (passwordValue.trim() !== "") {
-			changePassword(passwordValue);
+		if (await !user_is_42()) {
+			if (passwordValue.trim() !== "") {
+				changePassword(passwordValue);
+			} else {
+				alert("Le mot de passe ne peut pas être vide.");
+			}
 		} else {
-			alert("Le mot de passe ne peut pas être vide.");
+			alert("Auth with 42, you cannot change password !");
 		}
 	});
 
@@ -219,6 +227,30 @@ function logout() {
         }
     })
     .catch(error => console.error("Erreur réseau : ", error));
+}
+
+async function user_is_42() {
+	const response = await fetch('/api/user_is_42/', {
+		method: 'POST',
+		headers: {
+			'X-CSRFToken': getCSRFToken()
+		}
+	});
+	const data = await response.json();
+	if (response.ok) {
+		console.log("user_is_42 Seem Ok !");
+		if (data.user_42) {
+			console.log("data.user_42 is true");
+			return true;
+		}
+		else {
+			console.log("data.user_42 is false");
+			return false;
+		}
+	}
+	else {
+		console.log("Error user_is_42 : " + data.error);
+	}
 }
 
 

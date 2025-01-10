@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from settings.models import PlayerData
 import requests
+import base64
 from django.contrib.auth.hashers import make_password
 
 def index(request):
@@ -41,6 +42,7 @@ def reqregister(request):
 		user = User.objects.create_user(username=username, password=password)
 		user.save()
 		player_data = PlayerData.objects.create(username=user.username, email=email)
+		player_data.is_42 = False
 		player_data.save()
 		userd = authenticate(request, username=username, password=password)
 		if userd is not None:
@@ -91,18 +93,66 @@ def _login42(username, token):
 	if User.objects.filter(username=username).exists():
 		user = User.objects.get(username=username)
 		user.set_password(make_password(token))
+		# pdata = PlayerData.objects.get(username=username)
+		# _updateAvatar42Img(username, pdata)
 		user.save()
 		return (user)
 	else:
 		user = User.objects.create_user(username=username, email=username, password=make_password(token))
-		pdata = PlayerData.objects.create(username=user.username, email=username)
+		pdata = PlayerData.objects.create(username=username, email=username)
+		pdata.is_42 = True
 		pdata.save()
+		# _updateAvatar42Img(username, pdata)
 		return (user)
+
+def _updateAvatar42Img(username, pdata):
+    token = _getApiToken()
+    body = {
+        "access_token": f"{token}"
+    }
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    
+    # Récupérer les informations de l'utilisateur 42
+    response = requests.get(f"https://api.intra.42.fr/v2/users?filter[login]={username}", json=body)
+    print("start try update img... with token : " + token)
+    # Vérifier si la requête est réussie
+    if response.status_code == 200:
+        user_data = response.json()
+        
+        # Vérifier si la clé 'image' est présente dans la réponse
+        if 'image' in user_data and 'version' in user_data['image'] and 'medium' in user_data['image']['version']:
+            # Extraire l'URL de l'image
+            image_url = user_data['image']['version']['medium']
+            response_img = requests.get(image_url)
+            
+            # Vérifier si l'image a été récupérée avec succèss
+            if response_img.status_code == 200:
+                # Encoder l'image en base64
+                image_base64 = base64.b64encode(response_img.content).decode('utf-8')
+                pdata.avatar_base64 = image_base64
+                print(image_base64)
+            else:
+                print("Erreur lors de la récupération de l'image.")
+        else:
+            print("L'utilisateur n'a pas d'image.")
+    else:
+        print(f"Erreur lors de la récupération des données utilisateur : {response.status_code} + {response.json()['error']}")
+
 
 def _get42Info(token):
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
     return (response.json())
+
+def _getApiToken():
+    body = {
+        "grant_type": "client_credentials",
+        "client_id": "u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174",
+        "client_secret": "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"
+    }
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    response = requests.post('https://api.intra.42.fr/oauth/token', headers=headers, json=body)
+    return (response.json().get("access_token"))
 
 def _getToken(reurl, code):
     # POST https://api.intra.42.fr/oauth/token

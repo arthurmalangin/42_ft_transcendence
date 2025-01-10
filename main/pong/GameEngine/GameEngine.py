@@ -1,4 +1,6 @@
 # This file handles game logic for the game
+import threading
+
 
 class GameEngine:
     def __init__(self):
@@ -15,5 +17,13 @@ class GameEngine:
         else:
             return False
         
-    def start_party(self): # lancer la boucle du jeux dans un autre thread 
-        return True
+    def execute_party(self):
+        print("Start Party !!!")
+        
+    
+    def start_party(self):
+        thread = threading.Thread(target=self.execute_party)
+        thread.start()
+        thread.join()
+        print("End thread party...")
+    

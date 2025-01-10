@@ -47,6 +47,13 @@ const routes = {
 		js: '/static/js/game.js',
 		needLogin: true
 	},
+
+	'/404': {
+		html: '/home/404',
+		css: '/static/css/404.css',
+		js: '',
+		needLogin: false
+	},
 }
 
 async function is_auth() {
@@ -76,7 +83,10 @@ async function is_auth() {
 async function loadPage(url) {
     return new Promise(async (resolve, reject) => {
 		let normalizedUrl = url === '/' ? '/' : url.replace(/\/$/, '');
-		if (routes[normalizedUrl].needLogin && !(await is_auth())) {
+		if (!routes[normalizedUrl]) {
+            console.log("Url not found ==> redirecting to 404");
+            normalizedUrl = '/404';  
+        } else if (routes[normalizedUrl].needLogin && !(await is_auth())) {
 			normalizedUrl = '/login';
 			console.log('redirect to login => not auth');
 		} else {

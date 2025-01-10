@@ -54,6 +54,9 @@ def update_username(request):
             if User.objects.filter(username=new_username).exists():
                 return JsonResponse({"error": "Username already use."}, status=400)
             if new_username != request.user.username:
+                playerData = PlayerData.objects.get(username=request.user.username)
+                playerData.username = new_username
+                playerData.save()	
                 request.user.username = new_username
                 request.user.save()
                 login(request, request.user)
@@ -106,6 +109,24 @@ def user_exist(request):
                 return JsonResponse({"user_exist": True})
             else:
                 return JsonResponse({"user_exist": False})
+        except Exception as e:
+            return JsonResponse({"error": f"blblbl: {str(e)}"}, status=400)
+        
+def user_is_42(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            username_to_check = request.user.username
+            playerData = PlayerData.objects.filter(username=username_to_check).first()
+            if playerData is not None:
+                if playerData.is_42 is True:
+                    print("User is 42")
+                    return JsonResponse({"user_42": True})
+                else:
+                    print(f"User {username_to_check} is not 42 ")
+                    return JsonResponse({"user_42": False})
+            else:
+                print("Player data not found... ")
+                return JsonResponse({"user_42": False})
         except Exception as e:
             return JsonResponse({"error": f"blblbl: {str(e)}"}, status=400)
         

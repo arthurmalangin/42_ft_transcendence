@@ -1,7 +1,3 @@
-# consumers.py hosts the declarations of the consumers.
-# Django channels consumers are classes that contain methods for
-# receiving and handling data on the server-side through websockets.
-
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .GameEngine import GameEngine
@@ -11,6 +7,7 @@ game_engines = {}
 
 class GameConsumer(AsyncWebsocketConsumer):
     #si variable def ici, tout les ws seront partager avec cette variable
+    
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         
