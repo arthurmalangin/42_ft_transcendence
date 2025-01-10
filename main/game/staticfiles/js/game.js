@@ -85,6 +85,7 @@ function init_pong() {
 	let keys = {};
 
 	let powerupsEnabled = false;
+	let playerFrozen = false;
 
 	let powerUps = [];
 	const powerUpTypes = {
@@ -300,10 +301,12 @@ function init_pong() {
 //////////////////////////////////////////////////////////////////////////////////
 
 	function updatePaddlePositions() {
-		if (keys['w'] && player.y > 0)
-			player.y -= player.speed;
-		if (keys['s'] && player.y < boardHeight - player.height)
-			player.y += player.speed;
+		if (!playerFrozen) {
+			if (keys['w'] && player.y > 0)
+				player.y -= player.speed;
+			if (keys['s'] && player.y < boardHeight - player.height)
+				player.y += player.speed;
+		}
 	
 		if (keys['ArrowUp'] && opponent.y > 0)
 			opponent.y -= opponent.speed;
@@ -400,10 +403,17 @@ function applyPowerUp(powerUp, player) {
 		}
 		player.height += 25;
 	} else if (powerUp.type === powerUpTypes.FREEZE_OPPONENT) {
-		opponent.speed = 0;
-		setTimeout(() => {
-			opponent.speed = paddleSpeed;
-		}, 3000);
+		if (player === opponent) {
+			playerFrozen = true;
+			setTimeout(() => {
+				playerFrozen = false;
+			}, 3000);
+		} else {
+			opponent.speed = 0;
+			setTimeout(() => {
+				opponent.speed = paddleSpeed;
+			}, 3000);
+		}
 	}
 }
 
