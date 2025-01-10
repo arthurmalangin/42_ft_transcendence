@@ -27,6 +27,9 @@
 				<span>&gt; LOG OUT</span>
 			</div>
 		</nav>
+		<div id="scoreboard">
+			<span id="playerScore">0</span> - <span id="opponentScore">0</span>
+		</div>
 		<canvas id="board"></canvas>
 		<nav class="nav right-nav">
 			<div id="btn_pause" class="nav-item">
@@ -38,8 +41,11 @@
 		</nav>
 	</main>
 	<div id="settingsOverlay" class="overlay">
-		<div class="overlay-content">
-			<h2>SETTINGS</h2>
+		<div class="overlay-content phosphor">
+			<button class="popup-close" id="btn_close_settings_pong">×</button>
+			<div class="popup-header">
+				<h2>SETTINGS</h2>
+			</div>
 			<div class="form-group">
 				<label>BALL SPEED</label>
 				<input type="range" class="input" id="ballSpeedSlider" min="1" value="2" max="3">
@@ -51,7 +57,6 @@
 			<div class="form-group">
 				<button id="enablePowerupsButton" class="btn">ENABLE POWERUPS</button>
 			</div>
-			<button id="btn_close_settings_pong" class="btn">CLOSE</button>
 		</div>
 	</div>
 </div>

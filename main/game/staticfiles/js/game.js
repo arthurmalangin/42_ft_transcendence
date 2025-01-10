@@ -115,11 +115,11 @@ function init_pong() {
 	document.getElementById('btn_settings_pong').addEventListener('click', function() {
 		if (!isPaused)
 			pauseGame();
-		document.getElementById('settingsOverlay').style.display = 'flex';
+		document.getElementById('settingsOverlay').classList.add('active');
 	});
 	
 	document.getElementById('btn_close_settings_pong').addEventListener('click', function() {
-		document.getElementById('settingsOverlay').style.display = 'none';
+		document.getElementById('settingsOverlay').classList.remove('active');
 		pauseGame();
 		resetGame(true, false);
 	});
