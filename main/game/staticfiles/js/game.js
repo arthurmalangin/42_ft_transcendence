@@ -138,7 +138,7 @@ function init_pong() {
 	
 	function stopEventPropagation(event) {
 		const overlay = document.getElementById('settingsOverlay');
-		if (overlay.style.display === 'flex') {
+		if (overlay.classList.contains('active')) {
 			if (event.type === 'click' && event.target.id !== 'btn_close_settings_pong' && event.target.id !== 'enablePowerupsButton') {
 				event.stopPropagation();
 				event.preventDefault();

@@ -130,20 +130,6 @@ body {
 	border-bottom: 5px solid var(--terminal-green);
 }
 
-#scoreboard {
-	text-align: center;
-	margin-top: 40px;
-	font-family: 'Courier New', Courier, monospace;
-}
-
-#playerScore {
-	color: white;
-}
-
-#opponentScore {
-	color: #00ff00;
-}
-
 /* Settings */
 .overlay {
     position: fixed;
