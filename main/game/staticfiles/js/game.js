@@ -109,6 +109,18 @@ function init_pong() {
 	document.addEventListener('keydown', function(event) {
 		if (event.code === 'Space') {
 			pauseGame();
+		} else if (event.code === 'Escape') {
+			event.preventDefault();
+			const settingsOverlay = document.getElementById('settingsOverlay');
+			if (settingsOverlay.classList.contains('active')) {
+				settingsOverlay.classList.remove('active');
+				pauseGame();
+				resetGame(true, false);
+			} else {
+				if (!isPaused)
+					pauseGame();
+				settingsOverlay.classList.add('active');
+			}
 		}
 	});
 
