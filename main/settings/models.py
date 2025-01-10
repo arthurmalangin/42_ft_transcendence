@@ -7,6 +7,7 @@ class PlayerData(models.Model):
     email = models.CharField(max_length=255, unique=True)
     is_online = models.BooleanField(default=False)
     is_42 = models.BooleanField(default=False)
+    lang = models.TextField(default="fr", null=True, blank=True)
     lastConnexion = models.DateTimeField(default=None, null=True, blank=True)
     friendsList = models.TextField(default="", null=True, blank=True)
     requestFriendsList = models.TextField(default="", null=True, blank=True)
