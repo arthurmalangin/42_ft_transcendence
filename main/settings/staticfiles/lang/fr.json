@@ -1,0 +1,19 @@
+{
+  "title.main.home": "MENU PRINCIPAL",
+  "title.main.pong": "JOUER A PONG",
+  "title.main.friends": "AMIS",
+  "title.main.leaderboard": "CLASSEMENT",
+  "title.main.settings": "PARAMETRES",
+  "title.main.logout": "DECONNEXION",
+
+  "settings.maintitle": "PARAMETRES SYSTEME",
+  "settings.profil.title": "PROFILE",
+  "settings.profil.username": "PSEUDO",
+  "settings.profil.username_btn": "Changer le pseudo",
+  "settings.profil.password": "Mot de passe",
+  "settings.profil.password_placeholder": "Entrez un nouveau mot de passe",
+  "settings.profil.password_btn": "Changer le mot de passe",
+  "settings.profil.avatar": "AVATAR",
+  "settings.profil.avatar_upload_placeholder": "Aucun fichier choisi",
+  "settings.profil.avatar_upload_btn": "UPLOAD"
+}

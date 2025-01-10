@@ -1,0 +1,20 @@
+{
+	"title.main.home": "HOME",
+	"title.main.pong": "PLAY PONG",
+	"title.main.friends": "FRIENDS",
+	"title.main.leaderboard": "LEADERBOARD",
+	"title.main.settings": "SETTINGS",
+	"title.main.logout": "LOG OUT",
+  
+	"settings.maintitle": "SYSTEM SETTINGS",
+	"settings.profil.title": "PROFILE",
+	"settings.profil.username": "USERNAME",
+	"settings.profil.username_btn": "CHANGE USERNAME",
+	"settings.profil.password": "PASSWORD",
+	"settings.profil.password_placeholder": "Enter New Password",
+	"settings.profil.password_btn": "CHANGE PASSWORD",
+	"settings.profil.avatar": "AVATAR",
+	"settings.profil.avatar_upload_placeholder": "Aucun fichier choisi",
+	"settings.profil.avatar_upload_btn": "UPLOAD"
+  }
+  
