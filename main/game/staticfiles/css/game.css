@@ -147,19 +147,52 @@ body {
 /* Settings */
 .overlay {
     position: fixed;
-    top: 400px;
-    left: 40%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 24, 0, 0.8);
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
+}
+
+.overlay.active {
+    display: flex;
 }
 
 .overlay-content {
 	background: var(--terminal-bg);
-	padding: 2rem;
-	border: 1px solid var(--terminal-green);
-	color: var(--terminal-green);
+    padding: 2rem;
+    border: 2px solid var(--terminal-green);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.popup-close {
+	position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--terminal-green);
+    font-family: monospace;
+    font-size: 1.5rem;
+}
+
+.popup-close:hover {
+	color: #fff;
+}
+
+.form-group {
+	margin-bottom: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
 }
 
 .input {
@@ -169,7 +202,7 @@ body {
 	padding: 0.5rem;
 	font-family: monospace;
 	width: 200px;
-  }
+}
   
 input[type="range"] {
 	accent-color: var(--terminal-green);
