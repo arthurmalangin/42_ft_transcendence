@@ -469,21 +469,22 @@ function checkPowerUpCollisions() { // with player/opponent
 		const ballPredictedY = predictBallYAtX(475);
 		const pwrPredictedY = predictPowerupYAtX(475);
 		const ballPredictedTime = predictBallImpactTime();
-		console.log("ball: ", ballPredictedTime, ballPredictedY);
+		console.log("ball: ", ballPredictedTime);
 		const pwrPredictedTime = predictPowerupImpactTime();
-		console.log("pwrUp: ", pwrPredictedTime, pwrPredictedY);
+		console.log("pwrUp: ", pwrPredictedTime);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 
 		let targetY;
 		let isPowerup = false;
-		if (pwrPredictedTime < ballPredictedTime) {
+
+		if (hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY)) {
 			targetY = pwrPredictedY;
 			isPowerup = true;
-			console.log("opponent: going for powerup at Y=", targetY);
+			// console.log("opponent: going for powerup at Y=", targetY);
 		} else {
 			targetY = ballPredictedY;
-			console.log("opponent: going for ball at Y =", targetY);
+			// console.log("opponent: going for ball at Y =", targetY);
 		}
 	
 		prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;
@@ -578,6 +579,23 @@ function checkPowerUpCollisions() { // with player/opponent
 		}
 
 		return timeElapsed;
+	}
+
+	function hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY) {
+		if (pwrPredictedTime === 999)
+			return false;
+
+		const availableTime = ballPredictedTime - pwrPredictedTime;
+
+		const distanceToPowerup = Math.abs(opponent.y - pwrPredictedY);
+		const timeToPowerup = distanceToPowerup / opponent.speed;
+	
+		const distanceToBall = Math.abs(pwrPredictedY - ballPredictedY);
+		const timeToBallfromPowerup = distanceToBall / opponent.speed;	
+		
+		console.log('availableTime:', availableTime, 'timeToPowerup:', timeToPowerup, 'timeToBallfromPowerup:', timeToBallfromPowerup);
+
+		return (timeToBallfromPowerup <= availableTime);
 	}
 
 //////////////////////////////////////////////////////////////////////////////////
