@@ -250,9 +250,9 @@ function init_pong() {
 		opponent.height = paddleHeight;
 	
 		if (playerLost)
-			ball.velocityX = ballSpeed;
-		else
 			ball.velocityX = -ballSpeed;
+		else
+			ball.velocityX = ballSpeed;
 		ball.velocityY = 0;
 	
 		player.y = boardHeight / 2 - player.height / 2;
