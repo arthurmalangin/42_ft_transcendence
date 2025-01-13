@@ -33,6 +33,12 @@ function gameEvent() {
 		history.pushState(null, '', '/game');
 		loadPage('/game');
 	});
+
+	const brickbreakerLabel = document.getElementById('btn_brickbreaker');
+	brickbreakerLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/brickbreaker');
+		loadPage('/brickbreaker');
+	});
 }
 
 gameEvent();
