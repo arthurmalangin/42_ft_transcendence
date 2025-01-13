@@ -144,8 +144,11 @@ function init_pong() {
 	
 	function stopEventPropagation(event) {
 		const overlay = document.getElementById('settingsOverlay');
-		if (overlay.classList.contains('active')) {
-			if (event.type === 'click' && event.target.id !== 'btn_close_settings_pong' && event.target.id !== 'enablePowerupsButton') {
+		if (overlay && overlay.classList.contains('active')) {
+			if (event.type === 'click' &&
+				event.target.id !== 'btn_close_settings_pong' &&
+				event.target.id !== 'enablePowerupsButton' &&
+				event.target.id !== 'resetDefaultSettingsButton') {
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (event.type === 'keydown') {
@@ -175,6 +178,9 @@ function init_pong() {
 
 	const enablePowerupsButton = document.getElementById('enablePowerupsButton');
 	enablePowerupsButton.addEventListener('click', togglePowerups);
+
+	const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
+	resetDefaultSettingsButton.addEventListener('click', resetToDefaultSettings);
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
@@ -358,94 +364,109 @@ function init_pong() {
 /////////////                    SETTINGS FUNCS                       ////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-function updateBallSpeed(speed) {
-	ballSpeed = parseFloat(speed);
-	ball.speed = ballSpeed;
-}
+	function updateBallSpeed(speed) {
+		ballSpeed = parseFloat(speed);
+		ball.speed = ballSpeed;
+	}
 
-function updatePaddleSpeed(speed) {
-	player.speed = parseFloat(speed);
-	opponent.speed = parseFloat(speed);
-}
+	function updatePaddleSpeed(speed) {
+		player.speed = parseFloat(speed);
+		opponent.speed = parseFloat(speed);
+	}
+
+	function resetToDefaultSettings() {
+		// Disable power-ups
+		powerUpsEnabled = false;
+		const button = document.getElementById('enablePowerupsButton');
+		button.textContent = 'ENABLE POWERUPS';
+
+		// Reset paddle and ball speed to 2
+		updateBallSpeed(2);
+		updatePaddleSpeed(2);
+
+		// Update sliders to reflect the default values
+		document.getElementById('ballSpeedSlider').value = 2;
+		document.getElementById('paddleSpeedSlider').value = 2;
+	}
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                   POWER-UPS FUNCTIONS                   ////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-function togglePowerups() {
-	powerUpsEnabled = !powerUpsEnabled;
-	const button = document.getElementById('enablePowerupsButton');
-	button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
+	function togglePowerups() {
+		powerUpsEnabled = !powerUpsEnabled;
+		const button = document.getElementById('enablePowerupsButton');
+		button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
 
-	if (!powerUpsEnabled) {
-		powerUp = null; // rm all active powerUps
-	}
-}
-
-function spawnPowerUp() {
-	if (!powerUpsEnabled || powerUp)
-		return;
-
-		powerUp = {
-		type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
-		x: boardWidth / 2,
-		y: boardHeight / 2,
-		width: 10,
-		height: 10,
-		velocityX: Math.random() < 0.5 ? 1 : -1,
-		velocityY: Math.random() < 0.5 ? 1 : -1 
-	};
-}
-
-function applyPowerUp(powerUp, player) {
-	if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
-		if (player.y + player.height / 2 >= boardHeight / 2) {
-			player.y -= 25;
-		}
-		player.height += 25;
-	} else if (powerUp.type === powerUpTypes.FREEZE_OPPONENT) {
-		if (player === opponent) {
-			playerFrozen = true;
-			setTimeout(() => {
-				playerFrozen = false;
-			}, 3000);
-		} else {
-			opponent.speed = 0;
-			setTimeout(() => {
-				opponent.speed = paddleSpeed;
-			}, 3000);
+		if (!powerUpsEnabled) {
+			powerUp = null; // rm all active powerUps
 		}
 	}
-}
 
-function movePowerUps() {
-	if (!powerUp)
-		return;
+	function spawnPowerUp() {
+		if (!powerUpsEnabled || powerUp)
+			return;
 
-	powerUp.x += powerUp.velocityX;
-    powerUp.y += powerUp.velocityY;
+			powerUp = {
+			type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
+			x: boardWidth / 2,
+			y: boardHeight / 2,
+			width: 10,
+			height: 10,
+			velocityX: Math.random() < 0.5 ? 1 : -1,
+			velocityY: Math.random() < 0.5 ? 1 : -1 
+		};
+	}
 
-    // collision check
-    if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
-        powerUp.velocityX *= -1;
-    }
-    if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
-        powerUp.velocityY *= -1;
-    }
-}
+	function applyPowerUp(powerUp, player) {
+		if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
+			if (player.y + player.height / 2 >= boardHeight / 2) {
+				player.y -= 25;
+			}
+			player.height += 25;
+		} else if (powerUp.type === powerUpTypes.FREEZE_OPPONENT) {
+			if (player === opponent) {
+				playerFrozen = true;
+				setTimeout(() => {
+					playerFrozen = false;
+				}, 3000);
+			} else {
+				opponent.speed = 0;
+				setTimeout(() => {
+					opponent.speed = paddleSpeed;
+				}, 3000);
+			}
+		}
+	}
 
-function checkPowerUpCollisions() {
-    if (!powerUp)
-		return;
+	function movePowerUps() {
+		if (!powerUp)
+			return;
 
-    if (powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y && powerUp.y <= player.y + player.height) {
-        applyPowerUp(powerUp, player);
-        powerUp = null;
-    } else if (powerUp.x + powerUp.width >= opponent.x && powerUp.y + powerUp.height >= opponent.y && powerUp.y <= opponent.y + opponent.height) {
-        applyPowerUp(powerUp, opponent);
-        powerUp = null;
-    }
-}
+		powerUp.x += powerUp.velocityX;
+		powerUp.y += powerUp.velocityY;
+
+		// collision check
+		if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
+			powerUp.velocityX *= -1;
+		}
+		if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
+			powerUp.velocityY *= -1;
+		}
+	}
+
+	function checkPowerUpCollisions() {
+		if (!powerUp)
+			return;
+
+		if (powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y && powerUp.y <= player.y + player.height) {
+			applyPowerUp(powerUp, player);
+			powerUp = null;
+		} else if (powerUp.x + powerUp.width >= opponent.x && powerUp.y + powerUp.height >= opponent.y && powerUp.y <= opponent.y + opponent.height) {
+			applyPowerUp(powerUp, opponent);
+			powerUp = null;
+		}
+	}
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                      AI OPPONENT                        ////////////
