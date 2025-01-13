@@ -253,48 +253,48 @@ function init_pong() {
 		}
 	}
 	
-	function drawHighlightedPositions() {
-		// player's position
-		context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		context.fillRect(player.x, player.y, player.width, player.height);
+	// function drawHighlightedPositions() {
+	// 	// player's position
+	// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
+	// 	context.fillRect(player.x, player.y, player.width, player.height);
 	
-		// ball's position
-		context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		context.beginPath();
-		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
-		context.fill();
-	}
+	// 	// ball's position
+	// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
+	// 	context.beginPath();
+	// 	context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
+	// 	context.fill();
+	// }
 
-	function drawPredictedTrajectory() {
-		let predictedX = ball.x + ball.width / 2;
-		let predictedY = ball.y + ball.height / 2;
-		let velocityX = ball.velocityX;
-		let velocityY = ball.velocityY;
+	// function drawPredictedTrajectory() {
+	// 	let predictedX = ball.x + ball.width / 2;
+	// 	let predictedY = ball.y + ball.height / 2;
+	// 	let velocityX = ball.velocityX;
+	// 	let velocityY = ball.velocityY;
 	
-		context.strokeStyle = "rgba(255, 0, 0, 0.5)";
-		context.lineWidth = 1;
-		context.beginPath();
-		context.moveTo(predictedX, predictedY);
+	// 	context.strokeStyle = "rgba(255, 0, 0, 0.5)";
+	// 	context.lineWidth = 1;
+	// 	context.beginPath();
+	// 	context.moveTo(predictedX, predictedY);
 	
-		while (predictedX <= 475 && predictedX >= 25) {
-			predictedX += velocityX;
-			predictedY += velocityY;
+	// 	while (predictedX <= 475 && predictedX >= 25) {
+	// 		predictedX += velocityX;
+	// 		predictedY += velocityY;
 	
-			if (predictedY <= 0 + ball.height / 2 || predictedY >= boardHeight - ball.height / 2) {
-				velocityY = -velocityY;
-			}
+	// 		if (predictedY <= 0 + ball.height / 2 || predictedY >= boardHeight - ball.height / 2) {
+	// 			velocityY = -velocityY;
+	// 		}
 	
-			context.lineTo(predictedX, predictedY);
-		}
+	// 		context.lineTo(predictedX, predictedY);
+	// 	}
 	
-		context.stroke();
+	// 	context.stroke();
 	
-		// predicted ball position when hitting opponent's paddle 
-		context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		context.beginPath();
-		context.arc(predictedX, predictedY, ball.width / 2, 0, 2 * Math.PI);
-		context.fill();
-	}
+	// 	// predicted ball position when hitting opponent's paddle 
+	// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
+	// 	context.beginPath();
+	// 	context.arc(predictedX, predictedY, ball.width / 2, 0, 2 * Math.PI);
+	// 	context.fill();
+	// }
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                  OBJECT INTERACTIONS                    ////////////
@@ -464,8 +464,8 @@ function checkPowerUpCollisions() {
 	
 		lastUpdateTime = currentTime;
 	
-		drawPredictedTrajectory();
-		drawHighlightedPositions();
+		// drawPredictedTrajectory();
+		// drawHighlightedPositions();
 	
 		const ballPredictedY = predictBallYAtX(475);
 		const pwrPredictedY = predictPowerupYAtX(475);
