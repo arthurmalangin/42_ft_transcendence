@@ -36,6 +36,12 @@ function settingsRenderEvent() {
 		loadPage('/game');
 	});
 
+	const brickbreakerLabel = document.getElementById('btn_brickbreaker');
+	brickbreakerLabel.addEventListener('click', () => {
+		history.pushState(null, '', '/brickbreaker');
+		loadPage('/brickbreaker');
+	});
+
 	const btn_username = document.getElementById('btn_username');
 	btn_username.addEventListener('click', async () => {
 		const usernameValue = document.getElementById('input_username').value;
