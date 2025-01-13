@@ -48,6 +48,13 @@ const routes = {
 		needLogin: true
 	},
 
+	'/brickbreaker': {
+		html: '/srcbrickbreaker',
+		css: '/static/css/brickbreaker.css',
+		js: '/static/js/brickbreaker.js',
+		needLogin: true
+	},
+
 	'/404': {
 		html: '/home/404',
 		css: '/static/css/404.css',
