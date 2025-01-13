@@ -93,6 +93,11 @@ function init_pong() {
 		FREEZE_OPPONENT: 'freeze_opponent'
 	};
 
+	const FRAME_RATE = 60;
+	const FRAME_DURATION = 1000 / FRAME_RATE;
+	let gameIntervalId;
+	let isPaused = false;
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                         EVENTS                          ////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -175,20 +180,15 @@ function init_pong() {
 /////////////                       PONG GAME                         ////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-	let isPaused = false;
-	let animationFrameId;
-
 	function gameLoop() {
 		context.clearRect(0, 0, boardWidth, boardHeight);
-	
+
 		moveBall();
 		movePowerUps();
 		draw();
 		updateOpponentPosition();
 		updatePaddlePositions();
 		checkPowerUpCollisions();
-	
-		animationFrameId = requestAnimationFrame(gameLoop);
 	}
 
 	function startGame() {
@@ -197,7 +197,7 @@ function init_pong() {
 		board.width = boardWidth;
 		board.height = boardHeight;
 
-		animationFrameId = requestAnimationFrame(gameLoop);
+		gameIntervalId = setInterval(gameLoop, FRAME_DURATION);
 	}
 
 	function resetGame(playerLost, spawnPowerUpFlag = true) {
@@ -224,10 +224,10 @@ function init_pong() {
 	function pauseGame() {
 		if (isPaused) {
 			isPaused = false;
-			animationFrameId = requestAnimationFrame(gameLoop);
+			gameIntervalId = setInterval(gameLoop, FRAME_DURATION);
 		} else {
 			isPaused = true;
-			cancelAnimationFrame(animationFrameId);
+			clearInterval(gameIntervalId);
 		}
 	}
 
