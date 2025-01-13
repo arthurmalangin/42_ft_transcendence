@@ -82,6 +82,9 @@ function init_pong() {
 		y: boardHeight / 2 - ballHeight / 2
 	};
 
+	let playerScore = 0;
+	let opponentScore = 0;
+
 	let keys = {};
 
 	let powerUpsEnabled = false;
@@ -112,6 +115,8 @@ function init_pong() {
 
 	document.getElementById('btn_pause').addEventListener('click', pauseGame);
 
+	// TODO bug de gros fils de pute:
+	// la touche esc ne fonctionne plus quand on change de page puis revient sur le jeu
 	document.addEventListener('keydown', function(event) {
 		if (event.code === 'Space') {
 			pauseGame();
@@ -119,29 +124,37 @@ function init_pong() {
 			event.preventDefault();
 			const settingsOverlay = document.getElementById('settingsOverlay');
 			if (settingsOverlay.classList.contains('active')) {
+				console.log('Escape key pressed: Closing settings overlay');
 				settingsOverlay.classList.remove('active');
+				console.log('Settings overlay class: ', settingsOverlay.classList);
 				pauseGame();
 				resetGame(true, false);
 			} else {
+				console.log('Escape key pressed: Opening settings overlay');
 				if (!isPaused)
 					pauseGame();
 				settingsOverlay.classList.add('active');
+				console.log('Settings overlay class: ', settingsOverlay.classList);
 			}
 		}
 	});
 
 	document.getElementById('btn_settings_pong').addEventListener('click', function() {
+		console.log('Settings button clicked: Opening settings overlay');
 		if (!isPaused)
 			pauseGame();
 		document.getElementById('settingsOverlay').classList.add('active');
+		console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 	});
-	
+
 	document.getElementById('btn_close_settings_pong').addEventListener('click', function() {
+		console.log('Close settings button clicked: Closing settings overlay');
 		document.getElementById('settingsOverlay').classList.remove('active');
+		console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 		pauseGame();
 		resetGame(true, false);
 	});
-	
+
 	function stopEventPropagation(event) {
 		const overlay = document.getElementById('settingsOverlay');
 		if (overlay && overlay.classList.contains('active')) {
@@ -149,11 +162,13 @@ function init_pong() {
 				event.target.id !== 'btn_close_settings_pong' &&
 				event.target.id !== 'enablePowerupsButton' &&
 				event.target.id !== 'resetDefaultSettingsButton') {
+				console.log('Click event stopped: Settings overlay is active');
 				event.stopPropagation();
 				event.preventDefault();
 			} else if (event.type === 'keydown') {
 				const blockedKeys = ['s', 'w', ' '];
 				if (blockedKeys.includes(event.key)) {
+					console.log(`Keydown event stopped: ${event.key} key pressed while settings overlay is active`);
 					event.stopPropagation();
 					event.preventDefault();
 				}
@@ -167,20 +182,28 @@ function init_pong() {
 	const ballSpeedSlider = document.getElementById('ballSpeedSlider');
 	ballSpeedSlider.addEventListener('input', function() {
 		const newSpeed = ballSpeedSlider.value;
+		console.log(`Ball speed slider changed: New speed is ${newSpeed}`);
 		updateBallSpeed(newSpeed);
 	});
 
 	const paddleSpeedSlider = document.getElementById('paddleSpeedSlider');
 	paddleSpeedSlider.addEventListener('input', function() {
 		const newSpeed = paddleSpeedSlider.value;
+		console.log(`Paddle speed slider changed: New speed is ${newSpeed}`);
 		updatePaddleSpeed(newSpeed);
 	});
 
 	const enablePowerupsButton = document.getElementById('enablePowerupsButton');
-	enablePowerupsButton.addEventListener('click', togglePowerups);
+	enablePowerupsButton.addEventListener('click', function() {
+		console.log('Enable power-ups button clicked');
+		togglePowerups();
+	});
 
 	const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
-	resetDefaultSettingsButton.addEventListener('click', resetToDefaultSettings);
+	resetDefaultSettingsButton.addEventListener('click', function() {
+		console.log('Reset to default settings button clicked');
+		resetToDefaultSettings();
+	});
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////////                       PONG GAME                         ////////////
@@ -192,6 +215,7 @@ function init_pong() {
 		moveBall();
 		movePowerUps();
 		draw();
+		drawScoreboard();
 		updateOpponentPosition();
 		updatePaddlePositions();
 		checkPowerUpCollisions();
@@ -207,21 +231,27 @@ function init_pong() {
 	}
 
 	function resetGame(playerLost, spawnPowerUpFlag = true) {
+		if (playerLost) {
+			opponentScore++;
+		} else {
+			playerScore++;
+		}
+	
 		ball.x = boardWidth / 2 - ball.width / 2;
 		ball.y = boardHeight / 2 - ball.height / 2;
 		ball.speed = ballSpeed;
 		player.height = paddleHeight;
 		opponent.height = paddleHeight;
-
+	
 		if (playerLost)
 			ball.velocityX = ballSpeed;
 		else
 			ball.velocityX = -ballSpeed;
 		ball.velocityY = 0;
-
+	
 		player.y = boardHeight / 2 - player.height / 2;
 		opponent.y = boardHeight / 2 - opponent.height / 2;
-
+	
 		if (spawnPowerUpFlag) {
 			spawnPowerUp();
 		}
@@ -257,6 +287,13 @@ function init_pong() {
 			context.fillStyle = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? "#ff0000" : "#0000ff";
 			context.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
 		}
+	}
+
+	function drawScoreboard() {
+		context.font = "16px monospace";
+		context.fillStyle = "#ffffff";
+		context.fillText(`PLAYER: ${playerScore}`, 20, 20);
+		context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 120, 20);
 	}
 	
 	// function drawHighlightedPositions() {
@@ -353,10 +390,10 @@ function init_pong() {
 
 		// check for point
 		if (ball.x <= 0) {
-			resetGame(false);
+			resetGame(true, true);
 		}
 		if (ball.x + ball.width >= boardWidth) {
-			resetGame(true);
+			resetGame(false, true);
 		}
 	}
 
@@ -542,8 +579,9 @@ function init_pong() {
 		let predictedX = ball.x + ball.width / 2;
 		let velocityX = ball.velocityX;
 		let timeElapsed = 0;
+		const maxIterations = 1000; // prevent timeout crash
 	
-		while (predictedX < 475) {
+		while (predictedX < 475 && timeElapsed < maxIterations) {
 			predictedX += velocityX;
 			timeElapsed += 1;
 	
@@ -551,7 +589,11 @@ function init_pong() {
 				velocityX *= -1;
 			}
 		}
-
+	
+		if (timeElapsed >= maxIterations) {
+			console.warn('predictBallImpactTime: Maximum iterations reached');
+		}
+	
 		return timeElapsed;
 	}
 
