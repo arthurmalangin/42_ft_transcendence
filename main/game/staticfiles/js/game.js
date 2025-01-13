@@ -84,10 +84,10 @@ function init_pong() {
 
 	let keys = {};
 
-	let powerupsEnabled = false;
+	let powerUpsEnabled = false;
 	let playerFrozen = false;
 
-	let powerUps = [];
+	let powerUp = null;
 	const powerUpTypes = {
 		ENLARGE_PADDLE: 'enlarge_paddle',
 		FREEZE_OPPONENT: 'freeze_opponent'
@@ -247,10 +247,10 @@ function init_pong() {
 		context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 		context.fill();
 
-		powerUps.forEach(powerUp => {
+		if (powerUp) {
 			context.fillStyle = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? "#ff0000" : "#0000ff";
 			context.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
-		});
+		}
 	}
 	
 	function drawHighlightedPositions() {
@@ -373,18 +373,20 @@ function updatePaddleSpeed(speed) {
 //////////////////////////////////////////////////////////////////////////////////
 
 function togglePowerups() {
-	powerupsEnabled = !powerupsEnabled;
+	powerUpsEnabled = !powerUpsEnabled;
 	const button = document.getElementById('enablePowerupsButton');
-	button.textContent = powerupsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
+	button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
 
-	if (!powerupsEnabled) {
-		powerUps = []; // rm all active powerups
+	if (!powerUpsEnabled) {
+		powerUp = null; // rm all active powerUps
 	}
 }
 
 function spawnPowerUp() {
-	if (!powerupsEnabled || powerUps.length > 0) return;
-		const powerUp = {
+	if (!powerUpsEnabled || powerUp)
+		return;
+
+		powerUp = {
 		type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
 		x: boardWidth / 2,
 		y: boardHeight / 2,
@@ -393,7 +395,6 @@ function spawnPowerUp() {
 		velocityX: Math.random() < 0.5 ? 1 : -1,
 		velocityY: Math.random() < 0.5 ? 1 : -1 
 	};
-	powerUps.push(powerUp);
 }
 
 function applyPowerUp(powerUp, player) {
@@ -418,32 +419,32 @@ function applyPowerUp(powerUp, player) {
 }
 
 function movePowerUps() {
-	powerUps.forEach(powerUp => {
-		powerUp.x += powerUp.velocityX;
-		powerUp.y += powerUp.velocityY;
+	if (!powerUp)
+		return;
 
-		// collision check
-		if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
-			powerUp.velocityX *= -1;
-		}
-		if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
-			powerUp.velocityY *= -1;
-		}
-	});
+	powerUp.x += powerUp.velocityX;
+    powerUp.y += powerUp.velocityY;
+
+    // collision check
+    if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
+        powerUp.velocityX *= -1;
+    }
+    if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
+        powerUp.velocityY *= -1;
+    }
 }
 
-function checkPowerUpCollisions() { // with player/opponent
-	powerUps = powerUps.filter(powerUp => {
-		if (powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y && powerUp.y <= player.y + player.height) {
-			applyPowerUp(powerUp, player);
-			return false;
-		}
-		if (powerUp.x + powerUp.width >= opponent.x && powerUp.y + powerUp.height >= opponent.y && powerUp.y <= opponent.y + opponent.height) {
-			applyPowerUp(powerUp, opponent);
-			return false;
-		}
-		return true;
-	});
+function checkPowerUpCollisions() {
+    if (!powerUp)
+		return;
+
+    if (powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y && powerUp.y <= player.y + player.height) {
+        applyPowerUp(powerUp, player);
+        powerUp = null;
+    } else if (powerUp.x + powerUp.width >= opponent.x && powerUp.y + powerUp.height >= opponent.y && powerUp.y <= opponent.y + opponent.height) {
+        applyPowerUp(powerUp, opponent);
+        powerUp = null;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -469,9 +470,9 @@ function checkPowerUpCollisions() { // with player/opponent
 		const ballPredictedY = predictBallYAtX(475);
 		const pwrPredictedY = predictPowerupYAtX(475);
 		const ballPredictedTime = predictBallImpactTime();
-		console.log("ball: ", ballPredictedTime);
+		// console.log("ball: ", ballPredictedTime);
 		const pwrPredictedTime = predictPowerupImpactTime();
-		console.log("pwrUp: ", pwrPredictedTime);
+		// console.log("pwrUp: ", pwrPredictedTime);
 		const playerDistanceFromTop = player.y;
 		const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 
@@ -481,14 +482,14 @@ function checkPowerUpCollisions() { // with player/opponent
 		if (hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY)) {
 			targetY = pwrPredictedY;
 			isPowerup = true;
-			// console.log("opponent: going for powerup at Y=", targetY);
+			// console.log("opponent: going for powerUp at Y=", targetY);
 		} else {
 			targetY = ballPredictedY;
 			// console.log("opponent: going for ball at Y =", targetY);
 		}
 	
 		prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;
-		console.log("opponent: moving to Y=", prevTargetY);
+		// console.log("opponent: moving to Y=", prevTargetY);
 	
 		moveTowardsTargetY(prevTargetY);
 	}
@@ -534,21 +535,20 @@ function checkPowerUpCollisions() { // with player/opponent
 	}
 
 	function predictPowerupYAtX(targetX) {
-		if (powerUps.length === 0)
+		if (!powerUp)
 			return 999;
-		let powerup = powerUps[0];
 
-		let predictedX = powerup.x + powerup.width / 2;
-		let predictedY = powerup.y + powerup.height / 2;
-		let velocityX = powerup.velocityX;
-		let velocityY = powerup.velocityY;
+		let predictedX = powerUp.x + powerUp.width / 2;
+		let predictedY = powerUp.y + powerUp.height / 2;
+		let velocityX = powerUp.velocityX;
+		let velocityY = powerUp.velocityY;
 	
 		while (predictedX < targetX) {
 			predictedX += velocityX;
 			predictedY += velocityY;
 	
 			// top and bottom walls collision check
-			if (predictedY - powerup.height / 2 <= 0 || predictedY + powerup.height / 2 >= boardHeight) {
+			if (predictedY - powerUp.height / 2 <= 0 || predictedY + powerUp.height / 2 >= boardHeight) {
 				velocityY *= -1;
 			}
 	
@@ -561,12 +561,11 @@ function checkPowerUpCollisions() { // with player/opponent
 	}
 
 	function predictPowerupImpactTime() {
-		if (powerUps.length === 0)
+		if (!powerUp)
 			return 999;
-		let powerup = powerUps[0];
 	
-		let predictedX = powerup.x + powerup.width / 2;
-		let velocityX = powerup.velocityX;
+		let predictedX = powerUp.x + powerUp.width / 2;
+		let velocityX = powerUp.velocityX;
 		let timeElapsed = 0;
 	
 		while (predictedX < 475) {
@@ -593,7 +592,7 @@ function checkPowerUpCollisions() { // with player/opponent
 		const distanceToBall = Math.abs(pwrPredictedY - ballPredictedY);
 		const timeToBallfromPowerup = distanceToBall / opponent.speed;	
 		
-		console.log('availableTime:', availableTime, 'timeToPowerup:', timeToPowerup, 'timeToBallfromPowerup:', timeToBallfromPowerup);
+		// console.log('availableTime:', availableTime, 'timeToPowerup:', timeToPowerup, 'timeToBallfromPowerup:', timeToBallfromPowerup);
 
 		return (timeToBallfromPowerup <= availableTime);
 	}
