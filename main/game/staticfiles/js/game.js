@@ -76,7 +76,7 @@ function init_pong() {
 
 	let ballWidth = 10;
 	let ballHeight = 10;
-	let ballSpeed = 3;
+	let ballSpeed = 2;
 
 	let ball = {
 		width: ballWidth,
