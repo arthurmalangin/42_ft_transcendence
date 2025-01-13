@@ -585,7 +585,7 @@ function init_pong() {
 		let predictedX = ball.x + ball.width / 2;
 		let velocityX = ball.velocityX;
 		let timeElapsed = 0;
-		const maxIterations = 1000; // prevent timeout crash
+		const maxIterations = 1000; // tmp prevent timeout crash
 	
 		while (predictedX < 475 && timeElapsed < maxIterations) {
 			predictedX += velocityX;
