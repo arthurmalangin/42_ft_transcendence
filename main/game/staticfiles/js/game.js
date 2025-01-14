@@ -29,11 +29,11 @@ document.addEventListener('game_event', async()=>{
 			loadPage('/friends');
 		});
 
-		const gameLabel = document.getElementById('btn_game');
-		gameLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/game');
-			loadPage('/game');
-		});
+		// const gameLabel = document.getElementById('btn_game');
+		// gameLabel.addEventListener('click', () => {
+		// 	history.pushState(null, '', '/game');
+		// 	loadPage('/game');
+		// });
 
 		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
 		brickbreakerLabel.addEventListener('click', () => {
@@ -125,6 +125,22 @@ document.addEventListener('game_event', async()=>{
 			});
 			eventListeners = [];
 		}
+
+		const navbarElements = [
+            'btn_logout',
+            'btn_leaderboard',
+            'btn_settings',
+            'btn_home',
+            'btn_friends',
+            'btn_brickbreaker'
+        ];
+
+        navbarElements.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                addEventListenerWithTracking(element, 'click', cleanupGame);
+            }
+        });
 
 		addEventListenerWithTracking(window, 'keydown', function (e) {
 			keys[e.key] = true;
@@ -222,7 +238,7 @@ document.addEventListener('game_event', async()=>{
 		addEventListenerWithTracking(resetDefaultSettingsButton, 'click', function() {
 			console.log('Reset to default settings button clicked');
 			resetToDefaultSettings();
-		});		
+		});
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                       PONG GAME                         ////////////
@@ -291,12 +307,13 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function cleanupGame() {
-			removeAllEventListeners();
-			clearInterval(gameIntervalId);
 			resetGame(true, false);
-			isPaused = true;
+			resetToDefaultSettings();
 			playerScore = 0;
 			opponentScore = 0;
+			isPaused = true;
+			removeAllEventListeners();
+			clearInterval(gameIntervalId);
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -607,23 +624,23 @@ document.addEventListener('game_event', async()=>{
 			return predictedY;
 		}
 
-	function predictBallImpactTime() {
-		let predictedX = ball.x + ball.width / 2;
-		let velocityX = ball.velocityX;
-		let timeElapsed = 0;
-		let maxIterations = 1000;
-	
-		while (predictedX < 475 && timeElapsed < maxIterations) {
-			predictedX += velocityX;
-			timeElapsed += 1;
-	
-			if (predictedX <= 25) {
-				velocityX *= -1;
+		function predictBallImpactTime() {
+			let predictedX = ball.x + ball.width / 2;
+			let velocityX = ball.velocityX;
+			let timeElapsed = 0;
+			let maxIterations = 1000;
+		
+			while (predictedX < 475 && timeElapsed < maxIterations) {
+				predictedX += velocityX;
+				timeElapsed += 1;
+		
+				if (predictedX <= 25) {
+					velocityX *= -1;
+				}
 			}
+		
+			return timeElapsed;
 		}
-	
-		return timeElapsed;
-	}
 
 		function predictPowerupYAtX(targetX) {
 			if (!powerUp)
