@@ -77,7 +77,7 @@ document.addEventListener('game_event', async()=>{
 
 		let ballWidth = 10;
 		let ballHeight = 10;
-		let ballSpeed = 3;
+		let ballSpeed = 2;
 
 		let ball = {
 			width: ballWidth,
@@ -586,19 +586,16 @@ document.addEventListener('game_event', async()=>{
 			let predictedX = ball.x + ball.width / 2;
 			let velocityX = ball.velocityX;
 			let timeElapsed = 0;
-			const maxIterations = 1000; // prevent timeout crash
 		
-			while (predictedX < 475 && timeElapsed < maxIterations) {
+			while (predictedX < 475) {
 				predictedX += velocityX;
 				timeElapsed += 1;
 		
 				if (predictedX <= 25) {
 					velocityX *= -1;
 				}
-			}
-		
-			if (timeElapsed >= maxIterations) {
-				console.warn('predictBallImpactTime: Maximum iterations reached');
+
+				console.log(timeElapsed);
 			}
 		
 			return timeElapsed;
