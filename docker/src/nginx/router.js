@@ -59,6 +59,7 @@ const routes = {
 		html: '/srcbrickbreaker',
 		css: '/static/css/brickbreaker.css',
 		js: '/static/js/brickbreaker.js',
+		event: 'brickbreaker_event',
 		needLogin: true
 	},
 
