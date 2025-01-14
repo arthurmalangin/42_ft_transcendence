@@ -108,6 +108,8 @@ document.addEventListener('game_event', async()=>{
 		let gameIntervalId;
 		let isPaused = false;
 
+		let quitGame = false;
+
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -160,33 +162,33 @@ document.addEventListener('game_event', async()=>{
 					event.preventDefault();
 					const settingsOverlay = document.getElementById('settingsOverlay');
 					if (settingsOverlay.classList.contains('active')) {
-						console.log('Escape key pressed: Closing settings overlay');
+						// console.log('Escape key pressed: Closing settings overlay');
 						settingsOverlay.classList.remove('active');
-						console.log('Settings overlay class: ', settingsOverlay.classList);
+						// console.log('Settings overlay class: ', settingsOverlay.classList);
 						pauseGame();
 						resetGame(true, false);
 					} else {
-						console.log('Escape key pressed: Opening settings overlay');
+						// console.log('Escape key pressed: Opening settings overlay');
 						if (!isPaused)
 							pauseGame();
 						settingsOverlay.classList.add('active');
-						console.log('Settings overlay class: ', settingsOverlay.classList);
+						// console.log('Settings overlay class: ', settingsOverlay.classList);
 					}
 				}
 			});
 
 			addEventListenerWithTracking(document.getElementById('btn_settings_pong'), 'click', function() {
-				console.log('Settings button clicked: Opening settings overlay');
+				// console.log('Settings button clicked: Opening settings overlay');
 				if (!isPaused)
 					pauseGame();
 				document.getElementById('settingsOverlay').classList.add('active');
-				console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
+				// console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 			});
 
 			addEventListenerWithTracking(document.getElementById('btn_close_settings_pong'), 'click', function() {
-				console.log('Close settings button clicked: Closing settings overlay');
+				// console.log('Close settings button clicked: Closing settings overlay');
 				document.getElementById('settingsOverlay').classList.remove('active');
-				console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
+				// console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 				pauseGame();
 				resetGame(true, false);
 			});
@@ -199,13 +201,13 @@ document.addEventListener('game_event', async()=>{
 						event.target.id !== 'enablePowerupsButton' &&
 						event.target.id !== 'resetDefaultSettingsButton' &&
 						event.target.id !== 'btnQuitSettings') {
-						console.log('Click event stopped: Settings overlay is active');
+						// console.log('Click event stopped: Settings overlay is active');
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
 						const blockedKeys = ['s', 'w', ' '];
 						if (blockedKeys.includes(event.key)) {
-							console.log(`Keydown event stopped: ${event.key} key pressed while settings overlay is active`);
+							// console.log(`Keydown event stopped: ${event.key} key pressed while settings overlay is active`);
 							event.stopPropagation();
 							event.preventDefault();
 						}
@@ -219,32 +221,32 @@ document.addEventListener('game_event', async()=>{
 			const ballSpeedSlider = document.getElementById('ballSpeedSlider');
 			addEventListenerWithTracking(ballSpeedSlider, 'input', function() {
 				const newSpeed = ballSpeedSlider.value;
-				console.log(`Ball speed slider changed: New speed is ${newSpeed}`);
+				// console.log(`Ball speed slider changed: New speed is ${newSpeed}`);
 				updateBallSpeed(newSpeed);
 			});
 			
 			const paddleSpeedSlider = document.getElementById('paddleSpeedSlider');
 			addEventListenerWithTracking(paddleSpeedSlider, 'input', function() {
 				const newSpeed = paddleSpeedSlider.value;
-				console.log(`Paddle speed slider changed: New speed is ${newSpeed}`);
+				// console.log(`Paddle speed slider changed: New speed is ${newSpeed}`);
 				updatePaddleSpeed(newSpeed);
 			});
 			
 			const enablePowerupsButton = document.getElementById('enablePowerupsButton');
 			addEventListenerWithTracking(enablePowerupsButton, 'click', function() {
-				console.log('Enable power-ups button clicked');
+				// console.log('Enable power-ups button clicked');
 				togglePowerups();
 			});
 			
 			const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
 			addEventListenerWithTracking(resetDefaultSettingsButton, 'click', function() {
-				console.log('Reset to default settings button clicked');
+				// console.log('Reset to default settings button clicked');
 				resetToDefaultSettings();
 			});
 
 			const quitButton = document.getElementById('btnQuitSettings');
 			addEventListenerWithTracking(quitButton, 'click', function() {
-				console.log('Quit button clicked');
+				// console.log('Quit button clicked');
 				cleanupGame();
 				history.pushState(null, '', '/');
 				loadPage('/');
@@ -279,7 +281,8 @@ document.addEventListener('game_event', async()=>{
 			board.width = boardWidth;
 			board.height = boardHeight;
 
-			gameIntervalId = setInterval(gameLoop, FRAME_DURATION);
+			if (!quitGame)
+				gameIntervalId = setInterval(gameLoop, FRAME_DURATION);
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
@@ -324,6 +327,7 @@ document.addEventListener('game_event', async()=>{
 			resetGame(true, false);
 			pauseGame();
 			removeAllEventListeners();
+			quitGame = true;
 
 			if (fullCleanup) {
 				return;
@@ -613,6 +617,7 @@ document.addEventListener('game_event', async()=>{
 				moveTowardsTargetY(prevTargetY);
 				return;
 			}
+			console.log("opponent: update");
 		
 			lastUpdateTime = currentTime;
 		
