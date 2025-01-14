@@ -48,7 +48,7 @@ document.addEventListener('game_event', async()=>{
 	/////////////                       VARIABLES                         ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-	function init_pong() {
+	function initPong() {
 
 		let board;
 		let boardWidth = 500;
@@ -90,7 +90,7 @@ document.addEventListener('game_event', async()=>{
 		};
 
 		let playerScore = 0;
-		let opponentScore = 0;
+		let opponentScore = -1;
 
 		let keys = {};
 
@@ -314,6 +314,20 @@ document.addEventListener('game_event', async()=>{
 			isPaused = true;
 			removeAllEventListeners();
 			clearInterval(gameIntervalId);
+
+			const gameResultOverlay = document.getElementById('gameResultOverlay');
+			const gameResultMessage = document.getElementById('gameResultMessage');
+			if (gameResultOverlay && gameResultMessage) {
+				gameResultMessage.textContent = playerScore === 7 ? 'YOU WON!' : 'YOU LOST!';
+				gameResultOverlay.classList.add('active');
+			}
+
+			const playAgainButton = document.getElementById('btn_play_again');
+			if (playAgainButton) {
+				playAgainButton.addEventListener('click', () => {
+					location.reload();
+				});
+			}
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -769,8 +783,9 @@ document.addEventListener('game_event', async()=>{
 			return targetY;
 		}
 
-	startGame();
+		startGame();
+		pauseGame();
 	}
 
-	init_pong();
+	initPong();
 })
