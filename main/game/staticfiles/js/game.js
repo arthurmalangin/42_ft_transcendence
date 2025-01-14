@@ -340,9 +340,9 @@ document.addEventListener('game_event', async()=>{
 
 		function drawScoreboard() {
 			context.font = "16px monospace";
-			context.fillStyle = "#ffffff";
+			context.fillStyle = "#00ff00";
 			context.fillText(`PLAYER: ${playerScore}`, 20, 20);
-			context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 120, 20);
+			context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 140, 20);
 		}
 		
 		// function drawHighlightedPositions() {
@@ -410,8 +410,13 @@ document.addEventListener('game_event', async()=>{
 			ball.x += ball.velocityX;
 			ball.y += ball.velocityY;
 
-			if (ball.y <= 0 || ball.y + ball.height >= boardHeight)
-				ball.velocityY *= -1
+			if (ball.y <= 0) {
+				ball.y = 0;
+				ball.velocityY *= -1;
+			} else if (ball.y + ball.height >= boardHeight) {
+				ball.y = boardHeight - ball.height;
+				ball.velocityY *= -1;
+			}
 
 			// player
 			if (ball.x <= player.x + player.width && ball.y + ball.height >= player.y && ball.y <= player.y + player.height) {
@@ -637,6 +642,7 @@ document.addEventListener('game_event', async()=>{
 				if (predictedX <= 25) {
 					velocityX *= -1;
 				}
+				// console.log(timeElapsed);
 			}
 		
 			return timeElapsed;
