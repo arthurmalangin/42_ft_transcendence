@@ -4,64 +4,70 @@ document.addEventListener('friends_event', async()=>{
 		registerLabel.addEventListener('click', () => {
 			logout();
 		});
-	
+
 		const leaderboardLabel = document.getElementById('btn_leaderboard');
 		leaderboardLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/leaderboard');
 			loadPage('/leaderboard');
 		});
-	
+
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/settings');
 		});
-	
+
 		const homeLabel = document.getElementById('btn_home');
 		homeLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/');
 		});
-	
+
 		const friendsLabel = document.getElementById('btn_friends');
 		friendsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/friends');
 			loadPage('/friends');
 		});
-	
+
 		const gameLabel = document.getElementById('btn_game');
 		gameLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/game');
 			loadPage('/game');
 		});
+
+		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
+		brickbreakerLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/brickbreaker');
+			loadPage('/brickbreaker');
+		});
 	}
-	
+
 	friendsEvent();
 	friendRequestsBox();
 	addFriendsPopup();
 	currentFriendBox();
-	
+
 	async function addFriendsPopup() {
 		const addFriendBtn = document.querySelector('#addFriendBtn');
 		const popup = document.querySelector('#addFriendPopup');
 		const closeBtn = document.querySelector('#closePopup');
 		const searchInput = document.querySelector('#friendSearch');
 		const searchResults = document.querySelector('#searchResults');
-	
+
 		addFriendBtn.addEventListener('click', () => {
 			popup.classList.add('active');
 		});
-	
+
 		closeBtn.addEventListener('click', () => {
 			popup.classList.remove('active');
 		});
-	
+
 		popup.addEventListener('click', (e) => {
 			if (e.target === popup) {
 			popup.classList.remove('active');
 			}
 		});
-	
+
 		searchInput.addEventListener('input', async (e) => {
 			searchResults.innerHTML = ``
 			const searchTerm = e.target.value;
@@ -84,7 +90,7 @@ document.addEventListener('friends_event', async()=>{
 				alert('Error: ');
 			}
 		});
-	
+
 		function displayResults(user) {
 			searchResults.innerHTML = `
 			<div class="search-result">
@@ -92,14 +98,14 @@ document.addEventListener('friends_event', async()=>{
 				${user}
 			</div>
 			`;
-	
+
 			document.querySelectorAll('.search-result').forEach((result, index) => {
 			result.addEventListener('click', () => {
 				addFriend(user);
 			});
 			});
 		}
-	
+
 		async function addFriend(user) {
 			// alert(`TODO: send request friend to ${user}`);
 			try {
@@ -126,10 +132,10 @@ document.addEventListener('friends_event', async()=>{
 			popup.classList.remove('active');
 		}
 	}
-	
+
 	async function currentFriendBox() {
 		const currentFriendContainer = document.querySelector('#currentFriends');
-	
+
 		try {
 			const response = await fetch('/api/getFriendsList/', {
 				method: 'POST',
@@ -139,10 +145,10 @@ document.addEventListener('friends_event', async()=>{
 				},
 			});
 			const data = await response.json();
-	
+
 			if (response.ok) {
 				const inputString = data.friendsList;
-	
+
 				const userList = inputString.split(',');
 				const tabRequest = await Promise.all(userList
 					.filter(user => user.trim() !== '')
@@ -193,12 +199,12 @@ document.addEventListener('friends_event', async()=>{
 			console.error('Erreur request:', error);
 			alert('Error: ');
 		}
-	
+
 	}
-	
+
 	async function friendRequestsBox() {
 		const requestsContainer = document.querySelector('#friendRequests');
-	
+
 		try {
 			const response = await fetch('/api/getRequestFriendsList/', {
 				method: 'POST',
@@ -208,10 +214,10 @@ document.addEventListener('friends_event', async()=>{
 				},
 			});
 			const data = await response.json();
-	
+
 			if (response.ok) {
 				const inputString = data.requestFriendsList;
-	
+
 				const userList = inputString.split(',');
 				const tabRequest = await Promise.all(userList
 					.filter(user => user.trim() !== '')
@@ -272,9 +278,9 @@ document.addEventListener('friends_event', async()=>{
 									new_friend: request.name
 								})
 							});
-	
+
 							const data = await response.json();
-	
+
 							if (response.ok) {
 								const index = tabRequest.findIndex(r => r.id === id);
 								tabRequest.splice(index, 1);
@@ -325,10 +331,10 @@ document.addEventListener('friends_event', async()=>{
 			console.error('Erreur request:', error);
 			alert('Error: ');
 		}
-	
-	
+
+
 	}
-	
+
 	function logout() {
 		fetch('/srclogin/logout/', {
 			method: 'POST',
@@ -346,7 +352,7 @@ document.addEventListener('friends_event', async()=>{
 		})
 		.catch(error => console.error("Erreur réseau : ", error));
 	}
-	
+
 	async function user_is_online(user) {
 		const response = await fetch('/api/user_is_online/', {
 			method: 'POST',
@@ -370,8 +376,8 @@ document.addEventListener('friends_event', async()=>{
 			console.log("Error user_is_online : " + data.error);
 		}
 	}
-	
-	
+
+
 	function getCSRFToken() {
 		const csrfCookie = document.cookie
 			.split('; ')

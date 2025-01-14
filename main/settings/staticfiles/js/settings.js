@@ -6,37 +6,43 @@ document.addEventListener('settings_event', async()=>{
 		registerLabel.addEventListener('click', () => {
 			logout();
 		});
-	
+
 		const leaderboardLabel = document.getElementById('btn_leaderboard');
 		leaderboardLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/leaderboard');
 			loadPage('/leaderboard');
 		});
-	
+
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/settings');
 		});
-	
+
 		const homeLabel = document.getElementById('btn_home');
 		homeLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/');
 		});
-	
+
 		const friendsLabel = document.getElementById('btn_friends');
 		friendsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/friends');
 			loadPage('/friends');
 		});
-	
+
 		const gameLabel = document.getElementById('btn_game');
 		gameLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/game');
 			loadPage('/game');
 		});
-	
+
+		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
+		brickbreakerLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/brickbreaker');
+			loadPage('/brickbreaker');
+		});
+
 		const btn_username = document.getElementById('btn_username');
 		btn_username.addEventListener('click', async () => {
 			const usernameValue = document.getElementById('input_username').value;
@@ -51,7 +57,7 @@ document.addEventListener('settings_event', async()=>{
 				alert("Auth with 42, you cannot change username !");
 			}
 		});
-	
+
 		const btn_password = document.getElementById('btn_password');
 		btn_password.addEventListener('click', async () => {
 			const passwordValue = document.getElementById('input_password').value;
@@ -66,7 +72,7 @@ document.addEventListener('settings_event', async()=>{
 				alert("Auth with 42, you cannot change password !");
 			}
 		});
-	
+
 		document.getElementById('btn_upload_avatar').addEventListener('click', function () {
 			const fileInput = document.getElementById('avatar_upload');
 			const file = fileInput.files[0];
@@ -87,9 +93,9 @@ document.addEventListener('settings_event', async()=>{
 		});
 		
 	}
-	
+
 	settingsRenderEvent();
-	
+
 	async function uploadAvatar(base64Image) {
 		try {
 			const response = await fetch('/api/upload_avatar/', {
@@ -102,9 +108,9 @@ document.addEventListener('settings_event', async()=>{
 					avatar: base64Image
 				})
 			});
-	
+
 			const data = await response.json();
-	
+
 			if (response.ok) {
 				console.log('Avatar upload success:', data.success);
 				alert('Avatar Update success !');
@@ -117,7 +123,7 @@ document.addEventListener('settings_event', async()=>{
 			alert('Error update avatar');
 		}
 	}
-	
+
 	async function changeUsername(newUsername) {
 		try {
 			const response = await fetch('/api/update_username/', {
@@ -130,9 +136,9 @@ document.addEventListener('settings_event', async()=>{
 					username: newUsername
 				})
 			});
-	
+
 			const data = await response.json();
-	
+
 			if (response.ok) {
 				console.log('Username update success:', data.success);
 				alert('Username update success !');
@@ -145,14 +151,14 @@ document.addEventListener('settings_event', async()=>{
 			alert('Update Username Error.');
 		}
 	}
-	
+
 	async function updateImage() {
 		const avatarDisplay = document.getElementById('avatar_display');
-	
+
 		try {
 			const response = await fetch('/api/get_avatar/');
 			const data = await response.json();
-	
+
 			if (response.ok && data.avatar_base64) {
 				avatarDisplay.src = `data:image/png;base64,${data.avatar_base64}`;
 			}
@@ -161,7 +167,7 @@ document.addEventListener('settings_event', async()=>{
 			// avatarDisplay.src = '{% static "default_avatar.png" %}';
 		}
 	}
-	
+
 	async function changePassword(newPassword) {
 		try {
 			console.log("Attemp to changePassword with value:" + newPassword);
@@ -175,9 +181,9 @@ document.addEventListener('settings_event', async()=>{
 					password: newPassword
 				})
 			});
-	
+
 			const data = await response.json();
-	
+
 			if (response.ok) {
 				console.log('Password update success:', data.success);
 				alert('Password Update Success !');
@@ -190,7 +196,7 @@ document.addEventListener('settings_event', async()=>{
 			alert('Update Password Error.');
 		}
 	}
-	
+
 	async function updatePlayerInfo() {
 		try {
 			const response = await fetch('/api/get_username/', {
@@ -211,7 +217,7 @@ document.addEventListener('settings_event', async()=>{
 			console.error('Error updating welcome message:', error);
 		}
 	}
-	
+
 	function logout() {
 		fetch('/srclogin/logout/', {
 			method: 'POST',
@@ -229,7 +235,7 @@ document.addEventListener('settings_event', async()=>{
 		})
 		.catch(error => console.error("Erreur réseau : ", error));
 	}
-	
+
 	async function user_is_42() {
 		const response = await fetch('/api/user_is_42/', {
 			method: 'POST',
@@ -253,8 +259,8 @@ document.addEventListener('settings_event', async()=>{
 			console.log("Error user_is_42 : " + data.error);
 		}
 	}
-	
-	
+
+
 	function getCSRFToken() {
 		const csrfCookie = document.cookie
 			.split('; ')
