@@ -112,19 +112,31 @@ document.addEventListener('game_event', async()=>{
 	/////////////                         EVENTS                          ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-		window.addEventListener('keydown', function (e) {
+		let eventListeners = [];
+
+		function addEventListenerWithTracking(target, type, listener, options = {}) {
+			target.addEventListener(type, listener, options);
+			eventListeners.push({ target, type, listener });
+		}
+
+		function removeAllEventListeners() {
+			eventListeners.forEach(({ target, type, listener }) => {
+				target.removeEventListener(type, listener);
+			});
+			eventListeners = [];
+		}
+
+		addEventListenerWithTracking(window, 'keydown', function (e) {
 			keys[e.key] = true;
 		});
 
-		window.addEventListener('keyup', function (e) {
+		addEventListenerWithTracking(window, 'keyup', function (e) {
 			keys[e.key] = false;
 		});
 
-		document.getElementById('btn_pause').addEventListener('click', pauseGame);
+		addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
 
-		// TODO bug de gros fils de pute:
-		// la touche esc ne fonctionne plus quand on change de page puis revient sur le jeu
-		document.addEventListener('keydown', function(event) {
+		addEventListenerWithTracking(document, 'keydown', function(event) {
 			if (event.code === 'Space') {
 				pauseGame();
 			} else if (event.code === 'Escape') {
@@ -146,7 +158,7 @@ document.addEventListener('game_event', async()=>{
 			}
 		});
 
-		document.getElementById('btn_settings_pong').addEventListener('click', function() {
+		addEventListenerWithTracking(document.getElementById('btn_settings_pong'), 'click', function() {
 			console.log('Settings button clicked: Opening settings overlay');
 			if (!isPaused)
 				pauseGame();
@@ -154,7 +166,7 @@ document.addEventListener('game_event', async()=>{
 			console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 		});
 
-		document.getElementById('btn_close_settings_pong').addEventListener('click', function() {
+		addEventListenerWithTracking(document.getElementById('btn_close_settings_pong'), 'click', function() {
 			console.log('Close settings button clicked: Closing settings overlay');
 			document.getElementById('settingsOverlay').classList.remove('active');
 			console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
@@ -182,35 +194,35 @@ document.addEventListener('game_event', async()=>{
 				}
 			}
 		}
-
-		document.addEventListener('keydown', stopEventPropagation, true);
-		document.addEventListener('click', stopEventPropagation, true);
-
+		
+		addEventListenerWithTracking(document, 'keydown', stopEventPropagation, true);
+		addEventListenerWithTracking(document, 'click', stopEventPropagation, true);
+		
 		const ballSpeedSlider = document.getElementById('ballSpeedSlider');
-		ballSpeedSlider.addEventListener('input', function() {
+		addEventListenerWithTracking(ballSpeedSlider, 'input', function() {
 			const newSpeed = ballSpeedSlider.value;
 			console.log(`Ball speed slider changed: New speed is ${newSpeed}`);
 			updateBallSpeed(newSpeed);
 		});
-
+		
 		const paddleSpeedSlider = document.getElementById('paddleSpeedSlider');
-		paddleSpeedSlider.addEventListener('input', function() {
+		addEventListenerWithTracking(paddleSpeedSlider, 'input', function() {
 			const newSpeed = paddleSpeedSlider.value;
 			console.log(`Paddle speed slider changed: New speed is ${newSpeed}`);
 			updatePaddleSpeed(newSpeed);
 		});
-
+		
 		const enablePowerupsButton = document.getElementById('enablePowerupsButton');
-		enablePowerupsButton.addEventListener('click', function() {
+		addEventListenerWithTracking(enablePowerupsButton, 'click', function() {
 			console.log('Enable power-ups button clicked');
 			togglePowerups();
 		});
-
+		
 		const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
-		resetDefaultSettingsButton.addEventListener('click', function() {
+		addEventListenerWithTracking(resetDefaultSettingsButton, 'click', function() {
 			console.log('Reset to default settings button clicked');
 			resetToDefaultSettings();
-		});
+		});		
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                       PONG GAME                         ////////////
@@ -226,6 +238,10 @@ document.addEventListener('game_event', async()=>{
 			updateOpponentPosition();
 			updatePaddlePositions();
 			checkPowerUpCollisions();
+
+			if (playerScore >= 7 || opponentScore >= 7) {
+				cleanupGame();
+			}
 		}
 
 		function startGame() {
@@ -272,6 +288,15 @@ document.addEventListener('game_event', async()=>{
 				isPaused = true;
 				clearInterval(gameIntervalId);
 			}
+		}
+
+		function cleanupGame() {
+			removeAllEventListeners();
+			clearInterval(gameIntervalId);
+			resetGame(true, false);
+			isPaused = true;
+			playerScore = 0;
+			opponentScore = 0;
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -586,7 +611,7 @@ document.addEventListener('game_event', async()=>{
 		let predictedX = ball.x + ball.width / 2;
 		let velocityX = ball.velocityX;
 		let timeElapsed = 0;
-		const maxIterations = 1000; // tmp prevent timeout crash
+		let maxIterations = 1000;
 	
 		while (predictedX < 475 && timeElapsed < maxIterations) {
 			predictedX += velocityX;
@@ -595,10 +620,6 @@ document.addEventListener('game_event', async()=>{
 			if (predictedX <= 25) {
 				velocityX *= -1;
 			}
-		}
-	
-		if (timeElapsed >= maxIterations) {
-			console.warn('predictBallImpactTime: Maximum iterations reached');
 		}
 	
 		return timeElapsed;
@@ -637,8 +658,9 @@ document.addEventListener('game_event', async()=>{
 			let predictedX = powerUp.x + powerUp.width / 2;
 			let velocityX = powerUp.velocityX;
 			let timeElapsed = 0;
+			let maxIterations = 1000;
 		
-			while (predictedX < 475) {
+			while (predictedX < 475 && timeElapsed < maxIterations) {
 				predictedX += velocityX;
 				timeElapsed += 1;
 		
