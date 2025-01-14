@@ -3,6 +3,7 @@ const routes = {
 		html: '/home',
 		css: '/static/css/stylehome.css',
 		js: '/static/js/home.js',
+		event: 'home_event',
 		needLogin: true
 	},
 
@@ -10,6 +11,7 @@ const routes = {
 		html: '/srclogin',
 		css: '/static/css/login.css',
 		js: '/static/js/login_btn.js',
+		event: 'login_event',
 		needLogin: false
 	},
 
@@ -17,6 +19,7 @@ const routes = {
 		html: '/srclogin/register',
 		css: '/static/css/login.css',
 		js: '/static/js/register_btn.js',
+		event: 'register_event',
 		needLogin: false
 	},
 
@@ -24,6 +27,7 @@ const routes = {
 		html: '/srcleaderboard',
 		css: '/static/css/stylehome.css',
 		js: '/static/js/leaderboard.js',
+		event: 'leaderboard_event',
 		needLogin: true
 	},
 
@@ -31,6 +35,7 @@ const routes = {
 		html: '/srcfriends',
 		css: '/static/css/friends.css',
 		js: '/static/js/friends.js',
+		event: 'friends_event',
 		needLogin: true
 	},
 
@@ -38,6 +43,7 @@ const routes = {
 		html: '/srcsettings',
 		css: '/static/css/settings.css',
 		js: '/static/js/settings.js',
+		event: 'settings_event',
 		needLogin: true
 	},
 
@@ -45,6 +51,7 @@ const routes = {
 		html: '/srcgame',
 		css: '/static/css/game.css',
 		js: '/static/js/game.js',
+		event: 'game_event',
 		needLogin: true
 	},
 
@@ -59,6 +66,7 @@ const routes = {
 		html: '/home/404',
 		css: '/static/css/404.css',
 		js: '',
+		event: '',
 		needLogin: false
 	},
 }
@@ -109,9 +117,6 @@ async function loadPage(url) {
 
         const css = await fetch(routes[normalizedUrl].css);
         const css_content = await css.text();
-
-        const js = await fetch(routes[normalizedUrl].js);
-        const js_content = await js.text();
         // console.log(js_content);
 
         box_main.innerHTML = htmlcontent;
@@ -121,14 +126,31 @@ async function loadPage(url) {
 			box_js.removeChild(box_js.firstChild);
 		}
 		
-        const script = document.createElement('script');
-        script.textContent = js_content;
-		script.defer = true;
-        box_js.appendChild(script); 
+        loadJsEvent(box_js, routes[normalizedUrl].event, routes[normalizedUrl].js) 
         
 		console.log("Load Page: " + normalizedUrl + " !");
         resolve(true);
     });
+}
+
+function unloadJs() {
+	const js = document.getElementById('js_app_script');
+	if (js)
+		js.remove();
+	document.getElementById('js').innerHTML = '';
+}
+
+function loadJsEvent(box_js, eventName, js_path) {
+	unloadJs();
+	const script = document.createElement('script');
+	script.src = js_path;
+	script.type = 'module';
+	script.id = 'js_app_script';
+	box_js.appendChild(script);
+	script.onload = () => {
+		console.log(`script ${eventName} loaded.`);
+		document.dispatchEvent(new CustomEvent(eventName));
+	};
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
