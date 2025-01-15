@@ -97,6 +97,13 @@ document.addEventListener('game_event', async()=>{
 			FREEZE_OPPONENT: 'freeze_opponent'
 		};
 
+		const enlargePaddleImage = new Image();
+		enlargePaddleImage.src = 'https://127.0.0.1/static/enlarge.svg';
+
+		const freezeOpponentImage = new Image();
+		freezeOpponentImage.src = 'https://127.0.0.1/static/freeze.svg';
+
+
 		const FRAME_RATE = 60;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
@@ -369,8 +376,8 @@ document.addEventListener('game_event', async()=>{
 			context.fill();
 
 			if (powerUp) {
-				context.fillStyle = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? "#ff0000" : "#0000ff";
-				context.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+				const powerUpImage = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? enlargePaddleImage : freezeOpponentImage;
+				context.drawImage(powerUpImage, powerUp.x, powerUp.y, powerUp.width, powerUp.height);
 			}
 		}
 
