@@ -141,9 +141,8 @@ document.addEventListener('game_event', async()=>{
 
 			navbarElements.forEach(id => {
 				const element = document.getElementById(id);
-				if (element) {
+				if (element)
 					addEventListenerWithTracking(element, 'click', cleanupGame);
-				}
 			});
 
 			addEventListenerWithTracking(window, 'keydown', function (e) {
@@ -157,39 +156,31 @@ document.addEventListener('game_event', async()=>{
 			addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
-				if (event.code === 'Space') {
+				if (event.code === 'Space')
 					pauseGame();
-				} else if (event.code === 'Escape') {
+				else if (event.code === 'Escape') {
 					event.preventDefault();
 					const settingsOverlay = document.getElementById('settingsOverlay');
 					if (settingsOverlay.classList.contains('active')) {
-						// console.log('Escape key pressed: Closing settings overlay');
 						settingsOverlay.classList.remove('active');
-						// console.log('Settings overlay class: ', settingsOverlay.classList);
 						pauseGame();
 						resetGame(true, false);
 					} else {
-						// console.log('Escape key pressed: Opening settings overlay');
 						if (!isPaused)
 							pauseGame();
 						settingsOverlay.classList.add('active');
-						// console.log('Settings overlay class: ', settingsOverlay.classList);
 					}
 				}
 			});
 
 			addEventListenerWithTracking(document.getElementById('btn_settings_pong'), 'click', function() {
-				// console.log('Settings button clicked: Opening settings overlay');
 				if (!isPaused)
 					pauseGame();
 				document.getElementById('settingsOverlay').classList.add('active');
-				// console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 			});
 
 			addEventListenerWithTracking(document.getElementById('btn_close_settings_pong'), 'click', function() {
-				// console.log('Close settings button clicked: Closing settings overlay');
 				document.getElementById('settingsOverlay').classList.remove('active');
-				// console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 				pauseGame();
 				resetGame(true, false);
 			});
@@ -203,13 +194,11 @@ document.addEventListener('game_event', async()=>{
 						event.target.id !== 'resetDefaultSettingsButton' &&
 						event.target.id !== 'enableAIButton' &&
 						event.target.id !== 'btnQuitSettings') {
-						// console.log('Click event stopped: Settings overlay is active');
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
 						const blockedKeys = ['s', 'w', ' '];
 						if (blockedKeys.includes(event.key)) {
-							// console.log(`Keydown event stopped: ${event.key} key pressed while settings overlay is active`);
 							event.stopPropagation();
 							event.preventDefault();
 						}
@@ -268,14 +257,12 @@ document.addEventListener('game_event', async()=>{
 			moveBall();
 			movePowerUps();
 			draw();
-			// drawScoreboard();
 			updateOpponentPosition();
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
-			if (playerScore >= 7 || opponentScore >= 7) {
+			if (playerScore >= 7 || opponentScore >= 7)
 				cleanupGame(false);
-			}
 		}
 
 		function startGame() {
@@ -304,14 +291,13 @@ document.addEventListener('game_event', async()=>{
 				ball.velocityX = ballSpeed;
 			else
 				ball.velocityX = -ballSpeed;
+
 			ball.velocityY = 0;
-		
 			player.y = boardHeight / 2 - player.height / 2;
 			opponent.y = boardHeight / 2 - opponent.height / 2;
 		
-			if (spawnPowerUpFlag) {
+			if (spawnPowerUpFlag)
 				spawnPowerUp();
-			}
 		}
 
 		function pauseGame() {
@@ -332,9 +318,8 @@ document.addEventListener('game_event', async()=>{
 			if (!isPaused)
 				pauseGame();
 
-			if (fullCleanup) {
+			if (fullCleanup)
 				return;
-			}
 			
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
@@ -479,8 +464,9 @@ document.addEventListener('game_event', async()=>{
 				let normalizedIntersectY = intersectY / (opponent.height / 2);
 				let bounceAngle = normalizedIntersectY * Math.PI / 4;
 
-				if (ball.speed < 12)
+				if (ball.speed < 12) {
 					ball.speed += 0.1;
+				}
 				ball.velocityX = -ball.speed * Math.cos(bounceAngle);
 				ball.velocityY = ball.speed * Math.sin(bounceAngle);
 			}
@@ -580,12 +566,10 @@ document.addEventListener('game_event', async()=>{
 			powerUp.y += powerUp.velocityY;
 
 			// collision check
-			if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
+			if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth)
 				powerUp.velocityX *= -1;
-			}
-			if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
+			if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight)
 				powerUp.velocityY *= -1;
-			}
 		}
 
 		function checkPowerUpCollisions() {
@@ -618,8 +602,8 @@ document.addEventListener('game_event', async()=>{
 				moveTowardsTargetY(prevTargetY);
 				return;
 			}
-			console.log("opponent: update");
-		
+
+			console.log("AI: reading gamestate");
 			lastUpdateTime = currentTime;
 		
 			// drawPredictedTrajectory();
@@ -628,9 +612,7 @@ document.addEventListener('game_event', async()=>{
 			const ballPredictedY = predictBallYAtX(475);
 			const pwrPredictedY = predictPowerupYAtX(475);
 			const ballPredictedTime = predictBallImpactTime();
-			// console.log("ball: ", ballPredictedTime);
 			const pwrPredictedTime = predictPowerupImpactTime();
-			// console.log("pwrUp: ", pwrPredictedTime);
 			const playerDistanceFromTop = player.y;
 			const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 
@@ -640,15 +622,10 @@ document.addEventListener('game_event', async()=>{
 			if (hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY)) {
 				targetY = pwrPredictedY;
 				isPowerup = true;
-				// console.log("opponent: going for powerUp at Y=", targetY);
-			} else {
+			} else
 				targetY = ballPredictedY;
-				// console.log("opponent: going for ball at Y =", targetY);
-			}
 		
-			prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;
-			// console.log("opponent: moving to Y=", prevTargetY);
-		
+			prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;		
 			moveTowardsTargetY(prevTargetY);
 		}
 
@@ -663,13 +640,11 @@ document.addEventListener('game_event', async()=>{
 				predictedY += velocityY;
 		
 				// top and bottom walls collision check
-				if (predictedY - ball.height / 2 <= 0 || predictedY + ball.height / 2 >= boardHeight) {
+				if (predictedY - ball.height / 2 <= 0 || predictedY + ball.height / 2 >= boardHeight)
 					velocityY *= -1;
-				}
 		
-				if (predictedX <= 25) {
+				if (predictedX <= 25)
 					break;
-				}
 			}
 		
 			return predictedY;
@@ -685,9 +660,8 @@ document.addEventListener('game_event', async()=>{
 				predictedX += velocityX;
 				timeElapsed += 1;
 		
-				if (predictedX <= 25) {
+				if (predictedX <= 25)
 					velocityX *= -1;
-				}
 				// console.log(timeElapsed);
 			}
 		
@@ -708,13 +682,11 @@ document.addEventListener('game_event', async()=>{
 				predictedY += velocityY;
 		
 				// top and bottom walls collision check
-				if (predictedY - powerUp.height / 2 <= 0 || predictedY + powerUp.height / 2 >= boardHeight) {
+				if (predictedY - powerUp.height / 2 <= 0 || predictedY + powerUp.height / 2 >= boardHeight)
 					velocityY *= -1;
-				}
 		
-				if (predictedX <= 0) {
+				if (predictedX <= 0)
 					velocityX *= -1;
-				}
 			}
 		
 			return predictedY
@@ -733,9 +705,8 @@ document.addEventListener('game_event', async()=>{
 				predictedX += velocityX;
 				timeElapsed += 1;
 		
-				if (predictedX <= 0) {
+				if (predictedX <= 0)
 					velocityX *= -1;
-				}
 			}
 
 			return timeElapsed;
@@ -746,15 +717,10 @@ document.addEventListener('game_event', async()=>{
 				return false;
 
 			const availableTime = ballPredictedTime - pwrPredictedTime;
-
-			const distanceToPowerup = Math.abs(opponent.y - pwrPredictedY);
-			const timeToPowerup = distanceToPowerup / opponent.speed;
-		
+			const distanceToPowerup = Math.abs(opponent.y - pwrPredictedY);		
 			const distanceToBall = Math.abs(pwrPredictedY - ballPredictedY);
 			const timeToBallfromPowerup = distanceToBall / opponent.speed;	
 			
-			// console.log('availableTime:', availableTime, 'timeToPowerup:', timeToPowerup, 'timeToBallfromPowerup:', timeToBallfromPowerup);
-
 			return (timeToBallfromPowerup <= availableTime);
 		}
 
@@ -796,20 +762,18 @@ document.addEventListener('game_event', async()=>{
 			const playerDistanceFromEdge = Math.min(playerDistanceFromTop, playerDistanceFromBottom) / (boardHeight / 2);
 			let targetY;
 		
-			if (isPowerup) {
+			if (isPowerup)
 				targetY = predictedY;
-			} else {
+			else {
 				if (ball.velocityX > 0) { // ball was last hit by the player
 					let offset = (1 - playerDistanceFromEdge) * 0.5 * opponent.height;
 		
-					if (playerDistanceFromTop < playerDistanceFromBottom) {
+					if (playerDistanceFromTop < playerDistanceFromBottom)
 						targetY = predictedY - offset; // aim for bottom
-					} else {
+					else
 						targetY = predictedY + offset; // aim for top
-					}
-				} else {
+				} else
 					targetY = boardHeight / 2;
-				}
 			}
 		
 			return targetY;
