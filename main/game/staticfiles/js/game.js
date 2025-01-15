@@ -278,9 +278,6 @@ document.addEventListener('game_event', async()=>{
 			context = board.getContext('2d');
 			board.width = boardWidth;
 			board.height = boardHeight;
-
-			if (!quitGame)
-				gameIntervalId = setInterval(gameLoop, FRAME_DURATION);
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
@@ -340,11 +337,7 @@ document.addEventListener('game_event', async()=>{
 			const playAgainButton = document.getElementById('btnPlayAgain');
 			if (playAgainButton) {
 				playAgainButton.addEventListener('click', () => {
-					gameResultOverlay.classList.remove('active');
-					settingsOverlay.classList.add('active');
-					playerScore = 0;
-					opponentScore = -1;
-					addAllEventListeners();
+					loadPage('/game');
 				});
 			}
 			
