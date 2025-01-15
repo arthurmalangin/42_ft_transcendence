@@ -29,12 +29,6 @@ document.addEventListener('game_event', async()=>{
 			loadPage('/friends');
 		});
 
-		// const gameLabel = document.getElementById('btn_game');
-		// gameLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/game');
-		// 	loadPage('/game');
-		// });
-
 		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
 		brickbreakerLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/brickbreaker');
@@ -320,8 +314,10 @@ document.addEventListener('game_event', async()=>{
 		function cleanupGame(fullCleanup = true) {
 			resetToDefaultSettings();
 			resetGame(true, false);
-			pauseGame();
 			removeAllEventListeners();
+
+			if (!isPaused)
+				pauseGame();
 
 			if (fullCleanup) {
 				return;
