@@ -102,6 +102,8 @@ document.addEventListener('game_event', async()=>{
 		let gameIntervalId;
 		let isPaused = false;
 
+		let AIEnabled = false;
+
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -192,6 +194,7 @@ document.addEventListener('game_event', async()=>{
 						event.target.id !== 'btn_close_settings_pong' &&
 						event.target.id !== 'enablePowerupsButton' &&
 						event.target.id !== 'resetDefaultSettingsButton' &&
+						event.target.id !== 'enableAIButton' &&
 						event.target.id !== 'btnQuitSettings') {
 						// console.log('Click event stopped: Settings overlay is active');
 						event.stopPropagation();
@@ -213,32 +216,33 @@ document.addEventListener('game_event', async()=>{
 			const ballSpeedSlider = document.getElementById('ballSpeedSlider');
 			addEventListenerWithTracking(ballSpeedSlider, 'input', function() {
 				const newSpeed = ballSpeedSlider.value;
-				// console.log(`Ball speed slider changed: New speed is ${newSpeed}`);
 				updateBallSpeed(newSpeed);
 			});
 			
 			const paddleSpeedSlider = document.getElementById('paddleSpeedSlider');
 			addEventListenerWithTracking(paddleSpeedSlider, 'input', function() {
 				const newSpeed = paddleSpeedSlider.value;
-				// console.log(`Paddle speed slider changed: New speed is ${newSpeed}`);
 				updatePaddleSpeed(newSpeed);
 			});
 			
 			const enablePowerupsButton = document.getElementById('enablePowerupsButton');
 			addEventListenerWithTracking(enablePowerupsButton, 'click', function() {
-				// console.log('Enable power-ups button clicked');
 				togglePowerups();
 			});
 			
+			const enableAIButton = document.getElementById('enableAIButton');
+			addEventListenerWithTracking(enableAIButton, 'click', function() {
+				AIEnabled = !AIEnabled;
+				enableAIButton.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+			});
+
 			const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
 			addEventListenerWithTracking(resetDefaultSettingsButton, 'click', function() {
-				// console.log('Reset to default settings button clicked');
 				resetToDefaultSettings();
 			});
 
 			const quitButton = document.getElementById('btnQuitSettings');
 			addEventListenerWithTracking(quitButton, 'click', function() {
-				// console.log('Quit button clicked');
 				cleanupGame();
 				history.pushState(null, '', '/');
 				loadPage('/');
@@ -496,16 +500,15 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function resetToDefaultSettings() {
-			// Disable power-ups
 			powerUpsEnabled = false;
-			const button = document.getElementById('enablePowerupsButton');
-			button.textContent = 'ENABLE POWERUPS';
+			AIEnabled = false;
+			const powerUpButton = document.getElementById('enablePowerupsButton');
+			const AIButton = document.getElementById('enableAIButton');
+			powerUpButton.textContent = 'ENABLE POWERUPS';
+			AIButton.textContent = 'ENABLE AI';
 
-			// Reset paddle and ball speed to 2
 			updateBallSpeed(2);
 			updatePaddleSpeed(2);
-
-			// Update sliders to reflect the default values
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
 		}
@@ -597,6 +600,9 @@ document.addEventListener('game_event', async()=>{
 		let prevTargetY = boardHeight / 2;
 
 		function updateOpponentPosition() {
+			if (!AIEnabled)
+				return;
+
 			const currentTime = Date.now();
 		
 			if (!OneSecElapsed(currentTime)) {

@@ -109,11 +109,12 @@ body {
 }
 
 /* Buttons */
-.btn {
+.form-group .btn {
 	background: transparent;
 	border: 1px solid var(--terminal-green);
 	color: var(--terminal-green);
 	padding: 0.5rem 1rem;
+	min-width: 40%;
 	cursor: pointer;
 	transition: background-color 0.2s;
 }
