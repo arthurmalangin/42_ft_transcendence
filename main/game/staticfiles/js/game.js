@@ -351,7 +351,6 @@ document.addEventListener('game_event', async()=>{
 		function draw() {
 			context.fillStyle = "#ffffff";
 			context.fillRect(player.x, player.y, player.width, player.height);
-		
 			context.fillStyle = "#00ff00";
 			context.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
 		
@@ -365,56 +364,6 @@ document.addEventListener('game_event', async()=>{
 				context.drawImage(powerUpImage, powerUp.x, powerUp.y, powerUp.width, powerUp.height);
 			}
 		}
-
-		// function drawScoreboard() {
-		// 	context.font = "16px monospace";
-		// 	context.fillStyle = "#00ff00";
-		// 	context.fillText(`PLAYER: ${playerScore}`, 20, 20);
-		// 	context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 140, 20);
-		// }
-		
-		// function drawHighlightedPositions() {
-		// 	// player's position
-		// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.fillRect(player.x, player.y, player.width, player.height);
-		
-		// 	// ball's position
-		// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.beginPath();
-		// 	context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
-		// 	context.fill();
-		// }
-
-		// function drawPredictedTrajectory() {
-		// 	let predictedX = ball.x + ball.width / 2;
-		// 	let predictedY = ball.y + ball.height / 2;
-		// 	let velocityX = ball.velocityX;
-		// 	let velocityY = ball.velocityY;
-		
-		// 	context.strokeStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.lineWidth = 1;
-		// 	context.beginPath();
-		// 	context.moveTo(predictedX, predictedY);
-		
-		// 	while (predictedX <= 475 && predictedX >= 25) {
-		// 		predictedX += velocityX;
-		// 		predictedY += velocityY;
-		
-		// 		if (predictedY <= 0 + ball.height / 2 || predictedY >= boardHeight - ball.height / 2) {
-		// 			velocityY = -velocityY;
-		// 		}
-		
-		// 		context.lineTo(predictedX, predictedY);
-		// 	}
-		
-		// 	context.stroke();
-		
-		// 	// predicted ball position when hitting opponent's paddle 
-		// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.beginPath();
-		// 	context.arc(predictedX, predictedY, ball.width / 2, 0, 2 * Math.PI);
-		// 	context.fill();
-		// }
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                  OBJECT INTERACTIONS                    ////////////
@@ -605,9 +554,6 @@ document.addEventListener('game_event', async()=>{
 
 			console.log("AI: reading gamestate");
 			lastUpdateTime = currentTime;
-		
-			// drawPredictedTrajectory();
-			// drawHighlightedPositions();
 		
 			const ballPredictedY = predictBallYAtX(475);
 			const pwrPredictedY = predictPowerupYAtX(475);
