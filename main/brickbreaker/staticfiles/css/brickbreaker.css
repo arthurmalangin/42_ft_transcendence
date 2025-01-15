@@ -108,6 +108,18 @@ body {
     border-right: 2px solid var(--terminal-green);
 }
 
+/* Content panels */
+.panel {
+	flex: 1;
+	border: 1px solid var(--terminal-green);
+	padding: 1.5rem;
+}
+
+.panel-header {
+	font-size: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
 /* Buttons */
 .btn {
 	background: transparent;
@@ -126,6 +138,6 @@ body {
 
 #board {
 	background-color: var(--terminal-bg);
-	border-top: 5px solid var(--terminal-green);
-	border-bottom: 5px solid var(--terminal-green);
+	border: 1px solid rgba(0, 255, 0, 0.3);
+	margin-right: 24px;
 }

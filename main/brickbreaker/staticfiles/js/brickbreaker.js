@@ -160,7 +160,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 		}
 
 		function gameLoop() {
-		
+			context.clearRect(0, 0, boardWidth, boardHeight);
+
+			// draw();
+			// updatePlayerPosition();
 		}
 
 		startGame();
