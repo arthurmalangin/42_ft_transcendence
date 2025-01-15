@@ -121,3 +121,11 @@ body {
 .btn:hover {
 	background-color: rgba(0, 255, 0, 0.1);
 }
+
+/* Brickbreaker */
+
+#board {
+	background-color: var(--terminal-bg);
+	border-top: 5px solid var(--terminal-green);
+	border-bottom: 5px solid var(--terminal-green);
+}
