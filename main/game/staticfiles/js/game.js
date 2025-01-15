@@ -29,12 +29,6 @@ document.addEventListener('game_event', async()=>{
 			loadPage('/friends');
 		});
 
-		// const gameLabel = document.getElementById('btn_game');
-		// gameLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/game');
-		// 	loadPage('/game');
-		// });
-
 		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
 		brickbreakerLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/brickbreaker');
@@ -103,12 +97,19 @@ document.addEventListener('game_event', async()=>{
 			FREEZE_OPPONENT: 'freeze_opponent'
 		};
 
+		const enlargePaddleImage = new Image();
+		enlargePaddleImage.src = 'https://127.0.0.1/static/enlarge.svg';
+
+		const freezeOpponentImage = new Image();
+		freezeOpponentImage.src = 'https://127.0.0.1/static/freeze.svg';
+
+
 		const FRAME_RATE = 60;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
 		let isPaused = false;
 
-		let quitGame = false;
+		let AIEnabled = false;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
@@ -140,9 +141,8 @@ document.addEventListener('game_event', async()=>{
 
 			navbarElements.forEach(id => {
 				const element = document.getElementById(id);
-				if (element) {
+				if (element)
 					addEventListenerWithTracking(element, 'click', cleanupGame);
-				}
 			});
 
 			addEventListenerWithTracking(window, 'keydown', function (e) {
@@ -156,39 +156,31 @@ document.addEventListener('game_event', async()=>{
 			addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
-				if (event.code === 'Space') {
+				if (event.code === 'Space')
 					pauseGame();
-				} else if (event.code === 'Escape') {
+				else if (event.code === 'Escape') {
 					event.preventDefault();
 					const settingsOverlay = document.getElementById('settingsOverlay');
 					if (settingsOverlay.classList.contains('active')) {
-						// console.log('Escape key pressed: Closing settings overlay');
 						settingsOverlay.classList.remove('active');
-						// console.log('Settings overlay class: ', settingsOverlay.classList);
 						pauseGame();
 						resetGame(true, false);
 					} else {
-						// console.log('Escape key pressed: Opening settings overlay');
 						if (!isPaused)
 							pauseGame();
 						settingsOverlay.classList.add('active');
-						// console.log('Settings overlay class: ', settingsOverlay.classList);
 					}
 				}
 			});
 
 			addEventListenerWithTracking(document.getElementById('btn_settings_pong'), 'click', function() {
-				// console.log('Settings button clicked: Opening settings overlay');
 				if (!isPaused)
 					pauseGame();
 				document.getElementById('settingsOverlay').classList.add('active');
-				// console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 			});
 
 			addEventListenerWithTracking(document.getElementById('btn_close_settings_pong'), 'click', function() {
-				// console.log('Close settings button clicked: Closing settings overlay');
 				document.getElementById('settingsOverlay').classList.remove('active');
-				// console.log('Settings overlay class: ', document.getElementById('settingsOverlay').classList);
 				pauseGame();
 				resetGame(true, false);
 			});
@@ -200,14 +192,13 @@ document.addEventListener('game_event', async()=>{
 						event.target.id !== 'btn_close_settings_pong' &&
 						event.target.id !== 'enablePowerupsButton' &&
 						event.target.id !== 'resetDefaultSettingsButton' &&
+						event.target.id !== 'enableAIButton' &&
 						event.target.id !== 'btnQuitSettings') {
-						// console.log('Click event stopped: Settings overlay is active');
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
 						const blockedKeys = ['s', 'w', ' '];
 						if (blockedKeys.includes(event.key)) {
-							// console.log(`Keydown event stopped: ${event.key} key pressed while settings overlay is active`);
 							event.stopPropagation();
 							event.preventDefault();
 						}
@@ -221,32 +212,33 @@ document.addEventListener('game_event', async()=>{
 			const ballSpeedSlider = document.getElementById('ballSpeedSlider');
 			addEventListenerWithTracking(ballSpeedSlider, 'input', function() {
 				const newSpeed = ballSpeedSlider.value;
-				// console.log(`Ball speed slider changed: New speed is ${newSpeed}`);
 				updateBallSpeed(newSpeed);
 			});
 			
 			const paddleSpeedSlider = document.getElementById('paddleSpeedSlider');
 			addEventListenerWithTracking(paddleSpeedSlider, 'input', function() {
 				const newSpeed = paddleSpeedSlider.value;
-				// console.log(`Paddle speed slider changed: New speed is ${newSpeed}`);
 				updatePaddleSpeed(newSpeed);
 			});
 			
 			const enablePowerupsButton = document.getElementById('enablePowerupsButton');
 			addEventListenerWithTracking(enablePowerupsButton, 'click', function() {
-				// console.log('Enable power-ups button clicked');
 				togglePowerups();
 			});
 			
+			const enableAIButton = document.getElementById('enableAIButton');
+			addEventListenerWithTracking(enableAIButton, 'click', function() {
+				AIEnabled = !AIEnabled;
+				enableAIButton.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+			});
+
 			const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
 			addEventListenerWithTracking(resetDefaultSettingsButton, 'click', function() {
-				// console.log('Reset to default settings button clicked');
 				resetToDefaultSettings();
 			});
 
 			const quitButton = document.getElementById('btnQuitSettings');
 			addEventListenerWithTracking(quitButton, 'click', function() {
-				// console.log('Quit button clicked');
 				cleanupGame();
 				history.pushState(null, '', '/');
 				loadPage('/');
@@ -265,14 +257,12 @@ document.addEventListener('game_event', async()=>{
 			moveBall();
 			movePowerUps();
 			draw();
-			drawScoreboard();
 			updateOpponentPosition();
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
-			if (playerScore >= 7 || opponentScore >= 7) {
+			if (playerScore >= 7 || opponentScore >= 7)
 				cleanupGame(false);
-			}
 		}
 
 		function startGame() {
@@ -280,16 +270,15 @@ document.addEventListener('game_event', async()=>{
 			context = board.getContext('2d');
 			board.width = boardWidth;
 			board.height = boardHeight;
-
-			if (!quitGame)
-				gameIntervalId = setInterval(gameLoop, FRAME_DURATION);
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
 			if (playerLost) {
 				opponentScore++;
+				document.getElementById('player2Score').textContent = opponentScore;
 			} else {
 				playerScore++;
+				document.getElementById('player1Score').textContent = playerScore;
 			}
 		
 			ball.x = boardWidth / 2 - ball.width / 2;
@@ -302,14 +291,13 @@ document.addEventListener('game_event', async()=>{
 				ball.velocityX = ballSpeed;
 			else
 				ball.velocityX = -ballSpeed;
+
 			ball.velocityY = 0;
-		
 			player.y = boardHeight / 2 - player.height / 2;
 			opponent.y = boardHeight / 2 - opponent.height / 2;
 		
-			if (spawnPowerUpFlag) {
+			if (spawnPowerUpFlag)
 				spawnPowerUp();
-			}
 		}
 
 		function pauseGame() {
@@ -325,29 +313,25 @@ document.addEventListener('game_event', async()=>{
 		function cleanupGame(fullCleanup = true) {
 			resetToDefaultSettings();
 			resetGame(true, false);
-			pauseGame();
 			removeAllEventListeners();
-			quitGame = true;
 
-			if (fullCleanup) {
+			if (!isPaused)
+				pauseGame();
+
+			if (fullCleanup)
 				return;
-			}
 			
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
-				gameResultMessage.textContent = playerScore === 7 ? 'YOU WON! CONGRATULATIONS!' : 'YOU LOST! BETTER LUCK NEXT TIME!';
+				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
 				gameResultOverlay.classList.add('active');
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
 			if (playAgainButton) {
 				playAgainButton.addEventListener('click', () => {
-					gameResultOverlay.classList.remove('active');
-					settingsOverlay.classList.add('active');
-					playerScore = 0;
-					opponentScore = -1;
-					addAllEventListeners();
+					loadPage('/game');
 				});
 			}
 			
@@ -367,7 +351,6 @@ document.addEventListener('game_event', async()=>{
 		function draw() {
 			context.fillStyle = "#ffffff";
 			context.fillRect(player.x, player.y, player.width, player.height);
-		
 			context.fillStyle = "#00ff00";
 			context.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
 		
@@ -377,60 +360,10 @@ document.addEventListener('game_event', async()=>{
 			context.fill();
 
 			if (powerUp) {
-				context.fillStyle = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? "#ff0000" : "#0000ff";
-				context.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+				const powerUpImage = powerUp.type === powerUpTypes.ENLARGE_PADDLE ? enlargePaddleImage : freezeOpponentImage;
+				context.drawImage(powerUpImage, powerUp.x, powerUp.y, powerUp.width, powerUp.height);
 			}
 		}
-
-		function drawScoreboard() {
-			context.font = "16px monospace";
-			context.fillStyle = "#00ff00";
-			context.fillText(`PLAYER: ${playerScore}`, 20, 20);
-			context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 140, 20);
-		}
-		
-		// function drawHighlightedPositions() {
-		// 	// player's position
-		// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.fillRect(player.x, player.y, player.width, player.height);
-		
-		// 	// ball's position
-		// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.beginPath();
-		// 	context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
-		// 	context.fill();
-		// }
-
-		// function drawPredictedTrajectory() {
-		// 	let predictedX = ball.x + ball.width / 2;
-		// 	let predictedY = ball.y + ball.height / 2;
-		// 	let velocityX = ball.velocityX;
-		// 	let velocityY = ball.velocityY;
-		
-		// 	context.strokeStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.lineWidth = 1;
-		// 	context.beginPath();
-		// 	context.moveTo(predictedX, predictedY);
-		
-		// 	while (predictedX <= 475 && predictedX >= 25) {
-		// 		predictedX += velocityX;
-		// 		predictedY += velocityY;
-		
-		// 		if (predictedY <= 0 + ball.height / 2 || predictedY >= boardHeight - ball.height / 2) {
-		// 			velocityY = -velocityY;
-		// 		}
-		
-		// 		context.lineTo(predictedX, predictedY);
-		// 	}
-		
-		// 	context.stroke();
-		
-		// 	// predicted ball position when hitting opponent's paddle 
-		// 	context.fillStyle = "rgba(255, 0, 0, 0.5)";
-		// 	context.beginPath();
-		// 	context.arc(predictedX, predictedY, ball.width / 2, 0, 2 * Math.PI);
-		// 	context.fill();
-		// }
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                  OBJECT INTERACTIONS                    ////////////
@@ -480,8 +413,9 @@ document.addEventListener('game_event', async()=>{
 				let normalizedIntersectY = intersectY / (opponent.height / 2);
 				let bounceAngle = normalizedIntersectY * Math.PI / 4;
 
-				if (ball.speed < 12)
+				if (ball.speed < 12) {
 					ball.speed += 0.1;
+				}
 				ball.velocityX = -ball.speed * Math.cos(bounceAngle);
 				ball.velocityY = ball.speed * Math.sin(bounceAngle);
 			}
@@ -510,16 +444,15 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function resetToDefaultSettings() {
-			// Disable power-ups
 			powerUpsEnabled = false;
-			const button = document.getElementById('enablePowerupsButton');
-			button.textContent = 'ENABLE POWERUPS';
+			AIEnabled = false;
+			const powerUpButton = document.getElementById('enablePowerupsButton');
+			const AIButton = document.getElementById('enableAIButton');
+			powerUpButton.textContent = 'ENABLE POWERUPS';
+			AIButton.textContent = 'ENABLE AI';
 
-			// Reset paddle and ball speed to 2
 			updateBallSpeed(2);
 			updatePaddleSpeed(2);
-
-			// Update sliders to reflect the default values
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
 		}
@@ -582,12 +515,10 @@ document.addEventListener('game_event', async()=>{
 			powerUp.y += powerUp.velocityY;
 
 			// collision check
-			if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth) {
+			if (powerUp.x <= 0 || powerUp.x + powerUp.width >= boardWidth)
 				powerUp.velocityX *= -1;
-			}
-			if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight) {
+			if (powerUp.y <= 0 || powerUp.y + powerUp.height >= boardHeight)
 				powerUp.velocityY *= -1;
-			}
 		}
 
 		function checkPowerUpCollisions() {
@@ -611,25 +542,23 @@ document.addEventListener('game_event', async()=>{
 		let prevTargetY = boardHeight / 2;
 
 		function updateOpponentPosition() {
+			if (!AIEnabled)
+				return;
+
 			const currentTime = Date.now();
 		
 			if (!OneSecElapsed(currentTime)) {
 				moveTowardsTargetY(prevTargetY);
 				return;
 			}
-			console.log("opponent: update");
-		
+
+			console.log("AI: reading gamestate");
 			lastUpdateTime = currentTime;
-		
-			// drawPredictedTrajectory();
-			// drawHighlightedPositions();
 		
 			const ballPredictedY = predictBallYAtX(475);
 			const pwrPredictedY = predictPowerupYAtX(475);
 			const ballPredictedTime = predictBallImpactTime();
-			// console.log("ball: ", ballPredictedTime);
 			const pwrPredictedTime = predictPowerupImpactTime();
-			// console.log("pwrUp: ", pwrPredictedTime);
 			const playerDistanceFromTop = player.y;
 			const playerDistanceFromBottom = boardHeight - (player.y + player.height);
 
@@ -639,15 +568,10 @@ document.addEventListener('game_event', async()=>{
 			if (hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY)) {
 				targetY = pwrPredictedY;
 				isPowerup = true;
-				// console.log("opponent: going for powerUp at Y=", targetY);
-			} else {
+			} else
 				targetY = ballPredictedY;
-				// console.log("opponent: going for ball at Y =", targetY);
-			}
 		
-			prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;
-			// console.log("opponent: moving to Y=", prevTargetY);
-		
+			prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;		
 			moveTowardsTargetY(prevTargetY);
 		}
 
@@ -662,13 +586,11 @@ document.addEventListener('game_event', async()=>{
 				predictedY += velocityY;
 		
 				// top and bottom walls collision check
-				if (predictedY - ball.height / 2 <= 0 || predictedY + ball.height / 2 >= boardHeight) {
+				if (predictedY - ball.height / 2 <= 0 || predictedY + ball.height / 2 >= boardHeight)
 					velocityY *= -1;
-				}
 		
-				if (predictedX <= 25) {
+				if (predictedX <= 25)
 					break;
-				}
 			}
 		
 			return predictedY;
@@ -684,9 +606,8 @@ document.addEventListener('game_event', async()=>{
 				predictedX += velocityX;
 				timeElapsed += 1;
 		
-				if (predictedX <= 25) {
+				if (predictedX <= 25)
 					velocityX *= -1;
-				}
 				// console.log(timeElapsed);
 			}
 		
@@ -707,13 +628,11 @@ document.addEventListener('game_event', async()=>{
 				predictedY += velocityY;
 		
 				// top and bottom walls collision check
-				if (predictedY - powerUp.height / 2 <= 0 || predictedY + powerUp.height / 2 >= boardHeight) {
+				if (predictedY - powerUp.height / 2 <= 0 || predictedY + powerUp.height / 2 >= boardHeight)
 					velocityY *= -1;
-				}
 		
-				if (predictedX <= 0) {
+				if (predictedX <= 0)
 					velocityX *= -1;
-				}
 			}
 		
 			return predictedY
@@ -732,9 +651,8 @@ document.addEventListener('game_event', async()=>{
 				predictedX += velocityX;
 				timeElapsed += 1;
 		
-				if (predictedX <= 0) {
+				if (predictedX <= 0)
 					velocityX *= -1;
-				}
 			}
 
 			return timeElapsed;
@@ -745,15 +663,10 @@ document.addEventListener('game_event', async()=>{
 				return false;
 
 			const availableTime = ballPredictedTime - pwrPredictedTime;
-
-			const distanceToPowerup = Math.abs(opponent.y - pwrPredictedY);
-			const timeToPowerup = distanceToPowerup / opponent.speed;
-		
+			const distanceToPowerup = Math.abs(opponent.y - pwrPredictedY);		
 			const distanceToBall = Math.abs(pwrPredictedY - ballPredictedY);
 			const timeToBallfromPowerup = distanceToBall / opponent.speed;	
 			
-			// console.log('availableTime:', availableTime, 'timeToPowerup:', timeToPowerup, 'timeToBallfromPowerup:', timeToBallfromPowerup);
-
 			return (timeToBallfromPowerup <= availableTime);
 		}
 
@@ -795,20 +708,18 @@ document.addEventListener('game_event', async()=>{
 			const playerDistanceFromEdge = Math.min(playerDistanceFromTop, playerDistanceFromBottom) / (boardHeight / 2);
 			let targetY;
 		
-			if (isPowerup) {
+			if (isPowerup)
 				targetY = predictedY;
-			} else {
+			else {
 				if (ball.velocityX > 0) { // ball was last hit by the player
 					let offset = (1 - playerDistanceFromEdge) * 0.5 * opponent.height;
 		
-					if (playerDistanceFromTop < playerDistanceFromBottom) {
+					if (playerDistanceFromTop < playerDistanceFromBottom)
 						targetY = predictedY - offset; // aim for bottom
-					} else {
+					else
 						targetY = predictedY + offset; // aim for top
-					}
-				} else {
+				} else
 					targetY = boardHeight / 2;
-				}
 			}
 		
 			return targetY;
