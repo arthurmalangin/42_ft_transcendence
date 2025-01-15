@@ -30,13 +30,25 @@
 				<span>&gt; LOG OUT</span>
 			</div>
 		</nav>
+
 		<canvas id="board"></canvas>
+
 		<nav class="nav right-nav">
 			<div id="btn_pause" class="nav-item">
-				<span>&gt; PAUSE</span>
+				<span>&gt; PAUSE (SPACE)</span>
 			</div>
 			<div id="btn_settings_pong" class="nav-item">
-				<span>&gt; SETTINGS</span>
+				<span>&gt; SETTINGS (ESC)</span>
+			</div>
+			<div class="game-info">
+				<h2>CONTROLS</h2>
+				<p>PLAYER: W/S</p>
+				<p>GUEST: UP/DOWN</p>
+			</div>
+			<div class="game-info">
+				<h2>GAMESTATS</h2>
+				<p>PLAYER: <span id="player1Score">0</span></p>
+				<p>GUEST: <span id="player2Score">0</span></p>
 			</div>
 		</nav>
 	</main>

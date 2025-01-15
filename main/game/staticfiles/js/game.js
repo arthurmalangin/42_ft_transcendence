@@ -261,7 +261,7 @@ document.addEventListener('game_event', async()=>{
 			moveBall();
 			movePowerUps();
 			draw();
-			drawScoreboard();
+			// drawScoreboard();
 			updateOpponentPosition();
 			updatePaddlePositions();
 			checkPowerUpCollisions();
@@ -281,8 +281,10 @@ document.addEventListener('game_event', async()=>{
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
 			if (playerLost) {
 				opponentScore++;
+				document.getElementById('player2Score').textContent = opponentScore;
 			} else {
 				playerScore++;
+				document.getElementById('player1Score').textContent = playerScore;
 			}
 		
 			ball.x = boardWidth / 2 - ball.width / 2;
@@ -330,7 +332,7 @@ document.addEventListener('game_event', async()=>{
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
-				gameResultMessage.textContent = playerScore === 7 ? 'YOU WON! CONGRATULATIONS!' : 'YOU LOST! BETTER LUCK NEXT TIME!';
+				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
 				gameResultOverlay.classList.add('active');
 			}
 			
@@ -372,12 +374,12 @@ document.addEventListener('game_event', async()=>{
 			}
 		}
 
-		function drawScoreboard() {
-			context.font = "16px monospace";
-			context.fillStyle = "#00ff00";
-			context.fillText(`PLAYER: ${playerScore}`, 20, 20);
-			context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 140, 20);
-		}
+		// function drawScoreboard() {
+		// 	context.font = "16px monospace";
+		// 	context.fillStyle = "#00ff00";
+		// 	context.fillText(`PLAYER: ${playerScore}`, 20, 20);
+		// 	context.fillText(`OPPONENT: ${opponentScore}`, boardWidth - 140, 20);
+		// }
 		
 		// function drawHighlightedPositions() {
 		// 	// player's position

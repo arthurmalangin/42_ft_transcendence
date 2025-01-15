@@ -108,6 +108,10 @@ body {
     border-right: 2px solid var(--terminal-green);
 }
 
+.right-nav .game-info {
+	margin-top: 4rem;
+}
+
 /* Buttons */
 .form-group .btn {
 	background: transparent;
