@@ -42,7 +42,6 @@ def update_password(request):
     else:
         return JsonResponse({"error": "Invalid request method."}, status=405)
 
-
 def update_username(request):
     if request.user.is_authenticated and request.method == 'POST':
         try:
@@ -285,3 +284,28 @@ def getRequestFriendsList(request):
                 return JsonResponse({"error": "Can't find your profile"}, status=400)
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+
+def get_rank(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user)
+            return JsonResponse({'rank': user_profile.rank})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get rank: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def get_win(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user)
+            return JsonResponse({'win': user_profile.win})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get win: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+# def update_lose(request):
+#     if request.user.is_authenticated and request.method == 'POST':
+#         try:
+#             data = json.loads(request.body.decode('utf-8'))

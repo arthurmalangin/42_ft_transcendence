@@ -1,6 +1,8 @@
 document.addEventListener('home_event', async()=>{
 	function homeEvent() {
 		updateWelcomeMessage();
+		updateRank();
+		updateWin();
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -66,6 +68,54 @@ document.addEventListener('home_event', async()=>{
 			}
 		} catch (error) {
 			console.error('Error updating welcome message:', error);
+		}
+	}
+
+	async function updateRank(){
+		try{
+			const response = await fetch('/api/get_rank/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+		
+			if (response.ok) {
+				const data = await response.json();
+				const rankElement = document.getElementById('rank');
+				if (data.rank) {
+					rankElement.textContent = `#${data.rank}`;
+				} else {
+					rankElement.textContent = '#999';
+				}
+			}
+		} catch (error) {
+			console.error('Error updating rank:', error);
+		}
+	}
+
+	async function updateWin(){
+		try{
+			const response = await fetch('/api/get_win/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+		
+			if (response.ok) {
+				const data = await response.json();
+				const rankElement = document.getElementById('win');
+				if (data.win) {
+					rankElement.textContent = `${data.win}`;
+				} else {
+					rankElement.textContent = '0';
+				}
+			}
+		} catch (error) {
+			console.error('Error updating rank:', error);
 		}
 	}
 
