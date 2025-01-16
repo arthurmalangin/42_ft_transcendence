@@ -30,13 +30,25 @@
 				<span>&gt; LOG OUT</span>
 			</div>
 		</nav>
+
 		<canvas id="board"></canvas>
+
 		<nav class="nav right-nav">
 			<div id="btn_pause" class="nav-item">
-				<span>&gt; PAUSE</span>
+				<span>&gt; PAUSE (SPACE)</span>
 			</div>
 			<div id="btn_settings_pong" class="nav-item">
-				<span>&gt; SETTINGS</span>
+				<span>&gt; SETTINGS (ESC)</span>
+			</div>
+			<div class="game-info">
+				<h3>CONTROLS</h3>
+				<p>PLAYER: W/S</p>
+				<p>GUEST: UP/DOWN</p>
+			</div>
+			<div class="game-info">
+				<h3>GAMESTATS</h3>
+				<p>PLAYER: <span id="player1Score">0</span></p>
+				<p>GUEST: <span id="player2Score">0</span></p>
 			</div>
 		</nav>
 	</main>
@@ -58,11 +70,10 @@
 			</div>
 			<div class="form-group">
 				<button id="enablePowerupsButton" class="btn">ENABLE POWERUPS</button>
+				<button id="enableAIButton" class="btn">ENABLE AI</button>
 			</div>
 			<div class="form-group">
 				<button id="resetDefaultSettingsButton" class="btn">RESET DEFAULT</button>
-			</div>
-			<div class="form-group">
 				<button id="btnQuitSettings" class="btn">QUIT</button>
 			</div>
 		</div>

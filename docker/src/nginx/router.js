@@ -158,6 +158,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("router.js Log ! with path : |" + window.location.pathname + "|");
     const path = window.location.pathname;
     await loadPage(path);
+
+	window.addEventListener('popstate', async (event) => {
+        const newPath = window.location.pathname;
+        console.log("popstate event load page: ", newPath);
+        await loadPage(newPath);
+    });
     // console.log("" + path);
 });
 
