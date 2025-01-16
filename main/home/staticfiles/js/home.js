@@ -2,7 +2,8 @@ document.addEventListener('home_event', async()=>{
 	function homeEvent() {
 		updateWelcomeMessage();
 		updateRank();
-		updateWin();
+		updateWinRate();
+		updateMatches()
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -95,9 +96,9 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
-	async function updateWin(){
+	async function updateWinRate(){
 		try{
-			const response = await fetch('/api/get_win/', {
+			const response = await fetch('/api/get_win_rate/', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -109,9 +110,33 @@ document.addEventListener('home_event', async()=>{
 				const data = await response.json();
 				const rankElement = document.getElementById('win');
 				if (data.win) {
-					rankElement.textContent = `${data.win}`;
+					rankElement.textContent = `${data.win_rate}`;
 				} else {
-					rankElement.textContent = '0';
+					rankElement.textContent = 'N/A';
+				}
+			}
+		} catch (error) {
+			console.error('Error updating rank:', error);
+		}
+	}
+
+	async function updateMatches(){
+		try{
+			const response = await fetch('/api/get_matches/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+		
+			if (response.ok) {
+				const data = await response.json();
+				const rankElement = document.getElementById('matches');
+				if (data.win) {
+					rankElement.textContent = `${data.matches}`;
+				} else {
+					rankElement.textContent = 'N/A';
 				}
 			}
 		} catch (error) {
