@@ -185,7 +185,7 @@ document.addEventListener('game_event', async()=>{
 				resetGame(true, false);
 			});
 
-			addEventListenerWithTracking(document.getElementById('BtnPlay'), 'click', function() {
+			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
                 document.getElementById('settingsOverlay').classList.remove('active');
                 pauseGame();
                 resetGame(true, false);
@@ -197,10 +197,10 @@ document.addEventListener('game_event', async()=>{
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
 						event.target.id !== 'BtnEnablePowerups' &&
-						event.target.id !== 'BtnResetDefaultSettings' &&
+						event.target.id !== 'btnResetDefaultSettings' &&
 						event.target.id !== 'BtnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
-						event.target.id !== 'BtnPlay') {
+						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
@@ -239,8 +239,8 @@ document.addEventListener('game_event', async()=>{
 				BtnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
 			});
 
-			const BtnResetDefaultSettings = document.getElementById('BtnResetDefaultSettings');
-			addEventListenerWithTracking(BtnResetDefaultSettings, 'click', function() {
+			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
+			addEventListenerWithTracking(btnResetDefaultSettings, 'click', function() {
 				resetToDefaultSettings();
 			});
 
@@ -428,12 +428,10 @@ document.addEventListener('game_event', async()=>{
 			}
 
 			// check for point
-			if (ball.x <= 0) {
+			if (ball.x <= 0)
 				resetGame(true, true);
-			}
-			if (ball.x + ball.width >= boardWidth) {
+			if (ball.x + ball.width >= boardWidth)
 				resetGame(false, true);
-			}
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
