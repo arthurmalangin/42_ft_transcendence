@@ -54,6 +54,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 		let paddleSpeed = 2;
 
 		let lives = 4;
+		let level = 1;
 
 		let player = {
 			width: paddleWidth,
@@ -77,6 +78,18 @@ document.addEventListener('brickbreaker_event', async()=>{
 			x: boardWidth / 2 - ballWidth / 2,
 			y: 490 - ballHeight - paddleHeight
 		};
+
+		let bricks = [];
+		// const brickRows = 12;
+		// const brickCols = 10;
+		const brickWidth = 50;
+		const brickHeight = 20;
+		const brickTypes = [
+			{ type: 1, color: "rgba(0, 255, 0, 0.3)", hitPoints: 1 },
+			{ type: 2, color: "rgba(0, 255, 0, 0.6)", hitPoints: 2 },
+			{ type: 3, color: "rgba(0, 255, 0, 1)", hitPoints: 3 },
+			{ type: 4, color: "black", hitPoints: Infinity }
+		];
 
 		let totalTime = 0;
 		let cooldownTime = 0;
@@ -227,6 +240,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 			moveball();
 			draw();
+			drawBricks();
 			updatePlayerPosition();
 
 			totalTime += FRAME_DURATION / 1000;
@@ -241,13 +255,18 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context = board.getContext('2d');
 			board.width = boardWidth;
 			board.height = boardHeight;
+
+			loadCSVLevel('https://127.0.0.1/static/level3.csv', generateBricksFromCSV);
 		}
 
 		function resetGame() {
 			cooldownTime = 0;
 			lives--;
 			document.getElementById('lives').textContent = lives;
+			document.getElementById('level').textContent = level;
+			console.log(ballSpeed);
 			ball.speed = ballSpeed;
+			player.x = boardWidth / 2 - paddleWidth / 2;
 			ball.x = player.x + player.width / 2 - ball.width / 2;
 			ball.y = 490 - ball.height - paddleHeight;
 		}
@@ -273,6 +292,49 @@ document.addEventListener('brickbreaker_event', async()=>{
 			if (fullCleanup) 
 				return;
 		}
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	/////////////                    BRICK GENERATION                     ////////////
+	//////////////////////////////////////////////////////////////////////////////////
+		
+		function loadCSVLevel(levelFilePath, callback) {
+			fetch(levelFilePath)
+				.then(response => response.text())
+				.then(data => {
+					const rows = data.trim().split('\n');
+					const levelData = rows.map(row => row.split(',').map(Number));
+					callback(levelData);
+				})
+				.catch(error => console.error('Error loading level:', error));
+		}
+
+		function generateBricksFromCSV(levelData) {
+			bricks = [];
+		
+			for (let r = 0; r < levelData.length; r++) {
+				bricks[r] = [];
+				for (let c = 0; c < levelData[r].length; c++) {
+					const brickTypeIndex = levelData[r][c];
+					if (brickTypeIndex > 0) {
+						const brickType = brickTypes[brickTypeIndex - 1];
+						const brickX = c * (brickWidth);
+						const brickY = r * (brickHeight);
+						bricks[r][c] = {
+							x: brickX,
+							y: brickY,
+							width: brickWidth,
+							height: brickHeight,
+							type: brickType.type,
+							color: brickType.color,
+							// hitPoints: brickType.hitPoints,
+							// isBroken: false
+						};
+					} else {
+						bricks[r][c] = null;
+					}
+				}
+			}
+		}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                       DRAW FUNCS                        ////////////
@@ -286,6 +348,22 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context.beginPath();
 			context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 			context.fill();
+		}
+
+		function drawBricks() {
+			for (let r = 0; r < bricks.length; r++) {
+				for (let c = 0; c < bricks[r].length; c++) {
+					const brick = bricks[r][c];
+					if (brick && !brick.isBroken) {
+						context.fillStyle = brick.color;
+						context.fillRect(brick.x, brick.y, brick.width, brick.height);
+
+						context.strokeStyle = '--terminal-bg';
+						context.lineWidth = 1;
+						context.strokeRect(brick.x, brick.y, brick.width, brick.height);
+					}
+				}
+			}
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -327,6 +405,28 @@ document.addEventListener('brickbreaker_event', async()=>{
 				ball.velocityY = -ball.speed * Math.cos(bounceAngle);
 			}
 
+			for (let r = 0; r < bricks.length; r++) {
+				for (let c = 0; c < bricks[r].length; c++) {
+					const brick = bricks[r][c];
+					if (brick && !brick.isBroken) {
+						if (ball.x < brick.x + brick.width &&
+							ball.x + ball.width > brick.x &&
+							ball.y < brick.y + brick.height &&
+							ball.y + ball.height > brick.y) {
+							ball.velocityY *= -1;
+							if (brick.type === 1)
+								brick.isBroken = true;
+							else if (brick.type != 4) {
+								brick.type -= 1;
+								const newBrickType = brickTypes[brick.type - 1];
+								brick.color = newBrickType.color;
+								brick.hitPoints = newBrickType.hitPoints;
+							}
+						}
+					}
+				}
+			}
+
 			if (ball.y + ball.height >= boardHeight)
 				resetGame();
 		}
@@ -335,9 +435,11 @@ document.addEventListener('brickbreaker_event', async()=>{
 	/////////////                    SETTINGS FUNCS                       ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
+		// TODO ball speed is not applied. Check resetGame() function
 		function updateBallSpeed(speed) {
 			ballSpeed = parseFloat(speed);
 			ball.speed = ballSpeed;
+			console.log(ballSpeed);
 		}
 
 		function updatePaddleSpeed(speed) {
