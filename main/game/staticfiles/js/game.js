@@ -173,27 +173,34 @@ document.addEventListener('game_event', async()=>{
 				}
 			});
 
-			addEventListenerWithTracking(document.getElementById('btn_settings_pong'), 'click', function() {
+			addEventListenerWithTracking(document.getElementById('btnSettingsPong'), 'click', function() {
 				if (!isPaused)
 					pauseGame();
 				document.getElementById('settingsOverlay').classList.add('active');
 			});
 
-			addEventListenerWithTracking(document.getElementById('btn_close_settings_pong'), 'click', function() {
+			addEventListenerWithTracking(document.getElementById('btnCloseSettingsPong'), 'click', function() {
 				document.getElementById('settingsOverlay').classList.remove('active');
 				pauseGame();
 				resetGame(true, false);
 			});
 
+			addEventListenerWithTracking(document.getElementById('playButton'), 'click', function() {
+                document.getElementById('settingsOverlay').classList.remove('active');
+                pauseGame();
+                resetGame(true, false);
+            });
+
 			function stopEventPropagationSettings(event) {
 				const overlay = document.getElementById('settingsOverlay');
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
-						event.target.id !== 'btn_close_settings_pong' &&
+						event.target.id !== 'btnCloseSettingsPong' &&
 						event.target.id !== 'enablePowerupsButton' &&
 						event.target.id !== 'resetDefaultSettingsButton' &&
 						event.target.id !== 'enableAIButton' &&
-						event.target.id !== 'btnQuitSettings') {
+						event.target.id !== 'btnQuitSettings' &&
+						event.target.id !== 'playButton') {
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
