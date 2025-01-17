@@ -144,13 +144,17 @@ body {
 	border: 1px solid var(--terminal-green);
 	color: var(--terminal-green);
 	padding: 0.5rem 1rem;
-	min-width: 40%;
+	min-width: 45%;
 	cursor: pointer;
 	transition: background-color 0.2s;
 }
 
 .btn:hover {
 	background-color: rgba(0, 255, 0, 0.1);
+}
+
+.form-group #playButton {
+	min-width: 100%;
 }
 
 /* Pong game */
