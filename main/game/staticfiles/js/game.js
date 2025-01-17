@@ -185,7 +185,7 @@ document.addEventListener('game_event', async()=>{
 				resetGame(true, false);
 			});
 
-			addEventListenerWithTracking(document.getElementById('playButton'), 'click', function() {
+			addEventListenerWithTracking(document.getElementById('BtnPlay'), 'click', function() {
                 document.getElementById('settingsOverlay').classList.remove('active');
                 pauseGame();
                 resetGame(true, false);
@@ -196,11 +196,11 @@ document.addEventListener('game_event', async()=>{
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
-						event.target.id !== 'enablePowerupsButton' &&
-						event.target.id !== 'resetDefaultSettingsButton' &&
-						event.target.id !== 'enableAIButton' &&
+						event.target.id !== 'BtnEnablePowerups' &&
+						event.target.id !== 'BtnResetDefaultSettings' &&
+						event.target.id !== 'BtnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
-						event.target.id !== 'playButton') {
+						event.target.id !== 'BtnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
@@ -228,19 +228,19 @@ document.addEventListener('game_event', async()=>{
 				updatePaddleSpeed(newSpeed);
 			});
 			
-			const enablePowerupsButton = document.getElementById('enablePowerupsButton');
-			addEventListenerWithTracking(enablePowerupsButton, 'click', function() {
+			const BtnEnablePowerups = document.getElementById('BtnEnablePowerups');
+			addEventListenerWithTracking(BtnEnablePowerups, 'click', function() {
 				togglePowerups();
 			});
 			
-			const enableAIButton = document.getElementById('enableAIButton');
-			addEventListenerWithTracking(enableAIButton, 'click', function() {
+			const BtnEnableAI = document.getElementById('BtnEnableAI');
+			addEventListenerWithTracking(BtnEnableAI, 'click', function() {
 				AIEnabled = !AIEnabled;
-				enableAIButton.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+				BtnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
 			});
 
-			const resetDefaultSettingsButton = document.getElementById('resetDefaultSettingsButton');
-			addEventListenerWithTracking(resetDefaultSettingsButton, 'click', function() {
+			const BtnResetDefaultSettings = document.getElementById('BtnResetDefaultSettings');
+			addEventListenerWithTracking(BtnResetDefaultSettings, 'click', function() {
 				resetToDefaultSettings();
 			});
 
@@ -453,8 +453,8 @@ document.addEventListener('game_event', async()=>{
 		function resetToDefaultSettings() {
 			powerUpsEnabled = false;
 			AIEnabled = false;
-			const powerUpButton = document.getElementById('enablePowerupsButton');
-			const AIButton = document.getElementById('enableAIButton');
+			const powerUpButton = document.getElementById('BtnEnablePowerups');
+			const AIButton = document.getElementById('BtnEnableAI');
 			powerUpButton.textContent = 'ENABLE POWERUPS';
 			AIButton.textContent = 'ENABLE AI';
 
@@ -470,7 +470,7 @@ document.addEventListener('game_event', async()=>{
 
 		function togglePowerups() {
 			powerUpsEnabled = !powerUpsEnabled;
-			const button = document.getElementById('enablePowerupsButton');
+			const button = document.getElementById('BtnEnablePowerups');
 			button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
 
 			if (!powerUpsEnabled) {
