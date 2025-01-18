@@ -46,7 +46,6 @@ INSTALLED_APPS = [
 	"leaderboard",
 	"settings",
 	"API",
-	"pong",
 	"game",
     "brickbreaker"
 ]

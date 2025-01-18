@@ -14,7 +14,7 @@ document.addEventListener('home_event', async()=>{
 
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/');
+			history.pushState(null, '', '/settings');
 			loadPage('/settings');
 		});
 

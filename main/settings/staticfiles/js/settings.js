@@ -91,6 +91,11 @@ document.addEventListener('settings_event', async()=>{
 				alert("Select file first !");
 			}
 		});
+
+		const selectLang = document.getElementById('languageSelect');
+		selectLang.addEventListener('change', function () {
+			alert(selectLang.value);
+		});
 		
 	}
 

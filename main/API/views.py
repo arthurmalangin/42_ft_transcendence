@@ -285,3 +285,30 @@ def getRequestFriendsList(request):
                 return JsonResponse({"error": "Can't find your profile"}, status=400)
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+
+def getUserLang(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                return JsonResponse({"lang": user_profile.lang})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+
+def setUserLang(request):
+    if request.user.is_authenticated:
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            new_lang = data.get('lang', None)
+
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                user_profile.lang = new_lang
+                user_profile.save()
+                return JsonResponse({"success": user_profile.lang})
+            else:
+                return JsonResponse({"error": "Can't find your profile"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
