@@ -433,8 +433,22 @@ document.addEventListener('brickbreaker_event', async()=>{
 				ball.y < brick.y + brick.height &&
 				ball.y + ball.height > brick.y) {
 		
-				ball.velocityY *= -1;
-				return (true);
+				console.log('collision');
+		
+				const collisionFromLeft = ball.x + ball.width - brick.x;
+				const collisionFromRight = brick.x + brick.width - ball.x;
+				const collisionFromTop = ball.y + ball.height - brick.y;
+				const collisionFromBottom = brick.y + brick.height - ball.y;
+		
+				const minCollision = Math.min(collisionFromLeft, collisionFromRight, collisionFromTop, collisionFromBottom);
+		
+				if (minCollision === collisionFromLeft || minCollision === collisionFromRight) {
+					ball.velocityX *= -1;
+				} else {
+					ball.velocityY *= -1;
+				}
+		
+				return true;
 			}
 			return false;
 		}
@@ -447,6 +461,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 		function updateBallSpeed(speed) {
 			ballSpeed = parseFloat(speed);
 			ball.speed = ballSpeed;
+			ball.velocityY = -ball.speed;
 			console.log(ballSpeed);
 		}
 
