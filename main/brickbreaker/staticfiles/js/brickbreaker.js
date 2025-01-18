@@ -82,8 +82,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 		let bricks = [];
 		// const brickRows = 12;
 		// const brickCols = 10;
-		const brickWidth = 50;
-		const brickHeight = 20;
+		const brickWidth = 48;
+		const brickGap = 2;
+		const brickHeight = 18;
 		const brickTypes = [
 			{ type: 1, color: "rgba(0, 255, 0, 0.3)", hitPoints: 1 },
 			{ type: 2, color: "rgba(0, 255, 0, 0.6)", hitPoints: 2 },
@@ -256,7 +257,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			board.width = boardWidth;
 			board.height = boardHeight;
 
-			loadCSVLevel('https://127.0.0.1/static/level3.csv', generateBricksFromCSV);
+			loadCSVLevel('https://127.0.0.1/static/level1.csv', generateBricksFromCSV);
 		}
 
 		function resetGame() {
@@ -317,8 +318,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 					const brickTypeIndex = levelData[r][c];
 					if (brickTypeIndex > 0) {
 						const brickType = brickTypes[brickTypeIndex - 1];
-						const brickX = c * (brickWidth);
-						const brickY = r * (brickHeight);
+						const brickX = c * (brickWidth + brickGap);
+						const brickY = r * (brickHeight + brickGap);
 						bricks[r][c] = {
 							x: brickX,
 							y: brickY,
@@ -327,6 +328,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 							type: brickType.type,
 							color: brickType.color,
 							hitPoints: brickType.hitPoints,
+							needsRedraw: true,
 							isBroken: false
 						};
 					} else {
@@ -354,13 +356,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 			for (let r = 0; r < bricks.length; r++) {
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
-					if (brick && !brick.isBroken) {
+					if (brick && !brick.isBroken && brick.needsRedraw) {
 						context.fillStyle = brick.color;
 						context.fillRect(brick.x, brick.y, brick.width, brick.height);
-
-						context.strokeStyle = '--terminal-bg';
-						context.lineWidth = 1;
-						context.strokeRect(brick.x, brick.y, brick.width, brick.height);
 					}
 				}
 			}
@@ -447,6 +445,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 				} else {
 					ball.velocityY *= -1;
 				}
+
+				brick.needsRedraw = true;
 		
 				return true;
 			}
