@@ -421,6 +421,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 								brick.color = newBrickType.color;
 								brick.hitPoints = newBrickType.hitPoints;
 							}
+							return;
 						}
 					}
 				}
