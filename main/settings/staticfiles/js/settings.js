@@ -93,13 +93,61 @@ document.addEventListener('settings_event', async()=>{
 		});
 
 		const selectLang = document.getElementById('languageSelect');
-		selectLang.addEventListener('change', function () {
-			alert(selectLang.value);
+		selectLang.addEventListener('change', async () => {
+			await setLangPlayer(selectLang.value);
 		});
 		
 	}
 
 	settingsRenderEvent();
+	updateLangPlayer();
+	
+	async function setLangPlayer(new_lang) {
+		try {
+			const response = await fetch('/api/setUserLang/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+				body: JSON.stringify({
+					lang: new_lang
+				})
+			});
+			
+			const data = await response.json();
+			if (response.ok) {
+				if (data.lang) {
+					console.log('New lang set ! : ' + data.lang);
+				}
+			} else {
+				console.log(data.error)
+			}
+		} catch (error) {
+			console.error('Error setLangPlayer:', error);
+		}
+	}
+
+	async function updateLangPlayer() {
+		try {
+			const response = await fetch('/api/getUserLang/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				if (data.lang) {
+					document.getElementById('languageSelect').value = data.lang;
+				}
+			}
+		} catch (error) {
+			console.error('Error updateLangPlayer:', error);
+		}
+	}
 
 	async function uploadAvatar(base64Image) {
 		try {

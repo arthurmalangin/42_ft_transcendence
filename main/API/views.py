@@ -300,6 +300,8 @@ def getUserLang(request):
 def setUserLang(request):
     if request.user.is_authenticated:
         try:
+            if not request.body:
+                return JsonResponse({"error": "Request body is empty"}, status=400)
             data = json.loads(request.body.decode('utf-8'))
             new_lang = data.get('lang', None)
 
