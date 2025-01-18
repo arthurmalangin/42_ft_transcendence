@@ -362,8 +362,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
 					if (brick && !brick.isBroken && brick.needsRedraw) {
+						context.clearRect(brick.x, brick.y, brick.width, brick.height);
 						context.fillStyle = brick.color;
 						context.fillRect(brick.x, brick.y, brick.width, brick.height);
+						brick.needsRedraw = false;
 					}
 				}
 			}
