@@ -326,8 +326,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 							height: brickHeight,
 							type: brickType.type,
 							color: brickType.color,
-							// hitPoints: brickType.hitPoints,
-							// isBroken: false
+							hitPoints: brickType.hitPoints,
+							isBroken: false
 						};
 					} else {
 						bricks[r][c] = null;
@@ -409,11 +409,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
 					if (brick && !brick.isBroken) {
-						if (ball.x < brick.x + brick.width &&
-							ball.x + ball.width > brick.x &&
-							ball.y < brick.y + brick.height &&
-							ball.y + ball.height > brick.y) {
-							ball.velocityY *= -1;
+						if (handleBallCollisionWithBrick(brick)) {
 							if (brick.type === 1)
 								brick.isBroken = true;
 							else if (brick.type != 4) {
@@ -431,11 +427,23 @@ document.addEventListener('brickbreaker_event', async()=>{
 				resetGame();
 		}
 
+		function handleBallCollisionWithBrick(brick) {
+			if (ball.x < brick.x + brick.width &&
+				ball.x + ball.width > brick.x &&
+				ball.y < brick.y + brick.height &&
+				ball.y + ball.height > brick.y) {
+		
+				ball.velocityY *= -1;
+				return (true);
+			}
+			return false;
+		}
+
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                    SETTINGS FUNCS                       ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-		// TODO ball speed is not applied. Check resetGame() function
+		// TODO ball speed is not applied. Check resetGame() function?
 		function updateBallSpeed(speed) {
 			ballSpeed = parseFloat(speed);
 			ball.speed = ballSpeed;
