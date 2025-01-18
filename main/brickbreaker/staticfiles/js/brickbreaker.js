@@ -118,6 +118,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				target.removeEventListener(type, listener);
 			});
 			eventListeners = [];
+			document.removeEventListener('game_event', async () => {});
 		}
 
 		function addAllEventListeners() {
@@ -187,7 +188,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
+						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
+						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
@@ -245,7 +248,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 			updatePlayerPosition();
 
 			totalTime += FRAME_DURATION / 1000;
-			document.getElementById('time').textContent = totalTime.toFixed(1);
+			const minutes = Math.floor(totalTime / 60);
+			const seconds = (totalTime % 60).toFixed(1);
+			document.getElementById('time').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 			
 			if (cooldownTime <= 3)
 				cooldownTime += FRAME_DURATION / 1000;

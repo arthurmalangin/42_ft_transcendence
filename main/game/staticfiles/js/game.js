@@ -196,9 +196,9 @@ document.addEventListener('game_event', async()=>{
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
-						event.target.id !== 'BtnEnablePowerups' &&
+						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
-						event.target.id !== 'BtnEnableAI' &&
+						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
@@ -228,15 +228,15 @@ document.addEventListener('game_event', async()=>{
 				updatePaddleSpeed(newSpeed);
 			});
 			
-			const BtnEnablePowerups = document.getElementById('BtnEnablePowerups');
-			addEventListenerWithTracking(BtnEnablePowerups, 'click', function() {
+			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
 				togglePowerups();
 			});
 			
-			const BtnEnableAI = document.getElementById('BtnEnableAI');
-			addEventListenerWithTracking(BtnEnableAI, 'click', function() {
+			const btnEnableAI = document.getElementById('btnEnableAI');
+			addEventListenerWithTracking(btnEnableAI, 'click', function() {
 				AIEnabled = !AIEnabled;
-				BtnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+				btnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
 			});
 
 			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
@@ -451,8 +451,8 @@ document.addEventListener('game_event', async()=>{
 		function resetToDefaultSettings() {
 			powerUpsEnabled = false;
 			AIEnabled = false;
-			const powerUpButton = document.getElementById('BtnEnablePowerups');
-			const AIButton = document.getElementById('BtnEnableAI');
+			const powerUpButton = document.getElementById('btnEnablePowerups');
+			const AIButton = document.getElementById('btnEnableAI');
 			powerUpButton.textContent = 'ENABLE POWERUPS';
 			AIButton.textContent = 'ENABLE AI';
 
@@ -468,7 +468,7 @@ document.addEventListener('game_event', async()=>{
 
 		function togglePowerups() {
 			powerUpsEnabled = !powerUpsEnabled;
-			const button = document.getElementById('BtnEnablePowerups');
+			const button = document.getElementById('btnEnablePowerups');
 			button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
 
 			if (!powerUpsEnabled) {
