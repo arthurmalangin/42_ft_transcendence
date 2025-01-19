@@ -319,7 +319,8 @@ def get_matches(request):
     if request.user.is_authenticated:
         try:
             user_profile = PlayerData.objects.get(username=request.user)
-            return JsonResponse({'matches': user_profile.lose + user_profile.win})
+            totalMatch = user_profile.lose + user_profile.win
+            return JsonResponse({'matches': totalMatch})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get matches: {str(e)}'}, status=400)
@@ -329,7 +330,7 @@ def get_win_rate(request):
     if request.user.is_authenticated:
         try:
             user_profile = PlayerData.objects.get(username=request.user)
-            return JsonResponse({'win_rate': user_profile.win_rate})
+            return JsonResponse({'winRate': user_profile.win_rate})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get win_rate: {str(e)}'}, status=400)
@@ -341,6 +342,7 @@ def add_win(request):
             user_profile = PlayerData.objects.get(username=request.user.username)
             user_profile.win += 1
             user_profile.save()
+            return JsonResponse({'info': user_profile.win})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to add win: {str(e)}'}, status=400)
@@ -352,21 +354,28 @@ def add_lose(request):
             user_profile = PlayerData.objects.get(username=request.user.username)
             user_profile.lose += 1
             user_profile.save()
+            return JsonResponse({'info': user_profile.lose})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to add lose: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
 def update_win_rate(request):
-    if request.user.is_authenticated and request.method =='POST':
+    if request.user.is_authenticated and request.method == 'POST':
         try:
             user_profile = PlayerData.objects.get(username=request.user.username)
-            if user_profile.win != 0:
-                user_profile.win_rate = user_profile.win / user_profile.lose
+            if user_profile.win != 0 and user_profile.lose != 0:
+                user_profile.win_rate = user_profile.win / (user_profile.lose + user_profile.win)
                 user_profile.save()
+                return JsonResponse({'info': user_profile.win_rate})
+            if user_profile.win != 0 and user_profile.lose == 0:
+                user_profile.win_rate = 1
+                user_profile.save()
+            else:
+                user_profile.win_rate = 0
+                user_profile.save()
+            return JsonResponse({'info': user_profile.win_rate})
         except Exception as e:
-            print("error::::::::::::::" + str(e))
-            return JsonResponse({'error': f'failed to update win_rate: {str(e)}'}, status=400)
-    return JsonResponse({'error': 'User not authenticated'}, status=400)
- 
-            
+            return JsonResponse({"error": f"Failed to update username: {str(e)}"}, status=400)
+    else:
+        return HttpResponse("Invalid request method.", status=405)

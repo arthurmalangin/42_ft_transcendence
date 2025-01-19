@@ -45,6 +45,10 @@ document.addEventListener('leaderboard_event', async()=>{
 
 	leaderboardEvent();
 
+	async function updateKing(){
+		
+	}
+
 	function logout() {
 		fetch('/srclogin/logout/', {
 			method: 'POST',

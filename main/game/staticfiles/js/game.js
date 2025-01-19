@@ -330,10 +330,10 @@ document.addEventListener('game_event', async()=>{
 			
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
-			console.log('je passe ici');
 			if (gameResultOverlay && gameResultMessage) {
 				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
-				upDateData(playerScore);
+				updateScores(playerScore);
+				updateData();
 				gameResultOverlay.classList.add('active');
 			}
 			
@@ -745,32 +745,7 @@ document.addEventListener('game_event', async()=>{
 	/////////////                      UPDATE DATA                        ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// async function updateWinRate(){
-	// 	try{
-	// 		const response = await fetch('/api/get_win_rate/', {
-	// 			method: 'GET',
-	// 			headers: {
-	// 				'Content-Type': 'application/json',
-	// 				'X-CSRFToken': getCSRFToken()
-	// 			}
-	// 		});
-		
-	// 		if (response.ok) {
-	// 			const data = await response.json();
-	// 			const rankElement = document.getElementById('win');
-	// 			if (data.win) {
-	// 				rankElement.textContent = `${data.win_rate}`;
-	// 			} else {
-	// 				rankElement.textContent = 'N/A';
-	// 			}
-	// 		}
-	// 	} catch (error) {
-	// 		console.error('Error updating rank:', error);
-	// 	}
-	// }
-
-	async function upDateData(playerScore){
-		console.log('ici aussi avec ${playerScore}')
+	async function updateScores(playerScore){
 		if(playerScore == 7)
 			try{
 				const response = await fetch('/api/add_win/', {
@@ -802,3 +777,21 @@ document.addEventListener('game_event', async()=>{
 			console.error('Erreur lors de l’appel API :', error);
 		}
 	}
+
+	async function updateData(){
+		try{
+			const response = await fetch('/api/update_win_rate/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
+	}
+		

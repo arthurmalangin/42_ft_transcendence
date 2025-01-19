@@ -2,8 +2,9 @@ document.addEventListener('home_event', async()=>{
 	function homeEvent() {
 		updateWelcomeMessage();
 		updateRank();
-		updateWinRate();
-		updateMatches()
+		getWinRate();
+		updateMatches();
+
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -88,7 +89,7 @@ document.addEventListener('home_event', async()=>{
 				if (data.rank) {
 					rankElement.textContent = `#${data.rank}`;
 				} else {
-					rankElement.textContent = '#999';
+					rankElement.textContent = 'N/A';
 				}
 			}
 		} catch (error) {
@@ -96,7 +97,7 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
-	async function updateWinRate(){
+	async function getWinRate(){
 		try{
 			const response = await fetch('/api/get_win_rate/', {
 				method: 'GET',
@@ -105,12 +106,12 @@ document.addEventListener('home_event', async()=>{
 					'X-CSRFToken': getCSRFToken()
 				}
 			});
-		
+			
 			if (response.ok) {
 				const data = await response.json();
-				const rankElement = document.getElementById('win');
-				if (data.win) {
-					rankElement.textContent = `${data.win_rate}`;
+				const rankElement = document.getElementById('winRate');
+				if (data.winRate) {
+					rankElement.textContent = `${data.winRate}`;
 				} else {
 					rankElement.textContent = 'N/A';
 				}
@@ -132,11 +133,11 @@ document.addEventListener('home_event', async()=>{
 		
 			if (response.ok) {
 				const data = await response.json();
-				const rankElement = document.getElementById('matches');
-				if (data.win) {
-					rankElement.textContent = `${data.matches}`;
+				const matchElement = document.getElementById('match');
+				if (data.matches) {
+					matchElement.textContent = `${data.matches}`;
 				} else {
-					rankElement.textContent = 'N/A';
+					matchElement.textContent = 'N/A';
 				}
 			}
 		} catch (error) {
