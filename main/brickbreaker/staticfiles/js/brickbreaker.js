@@ -80,8 +80,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 		};
 
 		let bricks = [];
-		// const brickRows = 12;
-		// const brickCols = 10;
 		const brickWidth = 48;
 		const brickGap = 2;
 		const brickHeight = 18;
@@ -240,12 +238,14 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function gameLoop() {
-			context.clearRect(0, 0, boardWidth, boardHeight);
+			// context.clearRect(0, 0, boardWidth, boardHeight);
+			context.clearRect(Math.ceil(ball.x), Math.ceil(ball.y), ball.width, ball.height);
+			context.clearRect(player.x, player.y, player.width, player.height);
+			player.x = Math.min(Math.max(player.x, 0), boardWidth - player.width);
 
 			moveball();
-			draw();
-			drawBricks();
 			updatePlayerPosition();
+			draw();
 
 			totalTime += FRAME_DURATION / 1000;
 			const minutes = Math.floor(totalTime / 60);
@@ -352,12 +352,11 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context.fillRect(player.x, player.y, player.width, player.height);
 
 			context.fillStyle = "#00ff00";
+			// context.fillRect(Math.ceil(ball.x), Math.ceil(ball.y), ball.width, ball.height);
 			context.beginPath();
-			context.arc(ball.x + ball.width / 2, ball.y + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
+			context.arc(Math.ceil(ball.x) + ball.width / 2, Math.ceil(ball.y) + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 			context.fill();
-		}
 
-		function drawBricks() {
 			for (let r = 0; r < bricks.length; r++) {
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
@@ -423,6 +422,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 								brick.color = newBrickType.color;
 								brick.hitPoints = newBrickType.hitPoints;
 							}
+							context.clearRect(brick.x, brick.y, brick.width, brick.height);
 							return;
 						}
 					}
