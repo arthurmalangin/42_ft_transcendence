@@ -98,10 +98,10 @@ document.addEventListener('game_event', async()=>{
 		};
 
 		const enlargePaddleImage = new Image();
-		enlargePaddleImage.src = 'https://127.0.0.1/static/enlarge.svg';
+		enlargePaddleImage.src = '/static/enlarge.svg';
 
 		const freezeOpponentImage = new Image();
-		freezeOpponentImage.src = 'https://127.0.0.1/static/freeze.svg';
+		freezeOpponentImage.src = '/static/freeze.svg';
 
 
 		const FRAME_RATE = 60;

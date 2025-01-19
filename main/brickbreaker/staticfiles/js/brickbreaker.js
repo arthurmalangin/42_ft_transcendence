@@ -262,7 +262,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			board.width = boardWidth;
 			board.height = boardHeight;
 
-			loadCSVLevel('https://127.0.0.1/static/level1.csv', generateBricksFromCSV);
+			loadCSVLevel('/static/level2.csv', generateBricksFromCSV);
 		}
 
 		function resetGame() {
@@ -352,7 +352,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context.fillRect(player.x, player.y, player.width, player.height);
 
 			context.fillStyle = "#00ff00";
-			// context.fillRect(Math.ceil(ball.x), Math.ceil(ball.y), ball.width, ball.height);
 			context.beginPath();
 			context.arc(Math.ceil(ball.x) + ball.width / 2, Math.ceil(ball.y) + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 			context.fill();
