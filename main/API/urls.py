@@ -21,4 +21,12 @@ urlpatterns = [
 	path("user_is_42/", views.user_is_42, name="user_is_42"),
 	path("getUserLang/", views.getUserLang, name="getUserLang"),
 	path("setUserLang/", views.setUserLang, name="setUserLang"),
+	path("get_rank/", views.get_rank, name="get_rank"),
+	path("get_win/", views.get_win, name="get_win"),
+	path("get_lose/", views.get_lose, name="get_lose"),
+	path("get_matches/", views.get_matches, name="get_matches"),
+	path("get_win_rate/", views.get_win_rate, name="get_win_rate"),
+	path("add_win/", views.add_win, name="add_win"),
+	path("add_lose/", views.add_lose, name="add_lose"),
+	path("update_win_rate/", views.update_win_rate, name="update_win_rate"),
 ]
