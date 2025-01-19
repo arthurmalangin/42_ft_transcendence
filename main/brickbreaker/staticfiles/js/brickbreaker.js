@@ -90,6 +90,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		let totalTime = 0;
 		let cooldownTime = 0;
+		let lastGameAction = 0;
 
 		let gameOver = false;
 
@@ -218,6 +219,11 @@ document.addEventListener('brickbreaker_event', async()=>{
 				updatePaddleSpeed(newSpeed);
 			});
 
+			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
+				togglePowerups();
+			});
+
 			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
 			addEventListenerWithTracking(btnResetDefaultSettings, 'click', function() {
 				resetToDefaultSettings();
@@ -250,6 +256,14 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const minutes = Math.floor(totalTime / 60);
 			const seconds = (totalTime % 60).toFixed(1);
 			document.getElementById('time').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+			if (totalTime >= 60 && totalTime < 220 && totalTime - lastGameAction >= 10) {
+				moveBricksDown();
+				lastGameAction = totalTime;
+			}
+			else if (totalTime >= 220 && totalTime - lastGameAction >= 30) {
+				spawnPowerUp();
+			}
 			
 			if (cooldownTime <= 3)
 				cooldownTime += FRAME_DURATION / 1000;
@@ -305,9 +319,11 @@ document.addEventListener('brickbreaker_event', async()=>{
 			if (!isPaused)
 				pauseGame();
 
-			if (fullCleanup) 
-				return;
+			if (!fullCleanup)
+				showGameResultOverlay();
+		}
 
+		function showGameResultOverlay() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			const finalScore = document.getElementById('finalScore');
@@ -317,7 +333,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 			if (gameResultOverlay && gameResultMessage && finalScore && brickScore && timeScore && livesScore) {
 				let scoreFromBricks = score;
-				let scoreFromTime = lives === 0 ? 0 : 10000 - Math.floor(totalTime) * 10;
+				let scoreFromTime = lives === 0 ? 0 : Math.max(0, 10000 - Math.floor(totalTime) * 10);
 				let scoreFromLives = lives * 1000;
 				let scoreFromAll = scoreFromBricks + scoreFromTime + scoreFromLives;
 
@@ -387,6 +403,20 @@ document.addEventListener('brickbreaker_event', async()=>{
 			}
 		}
 
+		function moveBricksDown() {
+			context.clearRect(bricks[0][0].x, bricks[0][0].y, boardWidth, boardHeight);
+
+			for (let r = 0; r < bricks.length; r++) {
+				for (let c = 0; c < bricks[r].length; c++) {
+					const brick = bricks[r][c];
+					if (brick && !brick.isBroken) {
+						brick.y += 10;
+						brick.needsRedraw = true;
+					}
+				}
+			}
+		}
+
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                       DRAW FUNCS                        ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -416,6 +446,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				}
 			}
 		}
+
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                  OBJECT INTERACTIONS                    ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -554,6 +585,35 @@ document.addEventListener('brickbreaker_event', async()=>{
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////
+		/////////////                   POWER-UPS FUNCTIONS                   ////////////
+		//////////////////////////////////////////////////////////////////////////////////
+
+			function togglePowerups() {
+				powerUpsEnabled = !powerUpsEnabled;
+				const button = document.getElementById('btnEnablePowerups');
+				button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
+
+				if (!powerUpsEnabled) {
+					powerUp = null; // rm all active powerUps
+				}
+			}
+
+			function spawnPowerUp() {
+				if (!powerUpsEnabled || powerUp)
+					return;
+
+					powerUp = {
+					type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
+					x: boardWidth / 2,
+					y: boardHeight / 2,
+					width: 10,
+					height: 10,
+					velocityX: Math.random() < 0.5 ? 1 : -1,
+					velocityY: Math.random() < 0.5 ? 1 : -1 
+				};
+			}
 
 		startGame();
 		pauseGame();

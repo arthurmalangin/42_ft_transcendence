@@ -325,9 +325,11 @@ document.addEventListener('game_event', async()=>{
 			if (!isPaused)
 				pauseGame();
 
-			if (fullCleanup)
-				return;
+			if (!fullCleanup)
+				showGameResultOverlay();
+		}
 			
+		function showGameResultOverlay() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
@@ -512,7 +514,7 @@ document.addEventListener('game_event', async()=>{
 			}
 		}
 
-		function movePowerUps() {
+		function movePowerUp() {
 			if (!powerUp)
 				return;
 
