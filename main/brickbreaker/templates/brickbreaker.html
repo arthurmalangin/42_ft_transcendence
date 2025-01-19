@@ -34,7 +34,57 @@
 		<div class="panel">
 			<h2 class="panel-header">&gt; BRICKBREAKER</h2>
 
-			<canvas id="board"></canvas>
+			<div class="game-container">
+				<canvas id="board"></canvas>
+
+				<nav class="nav right-nav card">
+					<div id="btn_pause" class="nav-item">
+						<span>&gt; PAUSE (SPACE)</span>
+					</div>
+					<div id="btnSettingsPong" class="nav-item">
+						<span>&gt; SETTINGS (ESC)</span>
+					</div>
+					<div class="game-info">
+						<h3>INSTRUCTIONS</h3>
+						<p>DESTROY ALL THE BRICKS AS FAST AS POSSIBLE.</p>
+					</div>
+					<div class="game-info">
+						<h3>CONTROLS</h3>
+						<p>PLAYER: A/D</p>
+					</div>
+					<div class="game-info">
+						<h3>GAMESTATS</h3>
+						<p>LIVES: <span id="lives">3</span></p>
+						<p>TIME: <span id="time">0</span></p>
+						<p>LEVEL: <span id="level">0</span></p>
+					</div>
+				</nav>
+			</div>
 		</div>
 	</main>
+
+	<div id="settingsOverlay" class="overlay active">
+		<div class="overlay-content phosphor">
+			<button class="popup-close" id="btnCloseSettingsPong">×</button>
+			<div class="popup-header">
+				<h2>GAME SETTINGS</h2>
+				<p>WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESULT IN A LOST LIFE!</p>
+			</div>
+			<div class="form-group">
+				<label>BALL SPEED</label>
+				<input type="range" class="input" id="ballSpeedSlider" min="1" value="2" max="3">
+			</div>
+			<div class="form-group">
+				<label>PADDLE SPEED</label>
+				<input type="range" class="input" id="paddleSpeedSlider" min="1" value="2" max="3">
+			</div>
+			<div class="form-group">
+				<button id="btnResetDefaultSettings" class="btn">RESET DEFAULT</button>
+				<button id="btnQuitSettings" class="btn">QUIT GAME</button>
+			</div>
+			<div class="form-group">
+				<button id="btnPlay" class="btn">SAVE & PLAY</button>
+			</div>
+		</div>
+	</div>
 </div>
