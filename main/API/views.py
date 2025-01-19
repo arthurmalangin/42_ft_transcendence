@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 import json
 from settings.models import PlayerData
+from asgiref.sync import sync_to_async
 
 def is_auth(request):
     if request.user.is_authenticated:
@@ -371,7 +372,7 @@ def update_win_rate(request):
                 user_profile.win_rate = user_profile.win / user_profile.matches 
                 user_profile.save()
                 return JsonResponse({'info': user_profile.win_rate})
-            else :
+            else:
                 user_profile.win_rate = 0 
                 user_profile.save()
                 return JsonResponse({'info': user_profile.win_rate})

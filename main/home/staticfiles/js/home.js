@@ -2,6 +2,7 @@ document.addEventListener('home_event', async()=>{
 	function homeEvent() {
 		updateWelcomeMessage();
 		updateRank();
+		updateRate();
 		getWinRate();
 		updateMatches();
 
@@ -97,6 +98,24 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
+	async function updateRate(){
+		try{
+			const response = await fetch('/api/update_win_rate/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
+	}
+
 	async function getWinRate(){
 		try{
 			const response = await fetch('/api/get_win_rate/', {
@@ -109,11 +128,11 @@ document.addEventListener('home_event', async()=>{
 			
 			if (response.ok) {
 				const data = await response.json();
-				const rankElement = document.getElementById('winRate');
+				const rateElement = document.getElementById('winRate');
 				if (data.winRate) {
-					rankElement.textContent = `${data.winRate}`;
+					rateElement.textContent = `${data.winRate}`;
 				} else {
-					rankElement.textContent = 'N/A';
+					rateElement.textContent = 'N/A';
 				}
 			}
 		} catch (error) {

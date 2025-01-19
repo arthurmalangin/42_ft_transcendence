@@ -760,20 +760,20 @@ document.addEventListener('game_event', async()=>{
 				console.error('Erreur lors de l’appel API :', error);
 			}
 		else
-		try{
-			const response = await fetch('/api/add_lose/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-CSRFToken': getCSRFToken()
+			try{
+				const response = await fetch('/api/add_lose/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': getCSRFToken()
+					}
+				});
+				if (!response.ok) {
+					throw new Error(`Erreur API : ${response.statusText}`);
 				}
-			});
-			if (!response.ok) {
-				throw new Error(`Erreur API : ${response.statusText}`);
+			} catch (error) {
+				console.error('Erreur lors de l’appel API :', error);
 			}
-		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
-		}
 	}
 
 	async function updateData(){
