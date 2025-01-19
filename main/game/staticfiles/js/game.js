@@ -104,7 +104,7 @@ document.addEventListener('game_event', async()=>{
 		freezeOpponentImage.src = 'https://127.0.0.1/static/freeze.svg';
 
 
-		const FRAME_RATE = 60;
+		const FRAME_RATE = 120;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
 		let isPaused = false;
@@ -333,8 +333,8 @@ document.addEventListener('game_event', async()=>{
 			if (gameResultOverlay && gameResultMessage) {
 				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
 				updateScores(playerScore);
-				updateData();
 				gameResultOverlay.classList.add('active');
+				updateData();
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');

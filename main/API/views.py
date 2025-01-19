@@ -319,8 +319,7 @@ def get_matches(request):
     if request.user.is_authenticated:
         try:
             user_profile = PlayerData.objects.get(username=request.user)
-            totalMatch = user_profile.lose + user_profile.win
-            return JsonResponse({'matches': totalMatch})
+            return JsonResponse({'matches': user_profile.matches})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get matches: {str(e)}'}, status=400)
@@ -342,6 +341,8 @@ def add_win(request):
             user_profile = PlayerData.objects.get(username=request.user.username)
             user_profile.win += 1
             user_profile.save()
+            user_profile.matches += 1
+            user_profile.save()
             return JsonResponse({'info': user_profile.win})
         except Exception as e:
             print("error::::::::::::::" + str(e))
@@ -354,6 +355,8 @@ def add_lose(request):
             user_profile = PlayerData.objects.get(username=request.user.username)
             user_profile.lose += 1
             user_profile.save()
+            user_profile.matches += 1
+            user_profile.save()
             return JsonResponse({'info': user_profile.lose})
         except Exception as e:
             print("error::::::::::::::" + str(e))
@@ -364,17 +367,14 @@ def update_win_rate(request):
     if request.user.is_authenticated and request.method == 'POST':
         try:
             user_profile = PlayerData.objects.get(username=request.user.username)
-            if user_profile.win != 0 and user_profile.lose != 0:
-                user_profile.win_rate = user_profile.win / (user_profile.lose + user_profile.win)
+            if user_profile.win != 0:
+                user_profile.win_rate = user_profile.win / user_profile.matches 
                 user_profile.save()
                 return JsonResponse({'info': user_profile.win_rate})
-            if user_profile.win != 0 and user_profile.lose == 0:
-                user_profile.win_rate = 1
+            else :
+                user_profile.win_rate = 0 
                 user_profile.save()
-            else:
-                user_profile.win_rate = 0
-                user_profile.save()
-            return JsonResponse({'info': user_profile.win_rate})
+                return JsonResponse({'info': user_profile.win_rate})
         except Exception as e:
             return JsonResponse({"error": f"Failed to update username: {str(e)}"}, status=400)
     else:
