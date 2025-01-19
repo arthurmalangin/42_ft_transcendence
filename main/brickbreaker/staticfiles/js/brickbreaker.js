@@ -54,6 +54,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 		let paddleSpeed = 2;
 
 		let lives = 4;
+		let score = 0;
 		let level = 1;
 
 		let player = {
@@ -80,14 +81,12 @@ document.addEventListener('brickbreaker_event', async()=>{
 		};
 
 		let bricks = [];
-		const brickWidth = 48;
-		const brickGap = 2;
-		const brickHeight = 18;
+		const brickWidth = 50;
+		const brickHeight = 20;
 		const brickTypes = [
 			{ type: 1, color: "rgba(0, 255, 0, 0.3)", hitPoints: 1 },
 			{ type: 2, color: "rgba(0, 255, 0, 0.6)", hitPoints: 2 },
-			{ type: 3, color: "rgba(0, 255, 0, 1)", hitPoints: 3 },
-			{ type: 4, color: "black", hitPoints: Infinity }
+			{ type: 3, color: "rgba(0, 255, 0, 1)", hitPoints: 3 }
 		];
 
 		let totalTime = 0;
@@ -262,7 +261,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			board.width = boardWidth;
 			board.height = boardHeight;
 
-			loadCSVLevel('/static/level2.csv', generateBricksFromCSV);
+			loadCSVLevel('/static/level.csv', generateBricksFromCSV);
 		}
 
 		function resetGame() {
@@ -272,6 +271,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 			document.getElementById('level').textContent = level;
 			console.log(ballSpeed);
 			ball.speed = ballSpeed;
+			ball.velocityX = 0;
+			ball.velocityY = -ballSpeed;
+			context.clearRect(Math.ceil(ball.x), Math.ceil(ball.y), ball.width, ball.height);
+			context.clearRect(player.x, player.y, player.width, player.height); 
 			player.x = boardWidth / 2 - paddleWidth / 2;
 			ball.x = player.x + player.width / 2 - ball.width / 2;
 			ball.y = 490 - ball.height - paddleHeight;
@@ -323,8 +326,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 					const brickTypeIndex = levelData[r][c];
 					if (brickTypeIndex > 0) {
 						const brickType = brickTypes[brickTypeIndex - 1];
-						const brickX = c * (brickWidth + brickGap);
-						const brickY = r * (brickHeight + brickGap);
+						const brickX = c * brickWidth;
+						const brickY = r * brickHeight;
 						bricks[r][c] = {
 							x: brickX,
 							y: brickY,
@@ -362,7 +365,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 					if (brick && !brick.isBroken && brick.needsRedraw) {
 						context.clearRect(brick.x, brick.y, brick.width, brick.height);
 						context.fillStyle = brick.color;
-						context.fillRect(brick.x, brick.y, brick.width, brick.height);
+						context.fillRect(brick.x + 3, brick.y + 3, brick.width - 6, brick.height - 6);
 						brick.needsRedraw = false;
 					}
 				}
@@ -392,8 +395,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 			ball.x += ball.velocityX;
 			ball.y += ball.velocityY;
 			
-			if (ball.x <= 0 || ball.x + ball.width >= boardWidth)
+			if (ball.x <= 0 || ball.x + ball.width >= boardWidth) {
+				ball.x = ball.x <= 0 ? 0 : boardWidth - ball.width;
 				ball.velocityX *= -1;
+			}
 			if (ball.y <= 0)
 				ball.velocityY *= -1;
 
@@ -402,7 +407,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				let normalizedIntersectX = intersectX / (player.width / 2);
 				let bounceAngle = normalizedIntersectX * Math.PI / 4;
 			
-				if (ball.speed < 12)
+				if (ball.speed < 5)
 					ball.speed += 0.1;
 				ball.velocityX = ball.speed * Math.sin(bounceAngle);
 				ball.velocityY = -ball.speed * Math.cos(bounceAngle);
@@ -421,6 +426,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 								brick.color = newBrickType.color;
 								brick.hitPoints = newBrickType.hitPoints;
 							}
+							score++;
+							document.getElementById('score').textContent = score;
 							context.clearRect(brick.x, brick.y, brick.width, brick.height);
 							return;
 						}
