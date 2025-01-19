@@ -55,7 +55,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		let lives = 4;
 		let score = 0;
-		let level = 1;
 
 		let player = {
 			width: paddleWidth,
@@ -91,6 +90,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		let totalTime = 0;
 		let cooldownTime = 0;
+
+		let gameOver = false;
 
 		let keys = {};
 
@@ -237,7 +238,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function gameLoop() {
-			// context.clearRect(0, 0, boardWidth, boardHeight);
 			context.clearRect(Math.ceil(ball.x), Math.ceil(ball.y), ball.width, ball.height);
 			context.clearRect(player.x, player.y, player.width, player.height);
 			player.x = Math.min(Math.max(player.x, 0), boardWidth - player.width);
@@ -253,6 +253,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 			
 			if (cooldownTime <= 3)
 				cooldownTime += FRAME_DURATION / 1000;
+
+			if (gameOver)
+				cleanupGame(false);
 		}
 
 		function startGame() {
@@ -267,9 +270,13 @@ document.addEventListener('brickbreaker_event', async()=>{
 		function resetGame() {
 			cooldownTime = 0;
 			lives--;
+			if (lives <= 0) {
+				lives = 0;
+				document.getElementById('lives').textContent = lives;
+				gameOver = true;
+				return;
+			}
 			document.getElementById('lives').textContent = lives;
-			document.getElementById('level').textContent = level;
-			console.log(ballSpeed);
 			ball.speed = ballSpeed;
 			ball.velocityX = 0;
 			ball.velocityY = -ballSpeed;
@@ -300,6 +307,41 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 			if (fullCleanup) 
 				return;
+
+			const gameResultOverlay = document.getElementById('gameResultOverlay');
+			const gameResultMessage = document.getElementById('gameResultMessage');
+			const finalScore = document.getElementById('finalScore');
+			const brickScore = document.getElementById('brickScore');
+			const timeScore = document.getElementById('timeScore');
+			const livesScore = document.getElementById('livesScore');
+
+			if (gameResultOverlay && gameResultMessage && finalScore && brickScore && timeScore && livesScore) {
+				let scoreFromBricks = score;
+				let scoreFromTime = lives === 0 ? 0 : 10000 - Math.floor(totalTime) * 10;
+				let scoreFromLives = lives * 1000;
+				let scoreFromAll = scoreFromBricks + scoreFromTime + scoreFromLives;
+
+				brickScore.textContent = scoreFromBricks;
+				timeScore.textContent = scoreFromTime;
+				livesScore.textContent = scoreFromLives;
+				finalScore.textContent = scoreFromAll;
+				gameResultOverlay.classList.add('active');
+			}
+
+			const playAgainButton = document.getElementById('btnPlayAgain');
+			if (playAgainButton) {
+				playAgainButton.addEventListener('click', () => {
+					loadPage('/brickbreaker');
+				});
+			}
+
+			const quitButton = document.getElementById('btnQuit');
+			if (quitButton) {
+				quitButton.addEventListener('click', () => {
+					history.pushState(null, '', '/');
+					loadPage('/');
+				});
+			}
 		}
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -339,9 +381,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 							needsRedraw: true,
 							isBroken: false
 						};
-					} else {
+					} else
 						bricks[r][c] = null;
-					}
 				}
 			}
 		}
@@ -359,6 +400,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context.arc(Math.ceil(ball.x) + ball.width / 2, Math.ceil(ball.y) + ball.height / 2, ball.width / 2, 0, 2 * Math.PI);
 			context.fill();
 
+			drawBricks();
+		}
+		
+		function drawBricks() {
 			for (let r = 0; r < bricks.length; r++) {
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
@@ -371,7 +416,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 				}
 			}
 		}
-
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                  OBJECT INTERACTIONS                    ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -385,68 +429,72 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		function moveball() {
 			if (cooldownTime < 3) {
-				ball.x = player.x + player.width / 2 - ball.width / 2;
-
-				let direction = (player.x + player.width / 2 - boardWidth / 2) / (boardWidth / 2);
-				ball.velocityX = direction * ball.speed;
+				resetBallPosition();
 				return;
 			}
-
+		
+			updateBallPosition();
+			checkWallCollisions();
+			checkPlayerCollision();
+			checkBrickCollisions();
+		
+			if (ball.y + ball.height >= boardHeight)
+				resetGame();
+		}
+		
+		function resetBallPosition() {
+			ball.x = player.x + player.width / 2 - ball.width / 2;
+			let direction = (player.x + player.width / 2 - boardWidth / 2) / (boardWidth / 2);
+			ball.velocityX = direction * ball.speed;
+		}
+		
+		function updateBallPosition() {
 			ball.x += ball.velocityX;
 			ball.y += ball.velocityY;
-			
+		}
+		
+		function checkWallCollisions() {
 			if (ball.x <= 0 || ball.x + ball.width >= boardWidth) {
 				ball.x = ball.x <= 0 ? 0 : boardWidth - ball.width;
 				ball.velocityX *= -1;
 			}
 			if (ball.y <= 0)
 				ball.velocityY *= -1;
-
+		}
+		
+		function checkPlayerCollision() {
 			if (ball.x + ball.width >= player.x && ball.x <= player.x + player.width && ball.y + ball.height >= player.y) {
 				let intersectX = ball.x + ball.width / 2 - player.x - player.width / 2;
 				let normalizedIntersectX = intersectX / (player.width / 2);
 				let bounceAngle = normalizedIntersectX * Math.PI / 4;
-			
+		
 				if (ball.speed < 5)
 					ball.speed += 0.1;
 				ball.velocityX = ball.speed * Math.sin(bounceAngle);
 				ball.velocityY = -ball.speed * Math.cos(bounceAngle);
 			}
-
+		}
+		
+		function checkBrickCollisions() {
 			for (let r = 0; r < bricks.length; r++) {
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
 					if (brick && !brick.isBroken) {
 						if (handleBallCollisionWithBrick(brick)) {
-							if (brick.type === 1)
-								brick.isBroken = true;
-							else if (brick.type != 4) {
-								brick.type -= 1;
-								const newBrickType = brickTypes[brick.type - 1];
-								brick.color = newBrickType.color;
-								brick.hitPoints = newBrickType.hitPoints;
-							}
-							score++;
-							document.getElementById('score').textContent = score;
-							context.clearRect(brick.x, brick.y, brick.width, brick.height);
+							handleBrickHit(brick);
 							return;
 						}
 					}
 				}
 			}
-
-			if (ball.y + ball.height >= boardHeight)
-				resetGame();
 		}
-
+		
 		function handleBallCollisionWithBrick(brick) {
 			if (ball.x < brick.x + brick.width &&
 				ball.x + ball.width > brick.x &&
 				ball.y < brick.y + brick.height &&
 				ball.y + ball.height > brick.y) {
-		
-				console.log('collision');
-		
+				
 				const collisionFromLeft = ball.x + ball.width - brick.x;
 				const collisionFromRight = brick.x + brick.width - ball.x;
 				const collisionFromTop = ball.y + ball.height - brick.y;
@@ -466,17 +514,34 @@ document.addEventListener('brickbreaker_event', async()=>{
 			}
 			return false;
 		}
+		
+		function handleBrickHit(brick) {
+			if (brick.type === 1) {
+				brick.isBroken = true;
+				score += 50;
+			} else if (brick.type != 4) {
+				brick.type -= 1;
+				const newBrickType = brickTypes[brick.type - 1];
+				brick.color = newBrickType.color;
+				brick.hitPoints = newBrickType.hitPoints;
+				score += 10;
+			}
+
+			if (score === 7410) // total bricks score
+				gameOver = true;
+
+			document.getElementById('score').textContent = score;
+			context.clearRect(brick.x, brick.y, brick.width, brick.height);
+		}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                    SETTINGS FUNCS                       ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-		// TODO ball speed is not applied. Check resetGame() function?
 		function updateBallSpeed(speed) {
 			ballSpeed = parseFloat(speed);
 			ball.speed = ballSpeed;
 			ball.velocityY = -ball.speed;
-			console.log(ballSpeed);
 		}
 
 		function updatePaddleSpeed(speed) {
