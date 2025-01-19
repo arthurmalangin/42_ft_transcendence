@@ -262,7 +262,7 @@ document.addEventListener('game_event', async()=>{
 			context.clearRect(0, 0, boardWidth, boardHeight);
 
 			moveBall();
-			movePowerUps();
+			movePowerUp();
 			draw();
 			updateOpponentPosition();
 			updatePaddlePositions();
