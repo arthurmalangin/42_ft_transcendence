@@ -104,7 +104,7 @@ document.addEventListener('game_event', async()=>{
 		freezeOpponentImage.src = '/static/freeze.svg';
 
 
-		const FRAME_RATE = 120;
+		const FRAME_RATE = 60;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
 		let isPaused = false;
