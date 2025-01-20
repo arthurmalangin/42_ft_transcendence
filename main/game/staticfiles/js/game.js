@@ -326,10 +326,10 @@ document.addEventListener('game_event', async()=>{
 				pauseGame();
 
 			if (!fullCleanup)
-				showGameResultOverlay();
+				gameOver();
 		}
 			
-		function showGameResultOverlay() {
+		function gameOver() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {

@@ -107,7 +107,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 		let cooldownTime = 0;
 		let lastGameAction = 0;
 
-		let gameOver = false;
+		let isGameOver = false;
 
 		let keys = {};
 
@@ -262,7 +262,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context.clearRect(Math.ceil(ball.x), Math.ceil(ball.y), ball.width, ball.height);
 			context.clearRect(player.x, player.y, player.width, player.height);
 			player.x = Math.min(Math.max(player.x, 0), boardWidth - player.width);
-
+			
 			moveball();
 			updatePlayerPosition();
 			movePowerUp();
@@ -273,12 +273,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const seconds = (totalTime % 60).toFixed(1);
 			document.getElementById('time').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-			if (totalTime >= 60 && totalTime < 220 && totalTime - lastGameAction >= 10) {
-				console.log(totalTime, 'moving bricks down');
+			if ( totalTime >= 60 && totalTime < 220 && totalTime - lastGameAction >= 10) {
 				moveBricksDown();
 				lastGameAction = totalTime;
 			} else if (totalTime >= 220 && totalTime - lastGameAction >= 30) {
-				console.log(totalTime, 'spawning powerup');
 				spawnPowerUp();
 				lastGameAction = totalTime;
 			}
@@ -286,7 +284,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			if (cooldownTime <= 3)
 				cooldownTime += FRAME_DURATION / 1000;
 
-			if (gameOver)
+			if (isGameOver)
 				cleanupGame(false);
 		}
 
@@ -305,7 +303,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			if (lives <= 0) {
 				lives = 0;
 				document.getElementById('lives').textContent = lives;
-				gameOver = true;
+				isGameOver = true;
 				return;
 			}
 			document.getElementById('lives').textContent = lives;
@@ -338,10 +336,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 				pauseGame();
 
 			if (!fullCleanup)
-				showGameResultOverlay();
+				gameOver();
 		}
 
-		function showGameResultOverlay() {
+		function gameOver() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			const finalScore = document.getElementById('finalScore');
@@ -354,7 +352,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				let scoreFromBricks = score;
 				let scoreFromTime = lives === 0 ? 0 : Math.max(0, 10000 - Math.floor(totalTime) * 10);
 				let scoreFromLives = lives * 1000;
-				let scoreFromPowerUps = powerUpsEnabled ? 2500 : 0;
+				let scoreFromPowerUps = powerUpsEnabled ? 0 : 2500;
 				let scoreFromAll = scoreFromBricks + scoreFromTime + scoreFromLives;
 
 				brickScore.textContent = scoreFromBricks;
@@ -452,6 +450,11 @@ document.addEventListener('brickbreaker_event', async()=>{
 			context.fill();
 
 			drawBricks();
+
+			if (powerUp) {
+				const powerUpImage = powerUp.type === powerUpTypes.FIREBALL ? fireballImage : enlargePaddleImage;
+				context.drawImage(powerUpImage, powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+			}
 		}
 		
 		function drawBricks() {
@@ -555,8 +558,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 				const minCollision = Math.min(collisionFromLeft, collisionFromRight, collisionFromTop, collisionFromBottom);
 		
 				if (!ballOnFire && (minCollision === collisionFromLeft || minCollision === collisionFromRight)) {
+					ball.x -= ball.velocityX;
 					ball.velocityX *= -1;
 				} else if (!ballOnFire) {
+					ball.y -= ball.velocityY;
 					ball.velocityY *= -1;
 				}
 
@@ -580,7 +585,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			}
 
 			if (score === 7410) // total bricks score
-				gameOver = true;
+				isGameOver = true;
 
 			document.getElementById('score').textContent = score;
 			context.clearRect(brick.x, brick.y, brick.width, brick.height);
@@ -625,26 +630,47 @@ document.addEventListener('brickbreaker_event', async()=>{
 				return;
 
 				powerUp = {
-				type: Math.random() < 0.5 ? powerUpTypes.ENLARGE_PADDLE : powerUpTypes.FREEZE_OPPONENT,
-				x: Math.random() * boardWidth - 10,
+				type: Math.random() < 0.5 ? powerUpTypes.FIREBALL : powerUpTypes.ENLARGE_PADDLE,
+				x: Math.random() * (boardWidth - 10),
 				y: 0,
 				width: 10,
 				height: 10,
 				velocityX: 0,
-				velocityY: 0.25
+				velocityY: 0.5
 			};
+			console.log(powerUp);
 		}
 
 		function movePowerUp() {
 			if (!powerUp)
 				return;
 
+			context.clearRect(Math.floor(powerUp.x), Math.floor(powerUp.y), powerUp.width + 1, powerUp.height + 1);
+
+
 			powerUp.y += powerUp.velocityY;
 
 			// collision check
-			if (powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y && powerUp.y <= player.y + player.height) {
+			if (powerUp.x + powerUp.width >= player.x && powerUp.x <= player.x + player.width && powerUp.y + powerUp.height >= player.y) {
 				applyPowerUp(powerUp);
 				powerUp = null;
+				return;
+			}
+
+			for (let r = 0; r < bricks.length; r++) {
+				for (let c = 0; c < bricks[r].length; c++) {
+					const brick = bricks[r][c];
+					if (brick && !brick.isBroken) {
+						if (
+							powerUp.x < brick.x + brick.width &&
+							powerUp.x + powerUp.width > brick.x &&
+							powerUp.y < brick.y + brick.height &&
+							powerUp.y + powerUp.height > brick.y
+						) {
+							brick.needsRedraw = true;
+						}
+					}
+				}
 			}
 
 			if (powerUp.y > boardHeight) {
@@ -655,9 +681,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 		function applyPowerUp(powerUp) {
 			if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
 				if (player.x + player.width / 2 >= boardWidth / 2) {
-					player.y -= 25;
+					player.x -= 25;
 				}
-				player.height += 25;
+				player.width += 25;
 			}
 			else {
 				ballOnFire = true;
