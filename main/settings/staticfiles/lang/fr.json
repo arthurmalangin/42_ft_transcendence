@@ -1,10 +1,11 @@
 {
-  "title.main.home": "MENU PRINCIPAL",
-  "title.main.pong": "JOUER A PONG",
-  "title.main.friends": "AMIS",
-  "title.main.leaderboard": "CLASSEMENT",
-  "title.main.settings": "PARAMETRES",
-  "title.main.logout": "DECONNEXION",
+  "title.main.home": "> MENU PRINCIPAL",
+	"title.main.pong": "> JOUER A PONG",
+	"title.main.brickbreaker": "> JOUER A BRICKBREAKER",
+	"title.main.friends": "> AMIS",
+	"title.main.leaderboard": "> CLASSEMENT",
+	"title.main.settings": "> PREFERENCES",
+	"title.main.logout": "> DECCONNEXION",
 
   "settings.maintitle": "PARAMETRES SYSTEME",
   "settings.profil.title": "PROFILE",
