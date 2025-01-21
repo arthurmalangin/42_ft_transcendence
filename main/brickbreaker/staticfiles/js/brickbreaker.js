@@ -210,7 +210,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown') {
-						const blockedKeys = ['a', 'd', ' '];
+						const blockedKeys = ['a', 'd', 'ArrowLeft', 'ArrowRight', ' '];
 						if (blockedKeys.includes(event.key)) {
 							event.stopPropagation();
 							event.preventDefault();
@@ -476,9 +476,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function updatePlayerPosition() {
-			if (keys['a'] && player.x > 0)
+			if ((keys['a'] || keys['ArrowLeft']) && player.x > 0)
 				player.x -= player.speed;
-			if (keys['d'] && player.x + paddleWidth < boardWidth)
+			if ((keys['d'] || keys['ArrowRight']) && player.x + paddleWidth < boardWidth)
 				player.x += player.speed;
 		}
 
