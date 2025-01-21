@@ -764,10 +764,7 @@ document.addEventListener('game_event', async()=>{
 	}
 
 	async function saveMatches(AIEnabled){
-		if(AIEnabled)
-			versus = "AI"
-		else
-			versus = "GUEST"
+		const versus = AIEnabled? "AI" : "GUEST";
 		try{
 			const response = await fetch('/api/create_match/', {
 				method: 'POST',
