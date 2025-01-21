@@ -152,14 +152,14 @@ document.addEventListener('game_event', async()=>{
 			});
 
 			addEventListenerWithTracking(window, 'keydown', function (e) {
-				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's') {
 					e.preventDefault();
 				}
 				keys[e.key] = true;
 			});
 			
 			addEventListenerWithTracking(window, 'keyup', function (e) {
-				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's') {
 					e.preventDefault();
 				}
 				keys[e.key] = false;

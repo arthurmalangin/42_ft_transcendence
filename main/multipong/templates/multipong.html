@@ -32,8 +32,75 @@
 		</nav>
 		
 		<div class="panel">
-			<h2 class="panel-header">&gt; 4-PLAYERS PONG</h2>
+			<h2 class="panel-header">&gt; PONG (4 PLAYERS)</h2>
 
-			<p>multipong</p>
+			<div class="game-container">
+				<canvas id="board"></canvas>
+			
+				<nav class="nav right-nav card">
+					<div id="btn_pause" class="nav-item">
+						<span>&gt; PAUSE (SPACE)</span>
+					</div>
+					<div id="btnSettingsPong" class="nav-item">
+						<span>&gt; SETTINGS (ESC)</span>
+					</div>
+					<div class="game-info">
+						<h3>INSTRUCTIONS</h3>
+						<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
+					</div>
+					<div class="game-info">
+						<h3>CONTROLS</h3>
+						<p>PLAYER 1: W/S</p>
+						<p>PLAYER 2: C/V</p>
+						<p>PLAYER 3: ,/.</p>
+						<p>PLAYER 4: ↑/↓</p>
+					</div>
+					<div class="game-info">
+						<h3>GAMESTATS</h3>
+						<p>PLAYER 1: <span id="player1Score">0</span></p>
+						<p>PLAYER 2: <span id="player2Score">0</span></p>
+						<p>PLAYER 3: <span id="player3Score">0</span></p>
+						<p>PLAYER 4: <span id="player4Score">0</span></p>
+					</div>
+				</nav>
+			</div>
 		</div>
 	</main>
+
+	<div id="settingsOverlay" class="overlay active">
+		<div class="overlay-content phosphor">
+			<button class="popup-close" id="btnCloseSettingsPong">×</button>
+			<div class="popup-header">
+				<h2>GAME SETTINGS</h2>
+				<p>WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESET CURRENT POINT!</p>
+			</div>
+			<div class="form-group">
+				<label>BALL SPEED</label>
+				<input type="range" class="input" id="ballSpeedSlider" min="1" value="2" max="3">
+			</div>
+			<div class="form-group">
+				<label>PADDLE SPEED</label>
+				<input type="range" class="input" id="paddleSpeedSlider" min="1" value="2" max="3">
+			</div>
+			<div class="form-group">
+				<button id="btnResetDefaultSettings" class="btn">RESET DEFAULT</button>
+				<button id="btnQuitSettings" class="btn">QUIT GAME</button>
+			</div>
+			<div class="form-group">
+				<button id="btnPlay" class="btn">SAVE & PLAY</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="gameResultOverlay" class="overlay">
+		<div class="overlay-content phosphor">
+			<div class="popup-header">
+				<h2 id="gameResultMessage">PLAYER X WON!</h2>
+			</div>
+			<div class="form-group">
+				<button id="btnPlayAgain" class="btn">PLAY AGAIN</button>
+				<button id="btnQuit" class="btn">QUIT</button>
+			</div>
+		</div>
+	</div>
+</div>
