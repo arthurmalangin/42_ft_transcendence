@@ -76,15 +76,17 @@ def reqlogin(request):
 
 @api_view(['GET'])
 def reqlogin42(request):
-	token = _getToken("https://127.0.0.1/srclogin/reqlogin42/", request.query_params["code"])
+	token = _getToken("https://181.214.189.28/srclogin/reqlogin42/", request.query_params["code"])
+	# print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa : " + request.query_params["code"])
 	user_info = _get42Info(token)
 	username = user_info['login']
-	print("login 42 is :" + username)
+	print(user_info)
+	print("logsin 42 is :" + username)
 	user = _login42(username, token)
 	if user:
 		print("yes")
 		login(request, user)
-		return (redirect('https://127.0.0.1/'))
+		return (redirect('https://181.214.189.28/'))
 	else:
 		print("Error: user not set.")
 		return HttpResponse("Error: user not set.")
@@ -93,50 +95,26 @@ def _login42(username, token):
 	if User.objects.filter(username=username).exists():
 		user = User.objects.get(username=username)
 		user.set_password(make_password(token))
-		# pdata = PlayerData.objects.get(username=username)
-		# _updateAvatar42Img(username, pdata)
 		user.save()
 		return (user)
 	else:
 		user = User.objects.create_user(username=username, email=username, password=make_password(token))
 		pdata = PlayerData.objects.create(username=username, email=username)
 		pdata.is_42 = True
+		user_info = _get42Info(token)
+		_updateAvatar42Img(pdata, user_info['image']['versions']['medium'])
 		pdata.save()
-		# _updateAvatar42Img(username, pdata)
 		return (user)
 
-def _updateAvatar42Img(username, pdata):
-    token = _getApiToken()
-    body = {
-        "access_token": f"{token}"
-    }
-    headers = {"Content-Type": "application/json; charset=utf-8"}
-    
-    # Récupérer les informations de l'utilisateur 42
-    response = requests.get(f"https://api.intra.42.fr/v2/users?filter[login]={username}", json=body)
-    print("start try update img... with token : " + token)
-    # Vérifier si la requête est réussie
-    if response.status_code == 200:
-        user_data = response.json()
-        
-        # Vérifier si la clé 'image' est présente dans la réponse
-        if 'image' in user_data and 'version' in user_data['image'] and 'medium' in user_data['image']['version']:
-            # Extraire l'URL de l'image
-            image_url = user_data['image']['version']['medium']
-            response_img = requests.get(image_url)
-            
-            # Vérifier si l'image a été récupérée avec succèss
-            if response_img.status_code == 200:
-                # Encoder l'image en base64
-                image_base64 = base64.b64encode(response_img.content).decode('utf-8')
-                pdata.avatar_base64 = image_base64
-                print(image_base64)
-            else:
-                print("Erreur lors de la récupération de l'image.")
-        else:
-            print("L'utilisateur n'a pas d'image.")
-    else:
-        print(f"Erreur lors de la récupération des données utilisateur : {response.status_code} + {response.json()['error']}")
+def _updateAvatar42Img(pdata, linkIntraPics):
+	response_img = requests.get(linkIntraPics)
+	
+	if response_img.status_code == 200:
+		image_base64 = base64.b64encode(response_img.content).decode('utf-8')
+		pdata.avatar_base64 = image_base64
+		print(image_base64)
+	else:
+		print("Erreur lors de la récupération de l'image.")
 
 
 def _get42Info(token):

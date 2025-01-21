@@ -5,6 +5,11 @@ up:
 	@docker compose -f ./docker/docker-compose.yml up --build
 	@docker ps
 
+silent:
+	@echo "Docker up"
+	@docker compose -f ./docker/docker-compose.yml up --build -d
+	@docker ps
+
 clear: down stop
 	@echo "Clear volumes..."
 	@docker volume rm -f `docker volume ls`
@@ -28,4 +33,4 @@ status:
 
 re: clear all
 
-.PHONY: all clear re stop down up start
+.PHONY: all clear re stop down up start silent
