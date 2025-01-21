@@ -55,6 +55,14 @@ const routes = {
 		needLogin: true
 	},
 
+	'/menu': {
+        html: '/srcgame/menu',
+        css: '/static/css/menu.css',
+        js: '/static/js/menu.js',
+        event: 'menuplay_event',
+        needLogin: true
+    },
+
 	'/brickbreaker': {
 		html: '/srcbrickbreaker',
 		css: '/static/css/brickbreaker.css',

@@ -36,15 +36,15 @@ document.addEventListener('home_event', async()=>{
 
 		const gameLabel = document.getElementById('btn_game');
 		gameLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/game');
-			loadPage('/game');
+			history.pushState(null, '', '/menu');
+			loadPage('/menu');
 		});
 
-		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		brickbreakerLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/brickbreaker');
-			loadPage('/brickbreaker');
-		});
+		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
+		// brickbreakerLabel.addEventListener('click', () => {
+		// 	history.pushState(null, '', '/brickbreaker');
+		// 	loadPage('/brickbreaker');
+		// });
 	}
 
 	homeEvent();
