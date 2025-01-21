@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class MatchData(models.Model):
+    player = models.IntegerField(default=0)
+    #########################################
+    # a voir plus tard si on met en place le multi
+    opponent = models.CharField(max_length=255)
+    #########################################
+    myScore = models.IntegerField(default=0)
+    oppScore = models.IntegerField(default=0)
+    result = models.CharField(max_length=255)
+
 class PlayerData(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=255, unique=True)

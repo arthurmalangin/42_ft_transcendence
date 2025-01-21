@@ -332,9 +332,9 @@ document.addEventListener('game_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
 				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
-				updateScores(playerScore);
+				updateScore(playerScore);
+				saveMatch(playerScore, opponentScore, AIEnabled);
 				gameResultOverlay.classList.add('active');
-				updateData();
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
@@ -743,7 +743,39 @@ document.addEventListener('game_event', async()=>{
 	/////////////                      UPDATE DATA                        ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-	async function updateScores(playerScore){
+	async function updateScore(playerScore) {
+		await updateMatches(playerScore);
+		await updateData();
+		await saveMatches(AIEnabled);
+	}
+
+	async function saveMatches(AIEnabled){
+		if(AIEnabled)
+			versus = "AI"
+		else
+			versus = "GUEST"
+		try{
+			const response = await fetch('/api/create_match/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+				body: JSON.stringify({
+					opponent: versus,
+					myscore: myScore,
+					oppscore: oppScore,
+				}),
+			});
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error("Erreur réseau :", error);
+		}
+	}
+
+	async function updateMatches(playerScore){
 		if(playerScore == 7)
 			try{
 				const response = await fetch('/api/add_win/', {

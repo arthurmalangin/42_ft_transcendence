@@ -409,3 +409,24 @@ def setUserLang(request):
                 return JsonResponse({"error": "Can't find your profile"}, status=400)
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+
+def create_match(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            if not request.body:
+                return JsonResponse({"error": "Request body is empty"}, status=400)
+            data = json.loads(request.body.decode('utf-8'))
+            versus = data.get('versus', None)
+            my_score = data.get('myscore', None)
+            opp_score = data.get('oppscore', None)
+            if not my_score or not opp_score or not versus:
+                return JsonRequest({"error": "Can't find values"})
+            
+            user_profile = playerData.objects.get(username=request.user.username)
+            match_data = MatchData.objects.create(player=user_profile.id, myScore=my_score, oppScore=opp_score)
+            match_data.save()
+            return JsonResponse({"Success": "match created!"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
