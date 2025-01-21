@@ -31,8 +31,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		const gameLabel = document.getElementById('btn_game');
 		gameLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/game');
-			loadPage('/game');
+			history.pushState(null, '', '/menu');
+			loadPage('/menu');
 		});
 	}
 
@@ -247,8 +247,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const quitButton = document.getElementById('btnQuitSettings');
 			addEventListenerWithTracking(quitButton, 'click', function() {
 				cleanupGame();
-				history.pushState(null, '', '/');
-				loadPage('/');
+				history.pushState(null, '', '/menu');
+				loadPage('/menu');
 			});
 		}
 
@@ -374,8 +374,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const quitButton = document.getElementById('btnQuit');
 			if (quitButton) {
 				quitButton.addEventListener('click', () => {
-					history.pushState(null, '', '/');
-					loadPage('/');
+					history.pushState(null, '', '/menu');
+					loadPage('/menu');
 				});
 			}
 		}
