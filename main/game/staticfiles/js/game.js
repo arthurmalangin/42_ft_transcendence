@@ -146,10 +146,16 @@ document.addEventListener('game_event', async()=>{
 			});
 
 			addEventListenerWithTracking(window, 'keydown', function (e) {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+					e.preventDefault();
+				}
 				keys[e.key] = true;
 			});
-
+			
 			addEventListenerWithTracking(window, 'keyup', function (e) {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+					e.preventDefault();
+				}
 				keys[e.key] = false;
 			});
 
@@ -280,7 +286,7 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
-			if (playerLost) {
+			if (playerLost && opponentScore < 7) {
 				opponentScore++;
 				document.getElementById('player2Score').textContent = opponentScore;
 			} else {
