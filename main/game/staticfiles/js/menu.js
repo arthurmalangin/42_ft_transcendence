@@ -49,14 +49,14 @@ document.addEventListener('menuplay_event', async()=>{
 			loadPage('/game');
 		});
 
-		// const btn_pong_tournament = document.getElementById('btn_pong_tournament');
-		// btn_pong_classic.addEventListener('click', () => {
-		//     history.pushState(null, '', '/404');
-		//     loadPage('/404');
-		// });
+		const btn_pong_tournament = document.getElementById('btn_pong_tournament');
+		btn_pong_tournament.addEventListener('click', () => {
+			history.pushState(null, '', '/404');
+			loadPage('/404');
+		});
 
 		const btn_pong_4players = document.getElementById('btn_pong_4players');
-		btn_pong_classic.addEventListener('click', () => {
+		btn_pong_4players.addEventListener('click', () => {
 			history.pushState(null, '', '/multipong');
 			loadPage('/multipong');
 		});
@@ -67,11 +67,11 @@ document.addEventListener('menuplay_event', async()=>{
 			loadPage('/brickbreaker');
 		});
 
-		// const btn_brickbreaker_tournament = document.getElementById('btn_brickbreaker_tournament');
-		// btn_pong_classic.addEventListener('click', () => {
-		//     history.pushState(null, '', '/404');
-		//     loadPage('/404');
-		// });
+		const btn_brickbreaker_tournament = document.getElementById('btn_brickbreaker_tournament');
+		btn_brickbreaker_tournament.addEventListener('click', () => {
+			history.pushState(null, '', '/404');
+			loadPage('/404');
+		});
 	}
 
 	menuEvent();
