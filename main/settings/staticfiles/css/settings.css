@@ -213,3 +213,8 @@ input[type="range"] {
 .status-offline {
 	background-color: #ff0000;
 }
+
+/* Avatar picture */
+#avatar_display {
+    filter: grayscale(100%) sepia(100%) hue-rotate(45deg) saturate(1000%);
+}
