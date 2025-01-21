@@ -329,6 +329,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		function cleanupGame(fullCleanup = true) {
 			resetToDefaultSettings();
+			lives++;
 			resetGame();
 			removeAllEventListeners();
 
@@ -353,7 +354,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				let scoreFromTime = lives === 0 ? 0 : Math.max(0, 10000 - Math.floor(totalTime) * 10);
 				let scoreFromLives = lives * 1000;
 				let scoreFromPowerUps = powerUpsEnabled ? 0 : 2500;
-				let scoreFromAll = scoreFromBricks + scoreFromTime + scoreFromLives;
+				let scoreFromAll = scoreFromBricks + scoreFromTime + scoreFromLives + scoreFromPowerUps;
 
 				brickScore.textContent = scoreFromBricks;
 				timeScore.textContent = scoreFromTime;
