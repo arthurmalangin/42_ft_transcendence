@@ -29,11 +29,17 @@ document.addEventListener('game_event', async()=>{
 			loadPage('/friends');
 		});
 
-		const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		brickbreakerLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/brickbreaker');
-			loadPage('/brickbreaker');
+		const gameLabel = document.getElementById('btn_game');
+		gameLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/menu');
+			loadPage('/menu');
 		});
+
+		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
+		// brickbreakerLabel.addEventListener('click', () => {
+		// 	history.pushState(null, '', '/brickbreaker');
+		// 	loadPage('/brickbreaker');
+		// });
 	}
 
 	gameEvent();
@@ -136,7 +142,7 @@ document.addEventListener('game_event', async()=>{
 				'btn_settings',
 				'btn_home',
 				'btn_friends',
-				'btn_brickbreaker'
+				'btn_game',
 			];
 
 			navbarElements.forEach(id => {
@@ -146,10 +152,16 @@ document.addEventListener('game_event', async()=>{
 			});
 
 			addEventListenerWithTracking(window, 'keydown', function (e) {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+					e.preventDefault();
+				}
 				keys[e.key] = true;
 			});
-
+			
 			addEventListenerWithTracking(window, 'keyup', function (e) {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+					e.preventDefault();
+				}
 				keys[e.key] = false;
 			});
 
@@ -247,8 +259,8 @@ document.addEventListener('game_event', async()=>{
 			const quitButton = document.getElementById('btnQuitSettings');
 			addEventListenerWithTracking(quitButton, 'click', function() {
 				cleanupGame();
-				history.pushState(null, '', '/');
-				loadPage('/');
+				history.pushState(null, '', '/menu');
+				loadPage('/menu');
 			});
 		}
 
@@ -280,7 +292,7 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
-			if (playerLost) {
+			if (playerLost && opponentScore < 7) {
 				opponentScore++;
 				document.getElementById('player2Score').textContent = opponentScore;
 			} else {
@@ -349,8 +361,8 @@ document.addEventListener('game_event', async()=>{
 			const quitButton = document.getElementById('btnQuit');
 			if (quitButton) {
 				quitButton.addEventListener('click', () => {
-					history.pushState(null, '', '/');
-					loadPage('/');
+					history.pushState(null, '', '/menu');
+					loadPage('/menu');
 				});
 			}
 		}
