@@ -316,11 +316,11 @@ def get_lose(request):
             return JsonResponse({'error': f'failed to get lose: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
-def get_matches(request):
+def get_Nmatches(request):
     if request.user.is_authenticated:
         try:
             user_profile = PlayerData.objects.get(username=request.user)
-            return JsonResponse({'matches': user_profile.matches})
+            return JsonResponse({'match': user_profile.matches})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get matches: {str(e)}'}, status=400)
@@ -410,23 +410,36 @@ def setUserLang(request):
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
 
-def create_match(request):
-    if request.user.is_authenticated and request.method == 'POST':
-        try:
-            if not request.body:
-                return JsonResponse({"error": "Request body is empty"}, status=400)
-            data = json.loads(request.body.decode('utf-8'))
-            versus = data.get('versus', None)
-            my_score = data.get('myscore', None)
-            opp_score = data.get('oppscore', None)
-            if not my_score or not opp_score or not versus:
-                return JsonRequest({"error": "Can't find values"})
+# def create_match(request):
+#     if request.user.is_authenticated and request.method == 'POST':
+#         try:
+#             if not request.body:
+#                 return JsonResponse({"error": "Request body is empty"}, status=400)
+#             data = json.loads(request.body.decode('utf-8'))
+#             versus = data.get('versus', None)
+#             my_score = data.get('myscore', None)
+#             opp_score = data.get('oppscore', None)
+#             if not my_score or not opp_score or not versus:
+#                 return JsonRequest({"error": "Can't find values"})
             
-            user_profile = playerData.objects.get(username=request.user.username)
-            match_data = MatchData.objects.create(player=user_profile.id, myScore=my_score, oppScore=opp_score)
-            match_data.save()
-            return JsonResponse({"Success": "match created!"})
-        except Exception as e:
-            print("error::::::::::::::" + str(e))
-            return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
-    return JsonResponse({'error': 'User not authenticated'}, status=400)
+#             user_profile = playerData.objects.get(username=request.user.username)
+#             match_data = MatchData.objects.create(player=user_profile.id, myScore=my_score, oppScore=opp_score)
+#             match_data.save()
+#             return JsonResponse({"Success": "match created!"})
+#         except Exception as e:
+#             print("error::::::::::::::" + str(e))
+#             return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
+#     return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+# def getLmatches(request):
+#     if request.user.is_authenticated:
+#         try:
+#             match_profile = MatchData.objects.get(id=request.user.id)
+#             if match_profile:
+#                 return JsonResponse(match_profile.opponent)
+#             else:
+#                 return JsonResponse({'no opponent'})
+#         except Exception as e:
+#             print("error::::::::::::::" + str(e))
+#             return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
+#     return JsonResponse({'error': 'User not authenticated'}, status=400)

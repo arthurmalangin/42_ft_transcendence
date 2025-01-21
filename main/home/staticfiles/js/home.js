@@ -4,6 +4,7 @@ document.addEventListener('home_event', async()=>{
 		updateRank();
 		updateWinRate();
 		updateMatches();
+		// updateLastMatches();
 
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
@@ -168,7 +169,7 @@ document.addEventListener('home_event', async()=>{
 
 	async function updateMatches(){
 		try{
-			const response = await fetch('/api/get_matches/', {
+			const response = await fetch('/api/get_Nmatches/', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -179,8 +180,8 @@ document.addEventListener('home_event', async()=>{
 			if (response.ok) {
 				const data = await response.json();
 				const matchElement = document.getElementById('match');
-				if (data.matches) {
-					matchElement.textContent = `${data.matches}`;
+				if (data.match) {
+					matchElement.textContent = `${data.match}`;
 				} else {
 					matchElement.textContent = 'N/A';
 				}
@@ -189,6 +190,30 @@ document.addEventListener('home_event', async()=>{
 			console.error('Error updating rank:', error);
 		}
 	}
+
+	// async function updateLastMatches(){
+	// 	try{
+	// 		const response = await fetch('/api/getLmatches/', {
+	// 			methos: 'GET',
+	// 			headers: {
+	// 				'Content-Type': 'application/json',
+	// 				'X-CSRFToken': getCSRFToken()
+	// 			}
+	// 		});
+
+	// 		if (response.ok) {
+	// 			const data = await response.json();
+	// 			const lastMatchElement = document.getElementById('player')
+	// 			if(data.player) {
+	// 				lastMatchElement.textContent = `vs ${data.player}`;
+	// 			} else {
+	// 				lastMatchElement.textContent = `N/A`;
+	// 			}
+	// 		}
+	// 	} catch (error) {
+	// 		console.error('Error updating last matches:', error);
+	// 	}
+	// }
 
 	function logout() {
 		fetch('/srclogin/logout/', {
