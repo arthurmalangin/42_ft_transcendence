@@ -98,13 +98,13 @@ document.addEventListener('game_event', async()=>{
 		};
 
 		const enlargePaddleImage = new Image();
-		enlargePaddleImage.src = 'https://127.0.0.1/static/enlarge.svg';
+		enlargePaddleImage.src = '/static/enlarge.svg';
 
 		const freezeOpponentImage = new Image();
-		freezeOpponentImage.src = 'https://127.0.0.1/static/freeze.svg';
+		freezeOpponentImage.src = '/static/freeze.svg';
 
 
-		const FRAME_RATE = 120;
+		const FRAME_RATE = 60;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
 		let isPaused = false;
@@ -196,9 +196,9 @@ document.addEventListener('game_event', async()=>{
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
-						event.target.id !== 'BtnEnablePowerups' &&
+						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
-						event.target.id !== 'BtnEnableAI' &&
+						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
@@ -228,15 +228,15 @@ document.addEventListener('game_event', async()=>{
 				updatePaddleSpeed(newSpeed);
 			});
 			
-			const BtnEnablePowerups = document.getElementById('BtnEnablePowerups');
-			addEventListenerWithTracking(BtnEnablePowerups, 'click', function() {
+			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
 				togglePowerups();
 			});
 			
-			const BtnEnableAI = document.getElementById('BtnEnableAI');
-			addEventListenerWithTracking(BtnEnableAI, 'click', function() {
+			const btnEnableAI = document.getElementById('btnEnableAI');
+			addEventListenerWithTracking(btnEnableAI, 'click', function() {
 				AIEnabled = !AIEnabled;
-				BtnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+				btnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
 			});
 
 			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
@@ -262,7 +262,7 @@ document.addEventListener('game_event', async()=>{
 			context.clearRect(0, 0, boardWidth, boardHeight);
 
 			moveBall();
-			movePowerUps();
+			movePowerUp();
 			draw();
 			updateOpponentPosition();
 			updatePaddlePositions();
@@ -325,9 +325,11 @@ document.addEventListener('game_event', async()=>{
 			if (!isPaused)
 				pauseGame();
 
-			if (fullCleanup)
-				return;
+			if (!fullCleanup)
+				gameOver();
+		}
 			
+		function gameOver() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
@@ -410,7 +412,7 @@ document.addEventListener('game_event', async()=>{
 				let normalizedIntersectY = intersectY / (player.height / 2);
 				let bounceAngle = normalizedIntersectY * Math.PI / 4;
 
-				if (ball.speed < 12)
+				if (ball.speed < 5)
 					ball.speed += 0.1;
 				ball.velocityX = ball.speed * Math.cos(bounceAngle);
 				ball.velocityY = ball.speed * Math.sin(bounceAngle);
@@ -453,8 +455,8 @@ document.addEventListener('game_event', async()=>{
 		function resetToDefaultSettings() {
 			powerUpsEnabled = false;
 			AIEnabled = false;
-			const powerUpButton = document.getElementById('BtnEnablePowerups');
-			const AIButton = document.getElementById('BtnEnableAI');
+			const powerUpButton = document.getElementById('btnEnablePowerups');
+			const AIButton = document.getElementById('btnEnableAI');
 			powerUpButton.textContent = 'ENABLE POWERUPS';
 			AIButton.textContent = 'ENABLE AI';
 
@@ -470,7 +472,7 @@ document.addEventListener('game_event', async()=>{
 
 		function togglePowerups() {
 			powerUpsEnabled = !powerUpsEnabled;
-			const button = document.getElementById('BtnEnablePowerups');
+			const button = document.getElementById('btnEnablePowerups');
 			button.textContent = powerUpsEnabled ? 'DISABLE POWERUPS' : 'ENABLE POWERUPS';
 
 			if (!powerUpsEnabled) {
@@ -514,7 +516,7 @@ document.addEventListener('game_event', async()=>{
 			}
 		}
 
-		function movePowerUps() {
+		function movePowerUp() {
 			if (!powerUp)
 				return;
 
