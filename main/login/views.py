@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from settings.models import PlayerData
+from settings.models import MatchData
 import requests
 import base64
 from django.contrib.auth.hashers import make_password

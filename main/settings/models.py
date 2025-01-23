@@ -4,7 +4,7 @@ from django.utils import timezone
 
 class MatchData(models.Model):
     player = models.IntegerField(default=0)
-    opponent = models.CharField(max_length=255)
+    opponent = models.CharField(max_length=255, default="opponent")
     myScore = models.IntegerField(default=0)
     oppScore = models.IntegerField(default=0)
     result = models.CharField(max_length=255)

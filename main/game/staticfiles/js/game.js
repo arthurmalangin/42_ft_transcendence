@@ -115,7 +115,7 @@ document.addEventListener('game_event', async()=>{
 		let gameIntervalId;
 		let isPaused = false;
 
-		let AIEnabled = false;
+		var AIEnabled = false;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
@@ -346,8 +346,8 @@ document.addEventListener('game_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
 				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
-				updateScore(playerScore);
-				saveMatch(playerScore, opponentScore, AIEnabled);
+				const versus = AIEnabled? "AI" : "GUEST";
+				updateScore(playerScore, opponentScore, versus);
 				gameResultOverlay.classList.add('active');
 			}
 			
@@ -757,14 +757,13 @@ document.addEventListener('game_event', async()=>{
 	/////////////                      UPDATE DATA                        ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-	async function updateScore(playerScore) {
+	async function updateScore(playerScore, opponentScore, versus) {
 		await updateMatches(playerScore);
 		await updateData();
-		await saveMatches(AIEnabled);
+		await saveMatches(playerScore, opponentScore, versus);
 	}
 
-	async function saveMatches(AIEnabled){
-		const versus = AIEnabled? "AI" : "GUEST";
+	async function saveMatches(playerScore, opponentScore, versus){
 		try{
 			const response = await fetch('/api/create_match/', {
 				method: 'POST',
@@ -774,8 +773,8 @@ document.addEventListener('game_event', async()=>{
 				},
 				body: JSON.stringify({
 					opponent: versus,
-					myscore: myScore,
-					oppscore: oppScore,
+					myscore: playerScore,
+					oppscore: opponentScore,
 				}),
 			});
 			if (!response.ok) {

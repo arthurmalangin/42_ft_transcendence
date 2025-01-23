@@ -30,4 +30,5 @@ urlpatterns = [
 	path("add_lose/", views.add_lose, name="add_lose"),
 	path("update_win_rate/", views.update_win_rate, name="update_win_rate"),
 	path("create_match/", views.create_match, name="create_match"),
+	path("get_Lastmatches/", views.get_Lastmatches, name="get_Lastmatches"),
 ]

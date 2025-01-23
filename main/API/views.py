@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 import json
 from settings.models import PlayerData
+from settings.models import MatchData
 from asgiref.sync import sync_to_async
 
 def is_auth(request):
@@ -422,8 +423,8 @@ def create_match(request):
             if not my_score or not opp_score or not versus:
                 return JsonRequest({"error": "Can't find values"})
             
-            user_profile = playerData.objects.get(username=request.user.username)
-            match_data = MatchData.objects.create(player=user_profile.id, myScore=my_score, oppScore=opp_score)
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            match_data = MatchData.objects.create(player=user_profile.id, opponent=versus, myScore=my_score, oppScore=opp_score)
             match_data.save()
             return JsonResponse({"Success": "match created!"})
         except Exception as e:
@@ -431,15 +432,19 @@ def create_match(request):
             return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
-# def getLmatches(request):
-#     if request.user.is_authenticated:
-#         try:
-#             match_profile = MatchData.objects.get(id=request.user.id)
-#             if match_profile:
-#                 return JsonResponse(match_profile.opponent)
-#             else:
-#                 return JsonResponse({'no opponent'})
-#         except Exception as e:
-#             print("error::::::::::::::" + str(e))
-#             return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
-#     return JsonResponse({'error': 'User not authenticated'}, status=400)
+def get_Lastmatches(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                match_profile = MatchData.objects.get(player=user_profile.id)
+                if match_profile:
+                    return JsonResponse({"opponent":match_profile.opponent, "myScore":match_profile.myScore, "oppScore":match_profile.oppScore})
+                else:
+                    return JsonResponse({'no match'}) 
+            else:
+                return JsonResponse({"error": "not player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
