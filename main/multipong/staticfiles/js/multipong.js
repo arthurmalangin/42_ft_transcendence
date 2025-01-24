@@ -62,6 +62,7 @@ document.addEventListener('multipong_event', async()=>{
 			x: 10,
 			y: boardHeight / 2 - verticalPaddleHeight / 2
 		};
+		console.log('Player 1:', player1);
 
 		let player2 = {
 			width: horizontalPaddleWidth,
@@ -70,6 +71,7 @@ document.addEventListener('multipong_event', async()=>{
 			x: boardWidth / 2 - horizontalPaddleWidth / 2,
 			y: 10
 		};
+		console.log('Player 2:', player2);
 
 		let player3 = {
 			width: horizontalPaddleWidth,
@@ -78,6 +80,7 @@ document.addEventListener('multipong_event', async()=>{
 			x: boardWidth / 2 - horizontalPaddleWidth / 2,
 			y: 490 - horizontalPaddleHeight
 		};
+		console.log('Player 3:', player3);
 
 		let player4 = {
 			width: verticalPaddleWidth,
@@ -86,6 +89,7 @@ document.addEventListener('multipong_event', async()=>{
 			x: 490 - verticalPaddleWidth,
 			y: boardHeight / 2 - verticalPaddleHeight / 2
 		};
+		console.log('Player 4:', player4);
 
 		let players = [player1, player2, player3, player4];
 
@@ -280,10 +284,10 @@ document.addEventListener('multipong_event', async()=>{
 			ball.velocityX = ballSpeed * Math.cos(angle);
 			ball.velocityY = ballSpeed * Math.sin(angle);
 
-			player1.x = boardWidth / 2 - player1.width / 2;
-			player2.y = boardHeight / 2 - player2.height / 2;
-			player3.y = boardHeight / 2 - player3.height / 2;
-			player4.x = boardWidth / 2 - player4.width / 2;
+			player1.y = boardHeight / 2 - verticalPaddleHeight / 2;
+			player2.x = boardWidth / 2 - horizontalPaddleWidth / 2;
+			player3.x = boardWidth / 2 - horizontalPaddleWidth / 2;
+			player4.y = boardHeight / 2 - verticalPaddleHeight / 2;
 		}
 
 		function pauseGame() {
