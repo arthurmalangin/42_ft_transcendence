@@ -106,11 +106,13 @@ body {
 .right-nav .nav-item {
     border-left: none;
     border-right: 2px solid var(--terminal-green);
+	/* background-color: red; */
 }
 
 .right-nav .game-info {
 	margin-top: 2rem;
 	padding: 0 1rem;
+	min-width: 220px;
 }
 
 /* Content panels */

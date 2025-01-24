@@ -111,6 +111,7 @@ body {
 .right-nav .game-info {
 	margin-top: 2rem;
 	padding: 0 1rem;
+	min-width: 220px;
 }
 
 /* Content panels */

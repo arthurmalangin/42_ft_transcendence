@@ -477,9 +477,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function updatePlayerPosition() {
-			if ((keys['a'] || keys['ArrowLeft']) && player.x > 0)
+			if ((keys['a'] || keys['A'] || keys['ArrowLeft']) && player.x > 0)
 				player.x -= player.speed;
-			if ((keys['d'] || keys['ArrowRight']) && player.x + paddleWidth < boardWidth)
+			if ((keys['d'] || keys['D'] || keys['ArrowRight']) && player.x + paddleWidth < boardWidth)
 				player.x += player.speed;
 		}
 

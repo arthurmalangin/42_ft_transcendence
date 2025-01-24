@@ -397,10 +397,10 @@ document.addEventListener('game_event', async()=>{
 
 		function updatePaddlePositions() {
 			if (!playerFrozen) {
-				if (keys['w'] && player.y > 0)
-					player.y -= player.speed;
-				if (keys['s'] && player.y < boardHeight - player.height)
-					player.y += player.speed;
+				if ((keys['w'] || keys['W']) && player1.y > 0)
+					player1.y -= player1.speed;
+				if ((keys['s'] || keys['S']) && player1.y < boardHeight - player1.height)
+					player1.y += player1.speed;
 			}
 		
 			if (keys['ArrowUp'] && opponent.y > 0)
@@ -421,36 +421,29 @@ document.addEventListener('game_event', async()=>{
 				ball.velocityY *= -1;
 			}
 
-			// player
-			if (ball.x <= player.x + player.width && ball.y + ball.height >= player.y && ball.y <= player.y + player.height) {
-				let intersectY = ball.y + ball.height / 2 - player.y - player.height / 2;
-				let normalizedIntersectY = intersectY / (player.height / 2);
-				let bounceAngle = normalizedIntersectY * Math.PI / 4;
+			if (ball.x <= player.x + player.width && ball.y + ball.height >= player.y && ball.y <= player.y + player.height)
+				handlePaddleCollision(ball, player, true);
 
-				if (ball.speed < 5)
-					ball.speed += 0.1;
-				ball.velocityX = ball.speed * Math.cos(bounceAngle);
-				ball.velocityY = ball.speed * Math.sin(bounceAngle);
-			}
-
-			// opponent
-			if (ball.x + ball.width >= opponent.x && ball.y + ball.height >= opponent.y && ball.y <= opponent.y + opponent.height) {
-				let intersectY = ball.y + ball.height / 2 - opponent.y - opponent.height / 2;
-				let normalizedIntersectY = intersectY / (opponent.height / 2);
-				let bounceAngle = normalizedIntersectY * Math.PI / 4;
-
-				if (ball.speed < 5) {
-					ball.speed += 0.1;
-				}
-				ball.velocityX = -ball.speed * Math.cos(bounceAngle);
-				ball.velocityY = ball.speed * Math.sin(bounceAngle);
-			}
+			if (ball.x + ball.width >= opponent.x && ball.y + ball.height >= opponent.y && ball.y <= opponent.y + opponent.height)
+				handlePaddleCollision(ball, opponent, false);
 
 			// check for point
 			if (ball.x <= 0)
 				resetGame(true, true);
 			if (ball.x + ball.width >= boardWidth)
 				resetGame(false, true);
+		}
+
+		function handlePaddleCollision(ball, paddle, isPlayer) {
+			let intersectY = ball.y + ball.height / 2 - paddle.y - paddle.height / 2;
+			let normalizedIntersectY = intersectY / (paddle.height / 2);
+			let bounceAngle = normalizedIntersectY * Math.PI / 4;
+		
+			if (ball.speed < 5) {
+				ball.speed += 0.1;
+			}
+			ball.velocityX = (isPlayer ? 1 : -1) * ball.speed * Math.cos(bounceAngle);
+			ball.velocityY = ball.speed * Math.sin(bounceAngle);
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////

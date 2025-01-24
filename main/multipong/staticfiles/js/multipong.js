@@ -60,7 +60,8 @@ document.addEventListener('multipong_event', async()=>{
 			height: verticalPaddleHeight,
 			speed: paddleSpeed,
 			x: 10,
-			y: boardHeight / 2 - verticalPaddleHeight / 2
+			y: boardHeight / 2 - verticalPaddleHeight / 2,
+			score: 0
 		};
 
 		let player2 = {
@@ -68,7 +69,8 @@ document.addEventListener('multipong_event', async()=>{
 			height: horizontalPaddleHeight,
 			speed: paddleSpeed,
 			x: boardWidth / 2 - horizontalPaddleWidth / 2,
-			y: 10
+			y: 10,
+			score: 0
 		};
 
 		let player3 = {
@@ -76,7 +78,8 @@ document.addEventListener('multipong_event', async()=>{
 			height: horizontalPaddleHeight,
 			speed: paddleSpeed,
 			x: boardWidth / 2 - horizontalPaddleWidth / 2,
-			y: 490 - horizontalPaddleHeight
+			y: 490 - horizontalPaddleHeight,
+			score: 0
 		};
 
 		let player4 = {
@@ -84,7 +87,8 @@ document.addEventListener('multipong_event', async()=>{
 			height: verticalPaddleHeight,
 			speed: paddleSpeed,
 			x: 490 - verticalPaddleWidth,
-			y: boardHeight / 2 - verticalPaddleHeight / 2
+			y: boardHeight / 2 - verticalPaddleHeight / 2,
+			score: 0
 		};
 
 		let players = [player1, player2, player3, player4];
@@ -103,8 +107,6 @@ document.addEventListener('multipong_event', async()=>{
 			x: boardWidth / 2 - ballWidth / 2,
 			y: boardHeight / 2 - ballHeight / 2
 		};
-
-		let playerScores = [0, 0, 0, 0];
 
 		let keys = {};
 
@@ -260,7 +262,7 @@ document.addEventListener('multipong_event', async()=>{
 			draw();
 			updatePaddlePositions();
 
-			if (playerScores.some(score => score >= 7))
+			if (players.some(player => player.score >= 7))
 				cleanupGame(false);
 		}
 
@@ -284,6 +286,13 @@ document.addEventListener('multipong_event', async()=>{
 			player2.x = boardWidth / 2 - horizontalPaddleWidth / 2;
 			player3.x = boardWidth / 2 - horizontalPaddleWidth / 2;
 			player4.y = boardHeight / 2 - verticalPaddleHeight / 2;
+
+			players.forEach((player, index) => {
+				let scoreElement = document.getElementById(`player${index + 1}Score`);
+				if (scoreElement) {
+					scoreElement.textContent = player.score;
+				}
+			});
 		}
 
 		function pauseGame() {
@@ -297,14 +306,14 @@ document.addEventListener('multipong_event', async()=>{
 		}
 
 		function cleanupGame(fullCleanup = true) {
-			// resetToDefaultSettings();
-			// resetGame();
-			// removeAllEventListeners();
+			resetToDefaultSettings();
+			resetGame();
+			removeAllEventListeners();
 
-			// if (!isPaused)
-			// 	pauseGame();
+			if (!isPaused)
+				pauseGame();
 
-			// if (!fullCleanup)
+			if (!fullCleanup)
 				gameOver();
 		}
 			
@@ -321,7 +330,7 @@ document.addEventListener('multipong_event', async()=>{
 			const playAgainButton = document.getElementById('btnPlayAgain');
 			if (playAgainButton) {
 				playAgainButton.addEventListener('click', () => {
-					loadPage('/game');
+					loadPage('/multipong');
 				});
 			}
 			
@@ -355,19 +364,19 @@ document.addEventListener('multipong_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function updatePaddlePositions() {
-			if (keys['w'] && player1.y > 0)
+			if ((keys['w'] || keys['W']) && player1.y > 0)
 				player1.y -= player1.speed;
-			if (keys['s'] && player1.y < boardHeight - player1.height)
+			if ((keys['s'] || keys['S']) && player1.y < boardHeight - player1.height)
 				player1.y += player1.speed;
-
-			if (keys['c'] && player2.x > 0)
+		
+			if ((keys['c'] || keys['C']) && player2.x > 0)
 				player2.x -= player2.speed;
-			if (keys['v'] && player2.x < boardWidth - player2.width)
+			if ((keys['v'] || keys['V']) && player2.x < boardWidth - player2.width)
 				player2.x += player2.speed;
-			
-			if (keys[','] && player3.x > 0)
+		
+			if ((keys[','] || keys['<']) && player3.x > 0)
 				player3.x -= player3.speed;
-			if (keys['.'] && player3.x < boardWidth - player3.width)
+			if ((keys['.'] || keys['>']) && player3.x < boardWidth - player3.width)
 				player3.x += player3.speed;
 		
 			if (keys['ArrowUp'] && player4.y > 0)
@@ -383,26 +392,76 @@ document.addEventListener('multipong_event', async()=>{
 			players.forEach(player => {
 				if (ball.x < player.x + player.width && ball.x + ball.width > player.x &&
 					ball.y < player.y + player.height && ball.y + ball.height > player.y) {
-					
-					if (player.width > player.height) { // horizontal paddle
-						let intersectX = ball.x + ball.width / 2 - player.x - player.width / 2;
-						let normalizedIntersectX = intersectX / (player.width / 2);
-						let bounceAngle = normalizedIntersectX * Math.PI / 4;
-
-						ball.velocityX = ball.speed * Math.sin(bounceAngle);
-						ball.velocityY = player.y < ball.y ? ball.speed * Math.cos(bounceAngle) : -ball.speed * Math.cos(bounceAngle);
-					} else { // vertical paddle
-						let intersectY = ball.y + ball.height / 2 - player.y - player.height / 2;
-						let normalizedIntersectY = intersectY / (player.height / 2);
-						let bounceAngle = normalizedIntersectY * Math.PI / 4;
-		
-						ball.velocityX = ball.velocityX > 0 ? -ball.speed * Math.cos(bounceAngle) : ball.speed * Math.cos(bounceAngle);
-						ball.velocityY = ball.speed * Math.sin(bounceAngle);
-					}
-					if (ball.speed < 5)
-						ball.speed += 0.1;
+					handlePaddleCollision(ball, player);
 				}
 			});
+
+			// check for point
+			if (ball.x <= 0 || ball.x + ball.width >= boardWidth || ball.y <= 0 || ball.y + ball.height >= boardHeight) {
+				let scoredPlayer = null;
+
+				if (ball.x <= 0) {
+					scoredPlayer = players[0];
+				} else if (ball.y <= 0) {
+					scoredPlayer = players[1];
+				} else if (ball.y + ball.height >= boardHeight) {
+					scoredPlayer = players[2];
+				} else if (ball.x + ball.width >= boardWidth) {
+					scoredPlayer = players[3];
+				}
+
+				players.forEach(player => {
+					if (player !== scoredPlayer) {
+						player.score++;
+					}
+				});
+
+				resetGame();
+			}
+		}
+
+		function handlePaddleCollision(ball, player) {
+			if (player.width > player.height) { // horizontal paddle
+				let intersectX = ball.x + ball.width / 2 - player.x - player.width / 2;
+				let normalizedIntersectX = intersectX / (player.width / 2);
+				let bounceAngle = normalizedIntersectX * Math.PI / 4;
+		
+				ball.velocityX = ball.speed * Math.sin(bounceAngle);
+				ball.velocityY = player.y < ball.y ? ball.speed * Math.cos(bounceAngle) : -ball.speed * Math.cos(bounceAngle);
+			} else { // vertical paddle
+				let intersectY = ball.y + ball.height / 2 - player.y - player.height / 2;
+				let normalizedIntersectY = intersectY / (player.height / 2);
+				let bounceAngle = normalizedIntersectY * Math.PI / 4;
+		
+				ball.velocityX = ball.velocityX > 0 ? -ball.speed * Math.cos(bounceAngle) : ball.speed * Math.cos(bounceAngle);
+				ball.velocityY = ball.speed * Math.sin(bounceAngle);
+			}
+
+			if (ball.speed < 5) {
+				ball.speed += 0.1;
+			}
+		}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/////////////                    SETTINGS FUNCS                       ////////////
+	//////////////////////////////////////////////////////////////////////////////////
+
+		function updateBallSpeed(speed) {
+			ballSpeed = parseFloat(speed);
+			ball.speed = ballSpeed;
+		}
+
+		function updatePaddleSpeed(speed) {
+			players.forEach(player => {
+				player.speed = parseFloat(speed);
+			});
+		}
+
+		function resetToDefaultSettings() {
+			updateBallSpeed(2);
+			updatePaddleSpeed(2);
+			document.getElementById('ballSpeedSlider').value = 2;
+			document.getElementById('paddleSpeedSlider').value = 2;
 		}
 	
 		startGame();
