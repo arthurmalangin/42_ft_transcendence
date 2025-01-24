@@ -292,7 +292,10 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
-			if (playerLost && opponentScore < 7) {
+			if (playerScore >= 7 || opponentScore >= 7)
+				return;
+
+			if (playerLost) {
 				opponentScore++;
 				document.getElementById('player2Score').textContent = opponentScore;
 			} else {
