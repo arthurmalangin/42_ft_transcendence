@@ -317,11 +317,23 @@ document.addEventListener('multipong_event', async()=>{
 		function gameOver() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
-			if (gameResultOverlay && gameResultMessage) {
-				// gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
-				// updateScores(playerScore);
+			const player1Score = document.getElementById('player1Score');
+			const player2Score = document.getElementById('player2Score');
+			const player3Score = document.getElementById('player3Score');
+			const player4Score = document.getElementById('player4Score');
+
+			if (gameResultOverlay && gameResultMessage && player1Score && player2Score && player3Score && player4Score) {
+				console.log(player1.score);
+				console.log(player2.score);
+				console.log(player3.score);
+				console.log(player4.score);
+
+				// TODO not working for some stupid reason????
+				player1Score.textContent = player1.score;
+				player2Score.textContent = player2.score;
+				player3Score.textContent = player3.score;
+				player4Score.textContent = player4.score;
 				gameResultOverlay.classList.add('active');
-				// updateData();
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
@@ -345,7 +357,7 @@ document.addEventListener('multipong_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 		
 		function draw() {
-			context.fillStyle = "#ffffff";
+			context.fillStyle = "#00ff00";
 			players.forEach(player => {
 				context.fillRect(player.x, player.y, player.width, player.height);
 			});

@@ -162,7 +162,7 @@ body {
 /* Pong game */
 
 #board {
-	background-image: url('/static/bg.svg');
+	background-image: url('/static/multipong_bg.svg');
 	border: 1px solid rgba(0, 255, 0, 0.3);
 	margin-right: 24px;
 }

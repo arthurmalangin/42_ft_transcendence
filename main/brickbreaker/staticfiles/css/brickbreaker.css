@@ -161,7 +161,7 @@ body {
 /* Brickbreaker */
 
 #board {
-	background-color: var(--terminal-bg);
+	background-image: url("/static/brickbreaker_bg.svg");
 	border: 1px solid rgba(0, 255, 0, 0.3);
 	margin-right: 24px;
 }

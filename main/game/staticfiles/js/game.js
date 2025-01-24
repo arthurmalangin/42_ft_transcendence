@@ -372,7 +372,7 @@ document.addEventListener('game_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 		
 		function draw() {
-			context.fillStyle = "#ffffff";
+			context.fillStyle = "#00ff00";
 			context.fillRect(player.x, player.y, player.width, player.height);
 			context.fillStyle = "#00ff00";
 			context.fillRect(opponent.x, opponent.y, opponent.width, opponent.height);
