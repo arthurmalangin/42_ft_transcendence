@@ -215,12 +215,9 @@ document.addEventListener('game_event', async()=>{
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
-					} else if (event.type === 'keydown') {
-						const blockedKeys = ['s', 'w', ' '];
-						if (blockedKeys.includes(event.key)) {
-							event.stopPropagation();
-							event.preventDefault();
-						}
+					} else if (event.type === 'keydown' && [' '].includes(event.key)) {
+						event.stopPropagation();
+						event.preventDefault();
 					}
 				}
 			}
@@ -397,10 +394,10 @@ document.addEventListener('game_event', async()=>{
 
 		function updatePaddlePositions() {
 			if (!playerFrozen) {
-				if ((keys['w'] || keys['W']) && player1.y > 0)
-					player1.y -= player1.speed;
-				if ((keys['s'] || keys['S']) && player1.y < boardHeight - player1.height)
-					player1.y += player1.speed;
+				if ((keys['w'] || keys['W']) && player.y > 0)
+				player.y -= player.speed;
+			if ((keys['s'] || keys['S']) && player.y < boardHeight - player.height)
+				player.y += player.speed;
 			}
 		
 			if (keys['ArrowUp'] && opponent.y > 0)

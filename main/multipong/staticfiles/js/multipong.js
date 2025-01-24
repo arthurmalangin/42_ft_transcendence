@@ -211,12 +211,9 @@ document.addEventListener('multipong_event', async()=>{
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
-					} else if (event.type === 'keydown') {
-						const blockedKeys = ['s', 'w', ' ', 'ArrowUp', 'ArrowDown', 'c', 'v', ',', '.'];
-						if (blockedKeys.includes(event.key)) {
-							event.stopPropagation();
-							event.preventDefault();
-						}
+					} else if (event.type === 'keydown' && [' '].includes(event.key)) {
+						event.stopPropagation();
+						event.preventDefault();
 					}
 				}
 			}

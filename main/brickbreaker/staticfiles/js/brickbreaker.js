@@ -209,12 +209,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
-					} else if (event.type === 'keydown') {
-						const blockedKeys = ['a', 'd', 'ArrowLeft', 'ArrowRight', ' '];
-						if (blockedKeys.includes(event.key)) {
-							event.stopPropagation();
-							event.preventDefault();
-						}
+					} else if (event.type === 'keydown' && [' '].includes(event.key)) {
+						event.stopPropagation();
+						event.preventDefault();
 					}
 				}
 			}
