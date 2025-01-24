@@ -439,7 +439,7 @@ document.addEventListener('game_event', async()=>{
 				let normalizedIntersectY = intersectY / (opponent.height / 2);
 				let bounceAngle = normalizedIntersectY * Math.PI / 4;
 
-				if (ball.speed < 12) {
+				if (ball.speed < 5) {
 					ball.speed += 0.1;
 				}
 				ball.velocityX = -ball.speed * Math.cos(bounceAngle);

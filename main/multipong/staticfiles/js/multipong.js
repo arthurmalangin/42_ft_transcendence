@@ -62,7 +62,6 @@ document.addEventListener('multipong_event', async()=>{
 			x: 10,
 			y: boardHeight / 2 - verticalPaddleHeight / 2
 		};
-		console.log('Player 1:', player1);
 
 		let player2 = {
 			width: horizontalPaddleWidth,
@@ -71,7 +70,6 @@ document.addEventListener('multipong_event', async()=>{
 			x: boardWidth / 2 - horizontalPaddleWidth / 2,
 			y: 10
 		};
-		console.log('Player 2:', player2);
 
 		let player3 = {
 			width: horizontalPaddleWidth,
@@ -80,7 +78,6 @@ document.addEventListener('multipong_event', async()=>{
 			x: boardWidth / 2 - horizontalPaddleWidth / 2,
 			y: 490 - horizontalPaddleHeight
 		};
-		console.log('Player 3:', player3);
 
 		let player4 = {
 			width: verticalPaddleWidth,
@@ -89,7 +86,6 @@ document.addEventListener('multipong_event', async()=>{
 			x: 490 - verticalPaddleWidth,
 			y: boardHeight / 2 - verticalPaddleHeight / 2
 		};
-		console.log('Player 4:', player4);
 
 		let players = [player1, player2, player3, player4];
 
@@ -384,27 +380,29 @@ document.addEventListener('multipong_event', async()=>{
 			ball.x += ball.velocityX;
 			ball.y += ball.velocityY;
 
-			// players.forEach(player => {
-			// 	if (ball.x <= player.x + player.width && ball.x + ball.width >= player.x &&
-			// 		ball.y + ball.height >= player.y && ball.y <= player.y + player.height) {
+			players.forEach(player => {
+				if (ball.x < player.x + player.width && ball.x + ball.width > player.x &&
+					ball.y < player.y + player.height && ball.y + ball.height > player.y) {
 					
-			// 		let intersectY = ball.y + ball.height / 2 - player.y - player.height / 2;
-			// 		let normalizedIntersectY = intersectY / (player.height / 2);
-			// 		let bounceAngle = normalizedIntersectY * Math.PI / 4;
-			
-			// 		if (ball.speed < 5)
-			// 			ball.speed += 0.1;
-					
-			// 		ball.velocityX = ball.speed * Math.cos(bounceAngle);
-			// 		ball.velocityY = ball.speed * Math.sin(bounceAngle);
-			// 	}
-			// });
+					if (player.width > player.height) { // horizontal paddle
+						let intersectX = ball.x + ball.width / 2 - player.x - player.width / 2;
+						let normalizedIntersectX = intersectX / (player.width / 2);
+						let bounceAngle = normalizedIntersectX * Math.PI / 4;
 
-			// // check for point
-			// if (ball.x <= 0)
-			// 	resetGame(true, true);
-			// if (ball.x + ball.width >= boardWidth)
-			// 	resetGame(false, true);
+						ball.velocityX = ball.speed * Math.sin(bounceAngle);
+						ball.velocityY = player.y < ball.y ? ball.speed * Math.cos(bounceAngle) : -ball.speed * Math.cos(bounceAngle);
+					} else { // vertical paddle
+						let intersectY = ball.y + ball.height / 2 - player.y - player.height / 2;
+						let normalizedIntersectY = intersectY / (player.height / 2);
+						let bounceAngle = normalizedIntersectY * Math.PI / 4;
+		
+						ball.velocityX = ball.velocityX > 0 ? -ball.speed * Math.cos(bounceAngle) : ball.speed * Math.cos(bounceAngle);
+						ball.velocityY = ball.speed * Math.sin(bounceAngle);
+					}
+					if (ball.speed < 5)
+						ball.speed += 0.1;
+				}
+			});
 		}
 	
 		startGame();
