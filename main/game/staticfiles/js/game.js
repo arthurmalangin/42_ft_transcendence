@@ -109,7 +109,6 @@ document.addEventListener('game_event', async()=>{
 		const freezeOpponentImage = new Image();
 		freezeOpponentImage.src = '/static/freeze.svg';
 
-
 		const FRAME_RATE = 60;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
@@ -165,7 +164,7 @@ document.addEventListener('game_event', async()=>{
 				keys[e.key] = false;
 			});
 
-			addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
+			addEventListenerWithTracking(document.getElementById('btnPause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space')

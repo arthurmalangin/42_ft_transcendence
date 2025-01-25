@@ -163,7 +163,7 @@ document.addEventListener('multipong_event', async()=>{
 				keys[e.key] = false;
 			});
 
-			addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
+			addEventListenerWithTracking(document.getElementById('btnPause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space')
