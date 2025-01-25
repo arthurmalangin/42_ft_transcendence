@@ -159,7 +159,7 @@ document.addEventListener('home_event', async()=>{
 				if (data.winRate) {
 					rateElement.textContent = `${data.winRate}`;
 				} else {
-					rateElement.textContent = 'N/A';
+					rateElement.textContent = '0';
 				}
 			}
 		} catch (error) {
@@ -191,59 +191,37 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
-	async function updateLastMatches() {
+	async function updateLastMatches(){
 		try{
 			const response = await fetch('/api/get_Lastmatches/', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-CSRFToken': getCSRFToken()
-				}
-			});
-
+					method: 'GET',
+					headers: {
+							'Content-Type': 'application/json',
+							'X-CSRFToken': getCSRFToken()
+						}
+					});
+			
 			if (response.ok) {
 				const data = await response.json();
-				const lastMatchElement1 = document.getElementById('player1')
-				const lastResultElement1 = document.getElementById('result1')
-				if(data.opponent) {
-					lastMatchElement1.textContent = `vs ${data.opponent}`;
-				} else {
-					lastMatchElement1.textContent = `N/A`;
-				}
-				if(data.myScore && data.oppScore) {
-					lastResultElement1.textContent = `${data.myScore} - ${data.oppScore}`;
-				} else {
-					lastResultElement1.textContent = `N/A`
-				}
-				// const lastMatchElement2 = document.getElementById('player2')
-				// const lastResultElement2 = document.getElementById('result2')
-				// if(data.opponent) {
-				// 	lastMatchElement2.textContent = `vs ${data.opponent[1]}`;
-				// } else {
-				// 	lastMatchElement2.textContent = `N/A`;
-				// }
-				// if(data.myScore && data.oppScore) {
-				// 	lastResultElement2.textContent = `${data.myScore[1]} - ${data.oppScore[1]}`;
-				// } else {
-				// 	lastResultElement2.textContent = `N/A`
-				// }
-				// const lastMatchElement3 = document.getElementById('player3')
-				// const lastResultElement3 = document.getElementById('result3')
-				// if(data.opponent) {
-				// 	lastMatchElement3.textContent = `vs ${data.opponent[2]}`;
-				// } else {
-				// 	lastMatchElement3.textContent = `N/A`;
-				// }
-				// if(data.myScore && data.oppScore) {
-				// 	lastResultElement3.textContent = `${data.myScore[2]} - ${data.oppScore[2]}`;
-				// } else {
-				// 	lastResultElement3.textContent = `N/A`
-				// }
-			}
+				console.log('Matches received:', data);
+				data.forEach((match, index) => {
+					const lastMatchElement = document.getElementById(`player${index + 1}`);
+					const lastResultElement = document.getElementById(`result${index + 1}`);
+					if(match.opponent)
+						lastMatchElement.textContent = match.opponent;
+					else
+						lastMatchElement.textContent = ``;
+					if(match.myScore && match.oppScore)
+						lastResultElement.textContent = `${match.myScore} - ${match.oppScore}`;
+					else
+						lastResultElement.textContent = ``; 
+				});
+			}  
 		} catch (error) {
-			console.error('Error updating last matches:', error);
+			console.error('Error updating rank:', error);
 		}
-	}
+}
+	
 
 	function logout() {
 		fetch('/srclogin/logout/', {

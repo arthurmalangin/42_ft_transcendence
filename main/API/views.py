@@ -371,6 +371,8 @@ def update_win_rate(request):
             user_profile = PlayerData.objects.get(username=request.user.username)
             if user_profile.win != 0:
                 user_profile.win_rate = user_profile.win / user_profile.matches 
+                if user_profile.win_rate > user_profile.max_rate:
+                    user_profile.max_rate = user_profile.win_rate
                 user_profile.save()
                 return JsonResponse({'info': user_profile.win_rate})
             else:
@@ -437,9 +439,17 @@ def get_Lastmatches(request):
         try:
             user_profile = PlayerData.objects.get(username=request.user.username)
             if user_profile:
-                match_profile = MatchData.objects.get(player=user_profile.id)
-                if match_profile:
-                    return JsonResponse({"opponent":match_profile.opponent, "myScore":match_profile.myScore, "oppScore":match_profile.oppScore})
+                matches = MatchData.objects.filter(player=user_profile.id).order_by("-date")[:3]
+                if matches:
+                    data = [
+                        {
+                            "opponent":match.opponent,
+                            "myScore":match.myScore,
+                            "oppScore":match.oppScore,
+                        }
+                        for match in matches
+                    ]
+                    return JsonResponse(data, safe=False)
                 else:
                     return JsonResponse([], safe=False) 
             else:
