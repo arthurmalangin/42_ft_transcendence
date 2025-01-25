@@ -106,6 +106,7 @@ body {
 .right-nav .nav-item {
     border-left: none;
     border-right: 2px solid var(--terminal-green);
+	/* background-color: red; */
 }
 
 .right-nav .game-info {
@@ -158,10 +159,10 @@ body {
 	min-width: 100%;
 }
 
-/* Brickbreaker */
+/* Pong game */
 
 #board {
-	background-image: url("/static/brickbreaker_bg.svg");
+	background-image: url('/static/multipong_bg.svg');
 	border: 1px solid rgba(0, 255, 0, 0.3);
 	margin-right: 24px;
 }

@@ -6,14 +6,15 @@
 		<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
 	</header>
 	<main class="main-content">
+		<!-- Navigation -->
 		<nav class="nav">
 			<div id="btn_home" class="nav-item">
 				<span data-translate="title.main.home">&gt; HOME</span>
 			</div>
-			<div id="btn_game" class="nav-item active">
+			<div id="btn_game" class="nav-item">
 				<span data-translate="title.main.pong">&gt; PLAY</span>
 			</div>
-			<!-- <div id="btn_brickbreaker" class="nav-item">
+			<!-- <div id="btn_brickbreaker" class="nav-item active">
 				<span data-translate="title.main.brickbreaker">&gt; PLAY BRICKBREAKER</span>
 			</div> -->
 			<div id="btn_friends" class="nav-item">
@@ -29,9 +30,9 @@
 				<span data-translate="title.main.logout">&gt; LOG OUT</span>
 			</div>
 		</nav>
-
+		
 		<div class="panel">
-			<h2 class="panel-header">&gt; PONG</h2>
+			<h2 class="panel-header">&gt; PONG (4 PLAYERS)</h2>
 
 			<div class="game-container">
 				<canvas id="board"></canvas>
@@ -49,13 +50,15 @@
 					</div>
 					<div class="game-info">
 						<h3>CONTROLS</h3>
-						<p>PLAYER: W/S</p>
-						<p>GUEST: UP/DOWN</p>
+						<p>PLAYER 1: W/S  |  PLAYER 2: C/V</p>
+						<p>PLAYER 3: &lt;/>  |  PLAYER 4: ↑/↓</p>
 					</div>
 					<div class="game-info">
 						<h3>GAMESTATS</h3>
-						<p>PLAYER: <span id="player1Score">0</span></p>
-						<p>GUEST: <span id="player2Score">0</span></p>
+						<p>PLAYER 1: <span id="player1Score">0</span></p>
+						<p>PLAYER 2: <span id="player2Score">0</span></p>
+						<p>PLAYER 3: <span id="player3Score">0</span></p>
+						<p>PLAYER 4: <span id="player4Score">0</span></p>
 					</div>
 				</nav>
 			</div>
@@ -67,7 +70,7 @@
 			<button class="popup-close" id="btnCloseSettingsPong">×</button>
 			<div class="popup-header">
 				<h2>GAME SETTINGS</h2>
-				<p>WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESULT IN A LOST POINT!</p>
+				<p>WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESET CURRENT POINT!</p>
 			</div>
 			<div class="form-group">
 				<label>BALL SPEED</label>
@@ -76,10 +79,6 @@
 			<div class="form-group">
 				<label>PADDLE SPEED</label>
 				<input type="range" class="input" id="paddleSpeedSlider" min="1" value="2" max="3">
-			</div>
-			<div class="form-group">
-				<button id="btnEnablePowerups" class="btn">ENABLE POWERUPS</button>
-				<button id="btnEnableAI" class="btn">ENABLE AI</button>
 			</div>
 			<div class="form-group">
 				<button id="btnResetDefaultSettings" class="btn">RESET DEFAULT</button>
@@ -94,7 +93,11 @@
 	<div id="gameResultOverlay" class="overlay">
 		<div class="overlay-content phosphor">
 			<div class="popup-header">
-				<h2 id="gameResultMessage">PLAYER WON!</h2>
+				<h2 id="gameResultMessage">GAME OVER! FINAL SCORES:</h2>
+				<p>PLAYER1: <span id="player1Score">0</span></p>
+				<p>PLAYER2: <span id="player2Score">0</span></p>
+				<p>PLAYER3: <span id="player3Score">0</span></p>
+				<p>PLAYER4: <span id="player4Score">0</span></p>
 			</div>
 			<div class="form-group">
 				<button id="btnPlayAgain" class="btn">PLAY AGAIN</button>
