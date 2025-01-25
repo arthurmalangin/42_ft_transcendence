@@ -449,7 +449,7 @@ def get_Lastmatches(request):
                     ]
                     return JsonResponse(data, safe=False)
                 else:
-                    return JsonResponse([], safe=False) 
+                    return JsonResponse({'error':'no match found'}) 
             else:
                 return JsonResponse({"error": "not player find"})
         except Exception as e:
