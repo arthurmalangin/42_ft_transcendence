@@ -1,59 +1,59 @@
 document.addEventListener('home_event', async()=>{
 	function homeEvent() {
-		//updateWelcomeMessage();
-		//updateRank();
-		//updateWinRate();
-		//updateMatches();
+		updateWelcomeMessage();
+		updateRank();
+		updateWinRate();
+		updateMatches();
 		updateLastMatches();
-
+		
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
 		});
-
+		
 		const leaderboardLabel = document.getElementById('btn_leaderboard');
 		leaderboardLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/leaderboard');
 			loadPage('/leaderboard');
 		});
-
+		
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/settings');
 			loadPage('/settings');
 		});
-
+		
 		const homeLabel = document.getElementById('btn_home');
 		homeLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/');
 		});
-
+		
 		const friendsLabel = document.getElementById('btn_friends');
 		friendsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/friends');
 			loadPage('/friends');
 		});
-
+		
 		const gameLabel = document.getElementById('btn_game');
 		gameLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/menu');
 			loadPage('/menu');
 		});
-
+		
 		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
 		// brickbreakerLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/brickbreaker');
-		// 	loadPage('/brickbreaker');
-		// });
-	}
-
-	homeEvent();
-	langModule();
-	
-	async function langModule() {
-		await loadLanguage(await getLangPlayer());
-		async function loadLanguage(lang) {
+			// 	history.pushState(null, '', '/brickbreaker');
+			// 	loadPage('/brickbreaker');
+			// });
+		}
+		
+		homeEvent();
+		langModule();
+		
+		async function langModule() {
+			await loadLanguage(await getLangPlayer());
+			async function loadLanguage(lang) {
 			try {
 			const response = await fetch(`/static/lang/${lang}.json`);
 			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
@@ -191,7 +191,7 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
-	async function updateLastMatches){
+	async function updateLastMatches() {
 		try{
 			const response = await fetch('/api/get_Lastmatches/', {
 				method: 'GET',
