@@ -73,20 +73,28 @@ document.addEventListener('settings_event', async()=>{
 			}
 		});
 
-		document.getElementById('btn_upload_avatar').addEventListener('click', function () {
+		document.getElementById('btn_upload_avatar').addEventListener('click', function ()  {
 			const fileInput = document.getElementById('avatar_upload');
 			const file = fileInput.files[0];
+			const MAX_SIZE = 2_000_000; // 1 MB en octets
 		
 			if (file) {
+				if (file.size > MAX_SIZE) {
+					alert("Fichier trop volumineux (max 2 Mo) !");
+					return;
+				}
 				const reader = new FileReader();
 				
 				reader.onloadend = function () {
 					const base64Image = reader.result.split(',')[1];
 					console.log(base64Image);
 					uploadAvatar(base64Image);
+					const avatarDisplay = document.getElementById('avatar_display');
+					avatarDisplay.src = `data:image/png;base64,${base64Image}`;
 				};
 				
 				reader.readAsDataURL(file);
+				
 			} else {
 				alert("Select file first !");
 			}
