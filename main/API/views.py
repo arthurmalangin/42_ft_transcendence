@@ -437,17 +437,9 @@ def get_Lastmatches(request):
         try:
             user_profile = PlayerData.objects.get(username=request.user.username)
             if user_profile:
-                matchs = MatchData.objects.filter(player=user_profile.id)[:3]
-                if matchs:
-                    data = [
-                        {
-                            'opponent':match.opponent,
-                            'myScore':match.myScore,
-                            'oppScore':match.oppScore,
-                        }
-                        for match in matchs
-                    ]
-                    return JsonResponse(data, safe=False)
+                match_profile = MatchData.objects.get(player=user_profile.id)
+                if match_profile:
+                    return JsonResponse({"opponent":match_profile.opponent, "myScore":match_profile.myScore, "oppScore":match_profile.oppScore})
                 else:
                     return JsonResponse([], safe=False) 
             else:
