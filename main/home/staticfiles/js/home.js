@@ -3,8 +3,8 @@ document.addEventListener('home_event', async()=>{
 		//updateWelcomeMessage();
 		//updateRank();
 		//updateWinRate();
-		updateMatches();
-		updateLastOpponent();
+		//updateMatches();
+		updateLastMatches();
 
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
@@ -191,7 +191,7 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
-	async function updateLastOpponent(){
+	async function updateLastMatches){
 		try{
 			const response = await fetch('/api/get_Lastmatches/', {
 				method: 'GET',
