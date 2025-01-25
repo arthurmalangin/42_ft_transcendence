@@ -209,12 +209,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
-					} else if (event.type === 'keydown') {
-						const blockedKeys = ['a', 'd', 'ArrowLeft', 'ArrowRight', ' '];
-						if (blockedKeys.includes(event.key)) {
-							event.stopPropagation();
-							event.preventDefault();
-						}
+					} else if (event.type === 'keydown' && [' '].includes(event.key)) {
+						event.stopPropagation();
+						event.preventDefault();
 					}
 				}
 			}
@@ -348,7 +345,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const timeScore = document.getElementById('timeScore');
 			const livesScore = document.getElementById('livesScore');
 			const powerUpScore = document.getElementById('powerUpScore');
-
 			if (gameResultOverlay && gameResultMessage && finalScore && brickScore && timeScore && livesScore) {
 				let scoreFromBricks = score;
 				let scoreFromTime = lives === 0 ? 0 : Math.max(0, 10000 - Math.floor(totalTime) * 10);
@@ -442,7 +438,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function draw() {
-			context.fillStyle = '#ffffff';
+			context.fillStyle = '#00ff00';
 			context.fillRect(player.x, player.y, player.width, player.height);
 
 			context.fillStyle = "#00ff00";
@@ -477,9 +473,9 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function updatePlayerPosition() {
-			if ((keys['a'] || keys['ArrowLeft']) && player.x > 0)
+			if ((keys['a'] || keys['A'] || keys['ArrowLeft']) && player.x > 0)
 				player.x -= player.speed;
-			if ((keys['d'] || keys['ArrowRight']) && player.x + paddleWidth < boardWidth)
+			if ((keys['d'] || keys['D'] || keys['ArrowRight']) && player.x + paddleWidth < boardWidth)
 				player.x += player.speed;
 		}
 

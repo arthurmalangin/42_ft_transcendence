@@ -1,0 +1,22 @@
+<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_12_2)">
+<line x1="-0.00204468" y1="421.5" x2="500.002" y2="421.5" stroke="#00FF00" stroke-opacity="0.3"/>
+<rect x="215.5" y="466.5" width="69" height="54" stroke="#00FF00" stroke-opacity="0.3"/>
+<line x1="-1.75913" y1="527.052" x2="104.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="-51.7591" y1="527.052" x2="54.3069" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="48.2409" y1="527.052" x2="154.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="98.2409" y1="527.052" x2="204.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="148.241" y1="527.052" x2="254.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="259.307" y1="465.986" x2="304.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="284.307" y1="490.986" x2="354.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="298.241" y1="527.052" x2="404.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="348.241" y1="527.052" x2="454.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="398.241" y1="527.052" x2="504.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+<line x1="448.241" y1="527.052" x2="554.307" y2="420.986" stroke="#00FF00" stroke-opacity="0.1"/>
+</g>
+<defs>
+<clipPath id="clip0_12_2">
+<rect width="500" height="500" fill="white"/>
+</clipPath>
+</defs>
+</svg>
