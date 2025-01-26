@@ -79,6 +79,8 @@ document.addEventListener('tourpong_event', async()=>{
 			y: boardHeight / 2 - paddleHeight / 2
 		};
 
+		let playerCount = 4;
+
 		let ballWidth = 10;
 		let ballHeight = 10;
 		let ballSpeed = 2;
@@ -94,7 +96,7 @@ document.addEventListener('tourpong_event', async()=>{
 		};
 
 		let playerScore = 0;
-		let opponentScore = 0;
+		let opponentScore = -1;
 
 		let keys = {};
 
@@ -173,57 +175,22 @@ document.addEventListener('tourpong_event', async()=>{
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space')
 					pauseGame();
-				// else if (event.code === 'Escape') {
-				// 	event.preventDefault();
-				// 	const tournamentSettingsOverlay = document.getElementById('tournamentSettingsOverlay');
-				// 	if (tournamentSettingsOverlay.classList.contains('active')) {
-				// 		tournamentSettingsOverlay.classList.remove('active');
-				// 		pauseGame();
-				// 		resetGame(true, false);
-				// 	} else {
-				// 		if (!isPaused)
-				// 			pauseGame();
-				// 		tournamentSettingsOverlay.classList.add('active');
-				// 	}
-				// }
 			});
 
-			addEventListenerWithTracking(document.getElementById('btnSettingsPong'), 'click', function() {
-				if (!isPaused)
-					pauseGame();
-				document.getElementById('tournamentSettingsOverlay').classList.add('active');
-			});
-
-			addEventListenerWithTracking(document.getElementById('btnCloseSettingsPong'), 'click', function() {
-				document.getElementById('tournamentSettingsOverlay').classList.remove('active');
-				pauseGame();
-				resetGame(true, false);
-			});
-
-			addEventListenerWithTracking(document.getElementById('btnNextTournament'), 'click', function() {
-				document.getElementById('tournamentSettingsOverlay').classList.remove('active');
-				document.getElementById('tournamentPlayersOverlay').classList.add('active');
-				console.log('Next');
-			});
-
-			addEventListenerWithTracking(document.getElementById('btnPlayTournament'), 'click', function() {
-				document.getElementById('tournamentPlayersOverlay').classList.remove('active');
-				pauseGame();
-				resetGame(true, false);
-				console.log('Play');
-			});
+			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
+                document.getElementById('tournamentSettingsOverlay').classList.remove('active');
+                pauseGame();
+                resetGame(true, false);
+            });
 
 			function stopEventPropagationSettings(event) {
 				const overlay = document.getElementById('tournamentSettingsOverlay');
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
-						event.target.id !== 'btnCloseSettingsPong' &&
 						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
-						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
-						event.target.id !== 'btnPlay' && 
-						event.target.id !== 'btnNext') {
+						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown' && [' '].includes(event.key)) {
@@ -251,6 +218,11 @@ document.addEventListener('tourpong_event', async()=>{
 			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
 			addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
 				togglePowerups();
+			});
+
+			const numPlayersSelect = document.getElementById('numPlayers');
+			addEventListenerWithTracking(numPlayersSelect, 'change', function() {
+				updatePlayerCount(numPlayersSelect.value);
 			});
 			
 			const btnEnableAI = document.getElementById('btnEnableAI');
@@ -465,6 +437,25 @@ document.addEventListener('tourpong_event', async()=>{
 			opponent.speed = parseFloat(speed);
 		}
 
+		function updatePlayerCount(playerCount) {
+			playerCount = parseInt(playerCount);
+			if (playerCount === 4) {
+				document.getElementById('PlayersNicknames5-8').style.display = 'none';
+				document.getElementById('PlayersNicknames9-12').style.display = 'none';
+				document.getElementById('PlayersNicknames13-16').style.display = 'none';
+			}
+			else if (playerCount === 8) {
+				document.getElementById('PlayersNicknames5-8').style.display = 'flex';
+				document.getElementById('PlayersNicknames9-12').style.display = 'none';
+				document.getElementById('PlayersNicknames13-16').style.display = 'none';
+			}
+			else {
+				document.getElementById('PlayersNicknames5-8').style.display = 'flex';
+				document.getElementById('PlayersNicknames9-12').style.display = 'flex';
+				document.getElementById('PlayersNicknames13-16').style.display = 'flex';
+			}
+		}
+
 		function resetToDefaultSettings() {
 			powerUpsEnabled = false;
 			const powerUpButton = document.getElementById('btnEnablePowerups');
@@ -472,11 +463,10 @@ document.addEventListener('tourpong_event', async()=>{
 
 			updateBallSpeed(2);
 			updatePaddleSpeed(2);
+			updatePlayerCount(4);
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
-
-			const numPlayersSelect = document.getElementById('numPlayers');
-			numPlayersSelect.value = '4';
+			document.getElementById('numPlayers').value = 4;
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////

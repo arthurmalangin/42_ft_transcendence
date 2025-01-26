@@ -154,8 +154,7 @@ body {
 	background-color: rgba(0, 255, 0, 0.1);
 }
 
-.form-group #btnPlay,
-.form-group #btnNext {
+.form-group #btnPlay {
 	min-width: 100%;
 }
 
@@ -231,6 +230,11 @@ input[type="range"] {
 	accent-color: var(--terminal-green);
 }
 
+input[type="text"] {
+	border: 1px solid rgba(0, 255, 0, 0.5);
+	width: 25%;
+}
+
 #numPlayers {
     background: transparent;
     border: 1px solid var(--terminal-green);
@@ -244,4 +248,10 @@ input[type="range"] {
 
 #numPlayers:hover {
     background-color: rgba(0, 255, 0, 0.1);
+}
+
+#PlayersNicknames5-8,
+#PlayersNicknames9-12,
+#PlayersNicknames13-16 {
+	display: none;
 }
