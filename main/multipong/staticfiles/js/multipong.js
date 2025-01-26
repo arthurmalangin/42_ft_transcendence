@@ -206,7 +206,9 @@ document.addEventListener('multipong_event', async()=>{
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
+						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
+						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
@@ -232,6 +234,17 @@ document.addEventListener('multipong_event', async()=>{
 				const newSpeed = paddleSpeedSlider.value;
 				updatePaddleSpeed(newSpeed);
 			});
+
+			// const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			// addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
+			// 	togglePowerups();
+			// });
+			
+			// const btnEnableAI = document.getElementById('btnEnableAI');
+			// addEventListenerWithTracking(btnEnableAI, 'click', function() {
+			// 	AIEnabled = !AIEnabled;
+			// 	btnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+			// });
 
 			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
 			addEventListenerWithTracking(btnResetDefaultSettings, 'click', function() {
