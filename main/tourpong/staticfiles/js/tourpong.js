@@ -157,14 +157,14 @@ document.addEventListener('tourpong_event', async()=>{
 			});
 
 			addEventListenerWithTracking(window, 'keydown', function (e) {
-				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's') {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
 					e.preventDefault();
 				}
 				keys[e.key] = true;
 			});
 			
 			addEventListenerWithTracking(window, 'keyup', function (e) {
-				if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's') {
+				if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
 					e.preventDefault();
 				}
 				keys[e.key] = false;
@@ -245,6 +245,38 @@ document.addEventListener('tourpong_event', async()=>{
 		}
 
 		addAllEventListeners();
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/////////////                    TOURNAMENT MGMT                      ////////////
+	//////////////////////////////////////////////////////////////////////////////////
+	
+		function getTournamentParticipants() {
+			const participants = [];
+			for (let i = 1; i <= playerCount; i++) {
+				const input = document.getElementById(`player${i}Nickname`);
+				if (input)
+					participants.push(input.value);
+			}
+			return participants;
+		}
+
+		function drawTable() {
+			const participants = getTournamentParticipants();
+			const matchups = [];
+		
+			for (let i = 0; i < participants.length; i += 2) {
+				matchups.push(`${participants[i]} vs ${participants[i + 1]}`);
+			}
+		
+			const tableContainer = document.getElementById('matchupTable');
+			tableContainer.innerHTML = ''; 
+		
+			matchups.forEach(matchup => {
+				const matchupElement = document.createElement('div');
+				matchupElement.textContent = matchup;
+				tableContainer.appendChild(matchupElement);
+			});
+		}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                       PONG GAME                         ////////////
