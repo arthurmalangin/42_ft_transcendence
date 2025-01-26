@@ -98,6 +98,21 @@ document.addEventListener('tourpong_event', async()=>{
 
 		let keys = {};
 
+		let powerUpsEnabled = false;
+		let playerFrozen = false;
+
+		let powerUp = null;
+		const powerUpTypes = {
+			ENLARGE_PADDLE: 'enlarge_paddle',
+			FREEZE_OPPONENT: 'freeze_opponent'
+		};
+
+		const enlargePaddleImage = new Image();
+		enlargePaddleImage.src = '/static/enlarge.svg';
+
+		const freezeOpponentImage = new Image();
+		freezeOpponentImage.src = '/static/freeze.svg';
+
 		const FRAME_RATE = 60;
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
@@ -158,21 +173,57 @@ document.addEventListener('tourpong_event', async()=>{
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space')
 					pauseGame();
+				// else if (event.code === 'Escape') {
+				// 	event.preventDefault();
+				// 	const tournamentSettingsOverlay = document.getElementById('tournamentSettingsOverlay');
+				// 	if (tournamentSettingsOverlay.classList.contains('active')) {
+				// 		tournamentSettingsOverlay.classList.remove('active');
+				// 		pauseGame();
+				// 		resetGame(true, false);
+				// 	} else {
+				// 		if (!isPaused)
+				// 			pauseGame();
+				// 		tournamentSettingsOverlay.classList.add('active');
+				// 	}
+				// }
 			});
 
-			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
-                document.getElementById('settingsOverlay').classList.remove('active');
-                pauseGame();
-                resetGame(true, false);
-            });
+			addEventListenerWithTracking(document.getElementById('btnSettingsPong'), 'click', function() {
+				if (!isPaused)
+					pauseGame();
+				document.getElementById('tournamentSettingsOverlay').classList.add('active');
+			});
+
+			addEventListenerWithTracking(document.getElementById('btnCloseSettingsPong'), 'click', function() {
+				document.getElementById('tournamentSettingsOverlay').classList.remove('active');
+				pauseGame();
+				resetGame(true, false);
+			});
+
+			addEventListenerWithTracking(document.getElementById('btnNextTournament'), 'click', function() {
+				document.getElementById('tournamentSettingsOverlay').classList.remove('active');
+				document.getElementById('tournamentPlayersOverlay').classList.add('active');
+				console.log('Next');
+			});
+
+			addEventListenerWithTracking(document.getElementById('btnPlayTournament'), 'click', function() {
+				document.getElementById('tournamentPlayersOverlay').classList.remove('active');
+				pauseGame();
+				resetGame(true, false);
+				console.log('Play');
+			});
 
 			function stopEventPropagationSettings(event) {
-				const overlay = document.getElementById('settingsOverlay');
+				const overlay = document.getElementById('tournamentSettingsOverlay');
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
+						event.target.id !== 'btnCloseSettingsPong' &&
+						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
+						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
-						event.target.id !== 'btnPlay') {
+						event.target.id !== 'btnPlay' && 
+						event.target.id !== 'btnNext') {
 						event.stopPropagation();
 						event.preventDefault();
 					} else if (event.type === 'keydown' && [' '].includes(event.key)) {
@@ -195,6 +246,17 @@ document.addEventListener('tourpong_event', async()=>{
 			addEventListenerWithTracking(paddleSpeedSlider, 'input', function() {
 				const newSpeed = paddleSpeedSlider.value;
 				updatePaddleSpeed(newSpeed);
+			});
+
+			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
+				togglePowerups();
+			});
+			
+			const btnEnableAI = document.getElementById('btnEnableAI');
+			addEventListenerWithTracking(btnEnableAI, 'click', function() {
+				AIEnabled = !AIEnabled;
+				btnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
 			});
 
 			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
@@ -222,7 +284,6 @@ document.addEventListener('tourpong_event', async()=>{
 			moveBall();
 			movePowerUp();
 			draw();
-			updateOpponentPosition();
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
@@ -295,15 +356,13 @@ document.addEventListener('tourpong_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
 				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
-				const versus = AIEnabled? "AI" : "GUEST";
-				updateScore(playerScore, opponentScore, versus);
 				gameResultOverlay.classList.add('active');
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
 			if (playAgainButton) {
 				playAgainButton.addEventListener('click', () => {
-					loadPage('/game');
+					loadPage('/tourpong');
 				});
 			}
 			
@@ -408,16 +467,16 @@ document.addEventListener('tourpong_event', async()=>{
 
 		function resetToDefaultSettings() {
 			powerUpsEnabled = false;
-			AIEnabled = false;
 			const powerUpButton = document.getElementById('btnEnablePowerups');
-			const AIButton = document.getElementById('btnEnableAI');
 			powerUpButton.textContent = 'ENABLE POWERUPS';
-			AIButton.textContent = 'ENABLE AI';
 
 			updateBallSpeed(2);
 			updatePaddleSpeed(2);
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
+
+			const numPlayersSelect = document.getElementById('numPlayers');
+			numPlayersSelect.value = '4';
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -495,197 +554,6 @@ document.addEventListener('tourpong_event', async()=>{
 				applyPowerUp(powerUp, opponent);
 				powerUp = null;
 			}
-		}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	/////////////                      AI OPPONENT                        ////////////
-	//////////////////////////////////////////////////////////////////////////////////
-
-		let lastUpdateTime = 0;
-		let prevTargetY = boardHeight / 2;
-
-		function updateOpponentPosition() {
-			if (!AIEnabled)
-				return;
-
-			const currentTime = Date.now();
-		
-			if (!OneSecElapsed(currentTime)) {
-				moveTowardsTargetY(prevTargetY);
-				return;
-			}
-
-			console.log("AI: reading gamestate");
-			lastUpdateTime = currentTime;
-		
-			const ballPredictedY = predictBallYAtX(475);
-			const pwrPredictedY = predictPowerupYAtX(475);
-			const ballPredictedTime = predictBallImpactTime();
-			const pwrPredictedTime = predictPowerupImpactTime();
-			const playerDistanceFromTop = player.y;
-			const playerDistanceFromBottom = boardHeight - (player.y + player.height);
-
-			let targetY;
-			let isPowerup = false;
-
-			if (hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY)) {
-				targetY = pwrPredictedY;
-				isPowerup = true;
-			} else
-				targetY = ballPredictedY;
-		
-			prevTargetY = calculateTargetY(targetY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) + (Math.random() - 0.5) * 10;		
-			moveTowardsTargetY(prevTargetY);
-		}
-
-		function predictBallYAtX(targetX) {
-			let predictedX = ball.x + ball.width / 2;
-			let predictedY = ball.y + ball.height / 2;
-			let velocityX = ball.velocityX;
-			let velocityY = ball.velocityY;
-		
-			while (predictedX < targetX) {
-				predictedX += velocityX;
-				predictedY += velocityY;
-		
-				// top and bottom walls collision check
-				if (predictedY - ball.height / 2 <= 0 || predictedY + ball.height / 2 >= boardHeight)
-					velocityY *= -1;
-		
-				if (predictedX <= 25)
-					break;
-			}
-		
-			return predictedY;
-		}
-
-		function predictBallImpactTime() {
-			let predictedX = ball.x + ball.width / 2;
-			let velocityX = ball.velocityX;
-			let timeElapsed = 0;
-			let maxIterations = 1000;
-		
-			while (predictedX < 475 && timeElapsed < maxIterations) {
-				predictedX += velocityX;
-				timeElapsed += 1;
-		
-				if (predictedX <= 25)
-					velocityX *= -1;
-				// console.log(timeElapsed);
-			}
-		
-			return timeElapsed;
-		}
-
-		function predictPowerupYAtX(targetX) {
-			if (!powerUp)
-				return 999;
-
-			let predictedX = powerUp.x + powerUp.width / 2;
-			let predictedY = powerUp.y + powerUp.height / 2;
-			let velocityX = powerUp.velocityX;
-			let velocityY = powerUp.velocityY;
-		
-			while (predictedX < targetX) {
-				predictedX += velocityX;
-				predictedY += velocityY;
-		
-				// top and bottom walls collision check
-				if (predictedY - powerUp.height / 2 <= 0 || predictedY + powerUp.height / 2 >= boardHeight)
-					velocityY *= -1;
-		
-				if (predictedX <= 0)
-					velocityX *= -1;
-			}
-		
-			return predictedY
-		}
-
-		function predictPowerupImpactTime() {
-			if (!powerUp)
-				return 999;
-		
-			let predictedX = powerUp.x + powerUp.width / 2;
-			let velocityX = powerUp.velocityX;
-			let timeElapsed = 0;
-			let maxIterations = 1000;
-		
-			while (predictedX < 475 && timeElapsed < maxIterations) {
-				predictedX += velocityX;
-				timeElapsed += 1;
-		
-				if (predictedX <= 0)
-					velocityX *= -1;
-			}
-
-			return timeElapsed;
-		}
-
-		function hasTimeForPowerup(ballPredictedTime, pwrPredictedTime, ballPredictedY, pwrPredictedY) {
-			if (pwrPredictedTime === 999)
-				return false;
-
-			const availableTime = ballPredictedTime - pwrPredictedTime;
-			const distanceToPowerup = Math.abs(opponent.y - pwrPredictedY);		
-			const distanceToBall = Math.abs(pwrPredictedY - ballPredictedY);
-			const timeToBallfromPowerup = distanceToBall / opponent.speed;	
-			
-			return (timeToBallfromPowerup <= availableTime);
-		}
-
-	//////////////////////////////////////////////////////////////////////////////////
-	/////////////                   AI OPPONENT UTILS                     ////////////
-	//////////////////////////////////////////////////////////////////////////////////
-
-		function OneSecElapsed(currentTime) {
-			return currentTime - lastUpdateTime >= 1000;
-		}
-		
-		function calculateDiff(targetY, opponentY) {
-			return targetY - (opponentY + opponent.height / 2);
-		}
-
-		function moveTowardsTargetY(targetY) {
-			const diff = calculateDiff(targetY, opponent.y);
-			const threshold = paddleSpeed; // threshold to prevent wiggling
-		
-			updateKeys(diff, threshold);
-		}
-		
-		function updateKeys(diff, threshold) {
-			if (Math.abs(diff) > threshold) {
-				if (diff > 0) {
-					keys['ArrowDown'] = true;
-					keys['ArrowUp'] = false;
-				} else if (diff < 0) {
-					keys['ArrowUp'] = true;
-					keys['ArrowDown'] = false;
-				}
-			} else {
-				keys['ArrowUp'] = false;
-				keys['ArrowDown'] = false;
-			}
-		}
-		
-		function calculateTargetY(predictedY, playerDistanceFromTop, playerDistanceFromBottom, isPowerup) {
-			const playerDistanceFromEdge = Math.min(playerDistanceFromTop, playerDistanceFromBottom) / (boardHeight / 2);
-			let targetY;
-		
-			if (isPowerup)
-				targetY = predictedY;
-			else {
-				if (ball.velocityX > 0) { // ball was last hit by the player
-					let offset = (1 - playerDistanceFromEdge) * 0.5 * opponent.height;
-		
-					if (playerDistanceFromTop < playerDistanceFromBottom)
-						targetY = predictedY - offset; // aim for bottom
-					else
-						targetY = predictedY + offset; // aim for top
-				} else
-					targetY = boardHeight / 2;
-			}
-		
-			return targetY;
 		}
 
 		startGame();

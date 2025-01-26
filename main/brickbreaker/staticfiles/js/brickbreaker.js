@@ -607,6 +607,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 			updatePaddleSpeed(2);
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
+
+			powerUpsEnabled = false;
+			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			btnEnablePowerups.textContent = 'ENABLE POWERUPS';
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
