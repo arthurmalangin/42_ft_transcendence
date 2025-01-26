@@ -179,6 +179,7 @@ document.addEventListener('tourpong_event', async()=>{
 
 			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
                 document.getElementById('tournamentSettingsOverlay').classList.remove('active');
+				drawTable();
                 pauseGame();
                 resetGame(true, false);
             });
@@ -252,11 +253,16 @@ document.addEventListener('tourpong_event', async()=>{
 	
 		function getTournamentParticipants() {
 			const participants = [];
+
+			console.log("player count: " + playerCount);
+
 			for (let i = 1; i <= playerCount; i++) {
 				const input = document.getElementById(`player${i}Nickname`);
-				if (input)
-					participants.push(input.value);
+				if (input && input.value.trim() === "")
+					input.value = "PLAYER" + i;
+				participants.push(input.value);
 			}
+			console.log(participants);
 			return participants;
 		}
 
@@ -264,16 +270,18 @@ document.addEventListener('tourpong_event', async()=>{
 			const participants = getTournamentParticipants();
 			const matchups = [];
 		
+			participants.sort(() => Math.random() - 0.5);
+		
 			for (let i = 0; i < participants.length; i += 2) {
-				matchups.push(`${participants[i]} vs ${participants[i + 1]}`);
+				matchups.push([participants[i], participants[i + 1]]);
 			}
 		
 			const tableContainer = document.getElementById('matchupTable');
-			tableContainer.innerHTML = ''; 
+			tableContainer.innerHTML = '';
 		
 			matchups.forEach(matchup => {
 				const matchupElement = document.createElement('div');
-				matchupElement.textContent = matchup;
+				matchupElement.textContent = `${matchup[0]} vs ${matchup[1]}`;
 				tableContainer.appendChild(matchupElement);
 			});
 		}
@@ -295,7 +303,7 @@ document.addEventListener('tourpong_event', async()=>{
 				cleanupGame(false);
 		}
 
-		function startGame() {
+		function startGame() {			
 			board = document.getElementById('board');
 			context = board.getContext('2d');
 			board.width = boardWidth;
@@ -469,8 +477,8 @@ document.addEventListener('tourpong_event', async()=>{
 			opponent.speed = parseFloat(speed);
 		}
 
-		function updatePlayerCount(playerCount) {
-			playerCount = parseInt(playerCount);
+		function updatePlayerCount(newCount) {
+			playerCount = parseInt(newCount);
 			if (playerCount === 4) {
 				document.getElementById('PlayersNicknames5-8').style.display = 'none';
 				document.getElementById('PlayersNicknames9-12').style.display = 'none';
