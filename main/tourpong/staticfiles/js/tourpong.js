@@ -305,11 +305,6 @@ document.addEventListener('tourpong_event', async()=>{
 			playerSide = nextMatch[0];
 			guestSide = nextMatch[1];
 
-			console.log(participants);
-			console.log(matchups);
-
-			updateTournamentInfo();
-
 			const matchAnnouncement = document.getElementById('matchAnnounceOverlay');
 			const playerSideElement = document.getElementById('playerSidePlayer');
 			const guestSideElement = document.getElementById('guestSidePlayer');
@@ -317,36 +312,6 @@ document.addEventListener('tourpong_event', async()=>{
 				playerSideElement.textContent = playerSide;
 				guestSideElement.textContent = guestSide;
 				matchAnnouncement.classList.add('active');
-			}
-		}
-
-		function updateTournamentInfo() {
-			const currentRound = document.getElementById('currentRound');
-			const playersLeft = document.getElementById('playersLeft');
-			const nextMatch = document.getElementById('nextMatch');
-
-			let currentRoundValue;
-			let playersLeftValue = participants.length;
-			let nextMatchValue;
-
-			if (playersLeftValue <= 2)
-				currentRoundValue = 'FINALS';
-			else if (playersLeftValue <= 4)
-				currentRoundValue = 'SEMI-FINALS';
-			else if (playersLeftValue <= 8)
-				currentRoundValue = 'QUARTER FINALS';
-			else
-				currentRoundValue = `ROUND OF ${playersLeftValue}`;
-
-			if (matchups.length > 0)
-				nextMatchValue = `${matchups[0][0]} vs ${matchups[0][1]}`;
-			else
-				nextMatchValue = 'WAITING...';
-
-			if (currentRound && playersLeft && nextMatch) {
-				currentRound.textContent = currentRoundValue;
-				playersLeft.textContent = playersLeftValue;
-				nextMatch.textContent = nextMatchValue;
 			}
 		}
 
@@ -363,7 +328,7 @@ document.addEventListener('tourpong_event', async()=>{
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
-			if (playerScore >= 5 || opponentScore >= 5)
+			if (playerScore >= 2 || opponentScore >= 2)
 				cleanupGame(false);
 		}
 
@@ -375,7 +340,7 @@ document.addEventListener('tourpong_event', async()=>{
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
-			if (playerScore >= 5 || opponentScore >= 5)
+			if (playerScore >= 2 || opponentScore >= 2)
 				return;
 
 			if (playerLost) {
@@ -439,7 +404,7 @@ document.addEventListener('tourpong_event', async()=>{
 			if (opponentIndex > -1)
 				participants.splice(opponentIndex, 1);
 			
-			if (playerScore === 5)
+			if (playerScore === 2)
 				participants.push(playerSide);
 			else
 				participants.push(guestSide);
@@ -448,9 +413,9 @@ document.addEventListener('tourpong_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
 				if (participants.length > 1)
-					gameResultMessage.textContent = playerScore === 1 ? playerSide + ' WON!' : guestSide + ' WON!';
+					gameResultMessage.textContent = playerScore === 2 ? playerSide + ' WON!' : guestSide + ' WON!';
 				else
-					gameResultMessage.textContent = playerScore === 1 ? playerSide + ' WON THE TOURNAMENT!' : guestSide + ' WON THE TOURNAMENT!';
+					gameResultMessage.textContent = playerScore === 2 ? playerSide + ' WON THE TOURNAMENT!' : guestSide + ' WON THE TOURNAMENT!';
 				gameResultOverlay.classList.add('active');
 			}
 			
@@ -473,6 +438,7 @@ document.addEventListener('tourpong_event', async()=>{
 							powerUp = null;
 					} else {
 						cleanupGame();
+						history.pushState(null, '', '/menu');
 						loadPage('/menu');
 					}
 

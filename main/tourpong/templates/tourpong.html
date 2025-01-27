@@ -43,18 +43,18 @@
 					</div>
 					<div class="game-info">
 						<h3>INSTRUCTIONS</h3>
-						<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
-					</div>
-					<div class="game-info">
-						<h3>TOUNAMENT INFO</h3>
-						<p>ROUND: <span id="curentRound">NULL</p>
-						<p>PLAYERS LEFT: <span id="playersLeft">NULL</p>
-						<p>NEXT MATCH: <span id="nextMatch">NULL</p>
+						<p>FIRST PLAYER TO SCORE 5 POINTS WINS</p>
 					</div>
 					<div class="game-info">
 						<h3>GAMESTATS</h3>
 						<p>PLAYER: <span id="player1Score" name="myScore">0</span></p>
 						<p>GUEST: <span id="player2Score" name="oppScore">0</span></p>
+					</div>
+					<div class="game-info">
+						<h3>PHASE MATCHES</h3>
+						<div id="matchupTable">
+							<p>WAITING...</p>
+						</div>
 					</div>
 				</nav>
 			</div>
@@ -81,8 +81,6 @@
 					<label for="numPlayers">PLAYERS:</label>
 					<select id="numPlayers" class="form-control">
 						<option value="4">4</option>
-						<option value="8">8</option>
-						<option value="16">16</option>
 					</select>
 				</div>
 				<div class="form-group" id="PlayersNicknames1-4">
@@ -135,7 +133,7 @@
 			<div class="overlay-content phosphor">
 				<div class="popup-header">
 					<h2>ARE YOU READY?</h2>
-					<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
+					<p>FIRST PLAYER TO SCORE 5 POINTS WINS</p>
 					<p>&gt; PLAYER SIDE: <span id="playerSidePlayer">PLAYER</span></p>
 					<p>&gt; GUEST SIDE: <span id="guestSidePlayer">GUEST</span></p>
 					<h3>PRESS SPACEBAR TO START THE MATCH!</h3>
@@ -144,7 +142,4 @@
 		</div>
 		
 	</main>
-	<div id="matchupTable">
-		<p>MATCHUP TABLE TMP</p>
-	</div>
 </div>
