@@ -47,18 +47,18 @@ document.addEventListener('game_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                       VARIABLES                         ////////////
 	//////////////////////////////////////////////////////////////////////////////////
-
+	
 	function initPong() {
-
+		
 		let board;
 		let boardWidth = 500;
 		let boardHeight = 500;
 		let context;
-
+		
 		let paddleWidth = 10;
 		let paddleHeight = 50;
 		let paddleSpeed = 2;
-
+		
 		let player = {
 			width: paddleWidth,
 			height: paddleHeight,
@@ -66,7 +66,7 @@ document.addEventListener('game_event', async()=>{
 			x: 10,
 			y: boardHeight / 2 - paddleHeight / 2
 		};
-
+		
 		let opponent = {
 			width: paddleWidth,
 			height: paddleHeight,
@@ -74,11 +74,11 @@ document.addEventListener('game_event', async()=>{
 			x: boardWidth - paddleWidth - 10,
 			y: boardHeight / 2 - paddleHeight / 2
 		};
-
+		
 		let ballWidth = 10;
 		let ballHeight = 10;
 		let ballSpeed = 2;
-
+		
 		let ball = {
 			width: ballWidth,
 			height: ballHeight,
@@ -88,24 +88,25 @@ document.addEventListener('game_event', async()=>{
 			x: boardWidth / 2 - ballWidth / 2,
 			y: boardHeight / 2 - ballHeight / 2
 		};
-
+		
 		let playerScore = 0;
 		let opponentScore = -1;
-
+		let versus;
+		
 		let keys = {};
-
+		
 		let powerUpsEnabled = false;
 		let playerFrozen = false;
-
+		
 		let powerUp = null;
 		const powerUpTypes = {
 			ENLARGE_PADDLE: 'enlarge_paddle',
 			FREEZE_OPPONENT: 'freeze_opponent'
 		};
-
+		
 		const enlargePaddleImage = new Image();
 		enlargePaddleImage.src = '/static/enlarge.svg';
-
+		
 		const freezeOpponentImage = new Image();
 		freezeOpponentImage.src = '/static/freeze.svg';
 
@@ -113,8 +114,8 @@ document.addEventListener('game_event', async()=>{
 		const FRAME_DURATION = 1000 / FRAME_RATE;
 		let gameIntervalId;
 		let isPaused = false;
-
-		var AIEnabled = false;
+		let AIEnabled = false;
+		
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
@@ -345,7 +346,6 @@ document.addEventListener('game_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
 				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
-				const versus = AIEnabled? "AI" : "GUEST";
 				updateScore(playerScore, opponentScore, versus);
 				gameResultOverlay.classList.add('active');
 			}
@@ -458,6 +458,7 @@ document.addEventListener('game_event', async()=>{
 
 		function resetToDefaultSettings() {
 			powerUpsEnabled = false;
+			versus = AIEnabled? "AI" : "GUEST";
 			AIEnabled = false;
 			const powerUpButton = document.getElementById('btnEnablePowerups');
 			const AIButton = document.getElementById('btnEnableAI');
