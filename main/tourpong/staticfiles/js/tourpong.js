@@ -48,10 +48,6 @@ document.addEventListener('tourpong_event', async()=>{
 	/////////////                       VARIABLES                         ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////////////////////////////////////////////////////////
-	/////////////                       VARIABLES                         ////////////
-	//////////////////////////////////////////////////////////////////////////////////
-
 	function initPong() {
 
 		let board;
@@ -120,6 +116,9 @@ document.addEventListener('tourpong_event', async()=>{
 		let gameIntervalId;
 		let isPaused = false;
 
+		let matchups = [];
+		let participants;
+
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +179,8 @@ document.addEventListener('tourpong_event', async()=>{
 			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
                 document.getElementById('tournamentSettingsOverlay').classList.remove('active');
 				drawTable();
-                pauseGame();
+				announceNextMatch();
+                // pauseGame();
                 resetGame(true, false);
             });
 
@@ -243,6 +243,13 @@ document.addEventListener('tourpong_event', async()=>{
 				history.pushState(null, '', '/menu');
 				loadPage('/menu');
 			});
+
+			addEventListenerWithTracking(document, 'keydown', function(event) {
+				const matchAnnounceOverlay = document.getElementById('matchAnnounceOverlay');
+				if (event.code === 'Space' && matchAnnounceOverlay && matchAnnounceOverlay.classList.contains('active')) {
+					matchAnnounceOverlay.classList.remove('active');
+				}
+			});
 		}
 
 		addAllEventListeners();
@@ -267,9 +274,7 @@ document.addEventListener('tourpong_event', async()=>{
 		}
 
 		function drawTable() {
-			const participants = getTournamentParticipants();
-			const matchups = [];
-		
+			participants = getTournamentParticipants();
 			participants.sort(() => Math.random() - 0.5);
 		
 			for (let i = 0; i < participants.length; i += 2) {
@@ -284,6 +289,22 @@ document.addEventListener('tourpong_event', async()=>{
 				matchupElement.textContent = `${matchup[0]} vs ${matchup[1]}`;
 				tableContainer.appendChild(matchupElement);
 			});
+		}
+
+		function announceNextMatch() {
+			const nextMatch = matchups.shift();
+			const playerSide = nextMatch[0];
+			const opponentSide = nextMatch[1];
+
+			const matchAnnouncement = document.getElementById('matchAnnounceOverlay');
+			const playerSideElement = document.getElementById('playerSidePlayer');
+			const guestSideElement = document.getElementById('guestSidePlayer');
+
+			if (matchAnnouncement && playerSideElement && guestSideElement) {
+				playerSideElement.textContent = playerSide;
+				guestSideElement.textContent = opponentSide;
+				matchAnnouncement.classList.add('active');
+			}
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////

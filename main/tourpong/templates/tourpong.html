@@ -46,9 +46,10 @@
 						<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
 					</div>
 					<div class="game-info">
-						<h3>CONTROLS</h3>
-						<p>PLAYER: W/S</p>
-						<p>GUEST: UP/DOWN</p>
+						<h3>TOUNAMENT INFO</h3>
+						<p>ROUND: <span id="curentRound">X</p>
+						<p>PLAYERS LEFT: <span id="playersLeft">X</p>
+						<p>NEXT MATCH: <span id="nextMatch">X</p>
 					</div>
 					<div class="game-info">
 						<h3>GAMESTATS</h3>
@@ -130,6 +131,16 @@
 			</div>
 		</div>
 
+		<div id="matchAnnounceOverlay" class="overlay">
+			<div class="overlay-content phosphor">
+				<div class="popup-header">
+					<h2>ARE YOU READY?</h2>
+					<p>PLAYER SIDE: <span id="playerSidePlayer">PLAYER</span></p>
+					<p>GUEST SIDE: <span id="guestSidePlayer">GUEST</span></p>
+					<h3>PRESS SPACEBAR TO START THE MATCH!</h3>
+				</div>
+			</div>
+		</div>
 		
 	</main>
 	<div id="matchupTable">
