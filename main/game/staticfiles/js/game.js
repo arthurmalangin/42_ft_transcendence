@@ -501,6 +501,7 @@ document.addEventListener('game_event', async()=>{
 		}
 
 		function applyPowerUp(powerUp, player) {
+			let prevSpeed = opponent.speed;
 			if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
 				if (player.y + player.height / 2 >= boardHeight / 2) {
 					player.y -= 25;
@@ -515,7 +516,7 @@ document.addEventListener('game_event', async()=>{
 				} else {
 					opponent.speed = 0;
 					setTimeout(() => {
-						opponent.speed = paddleSpeed;
+						opponent.speed = prevSpeed;
 					}, 3000);
 				}
 			}
