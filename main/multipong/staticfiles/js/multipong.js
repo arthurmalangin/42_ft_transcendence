@@ -342,11 +342,11 @@ document.addEventListener('multipong_event', async()=>{
 				console.log(player4.score);
 
 				// TODO not working for some stupid reason????
-				player1Score.textContent = player1.score;
+				gameResultOverlay.classList.add('active');
 				player2Score.textContent = player2.score;
+				player1Score.textContent = player1.score;
 				player3Score.textContent = player3.score;
 				player4Score.textContent = player4.score;
-				gameResultOverlay.classList.add('active');
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
@@ -422,13 +422,13 @@ document.addEventListener('multipong_event', async()=>{
 			if (ball.x <= 0 || ball.x + ball.width >= boardWidth || ball.y <= 0 || ball.y + ball.height >= boardHeight) {
 				let scoredPlayer = null;
 
-				if (ball.x <= 0) {
+				if (ball.x <= 0 + verticalPaddleWidth) {
 					scoredPlayer = players[0];
-				} else if (ball.y <= 0) {
+				} else if (ball.y <= 0 + horizontalPaddleHeight) {
 					scoredPlayer = players[1];
-				} else if (ball.y + ball.height >= boardHeight) {
+				} else if (ball.y + ball.height >= boardHeight - horizontalPaddleHeight) {
 					scoredPlayer = players[2];
-				} else if (ball.x + ball.width >= boardWidth) {
+				} else if (ball.x + ball.width >= boardWidth - verticalPaddleWidth) {
 					scoredPlayer = players[3];
 				}
 
