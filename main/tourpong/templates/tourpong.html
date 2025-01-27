@@ -47,9 +47,9 @@
 					</div>
 					<div class="game-info">
 						<h3>TOUNAMENT INFO</h3>
-						<p>ROUND: <span id="curentRound">X</p>
-						<p>PLAYERS LEFT: <span id="playersLeft">X</p>
-						<p>NEXT MATCH: <span id="nextMatch">X</p>
+						<p>ROUND: <span id="curentRound">NULL</p>
+						<p>PLAYERS LEFT: <span id="playersLeft">NULL</p>
+						<p>NEXT MATCH: <span id="nextMatch">NULL</p>
 					</div>
 					<div class="game-info">
 						<h3>GAMESTATS</h3>
@@ -123,10 +123,10 @@
 			<div class="overlay-content phosphor">
 				<div class="popup-header">
 					<h2 id="gameResultMessage">PLAYER WON!</h2>
+					<p id="nextRoundMessage">THEY REACH THE NEXT ROUND</p>
 				</div>
 				<div class="form-group">
-					<button id="btnPlayAgain" class="btn">PLAY AGAIN</button>
-					<button id="btnQuit" class="btn">QUIT</button>
+					<button id="btnPlayNextMatch" class="btn">NEXT MATCH</button>
 				</div>
 			</div>
 		</div>
@@ -135,8 +135,9 @@
 			<div class="overlay-content phosphor">
 				<div class="popup-header">
 					<h2>ARE YOU READY?</h2>
-					<p>PLAYER SIDE: <span id="playerSidePlayer">PLAYER</span></p>
-					<p>GUEST SIDE: <span id="guestSidePlayer">GUEST</span></p>
+					<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
+					<p>&gt; PLAYER SIDE: <span id="playerSidePlayer">PLAYER</span></p>
+					<p>&gt; GUEST SIDE: <span id="guestSidePlayer">GUEST</span></p>
 					<h3>PRESS SPACEBAR TO START THE MATCH!</h3>
 				</div>
 			</div>

@@ -117,7 +117,14 @@ document.addEventListener('tourpong_event', async()=>{
 		let isPaused = false;
 
 		let matchups = [];
-		let participants;
+		let participants = [];
+
+		let playerSide;
+		let guestSide;
+
+		let gameID = 0;
+		let gamesOver = [];
+		let isCurentGameOver = false;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
@@ -172,8 +179,10 @@ document.addEventListener('tourpong_event', async()=>{
 			addEventListenerWithTracking(document.getElementById('btnPause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
-				if (event.code === 'Space')
+				if (event.code === 'Space' && !gameResultOverlay.classList.contains('active')) {
+					startGame();
 					pauseGame();
+				}
 			});
 
 			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
@@ -259,23 +268,21 @@ document.addEventListener('tourpong_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 	
 		function getTournamentParticipants() {
-			const participants = [];
-
-			console.log("player count: " + playerCount);
-
 			for (let i = 1; i <= playerCount; i++) {
 				const input = document.getElementById(`player${i}Nickname`);
-				if (input && input.value.trim() === "")
+				if (input && input.value.trim() === "") {
 					input.value = "PLAYER" + i;
+				}
 				participants.push(input.value);
 			}
-			console.log(participants);
 			return participants;
 		}
 
 		function drawTable() {
-			participants = getTournamentParticipants();
-			participants.sort(() => Math.random() - 0.5);
+			if (participants.length === 0) {
+				participants = getTournamentParticipants();
+				participants.sort(() => Math.random() - 0.5);
+			}
 		
 			for (let i = 0; i < participants.length; i += 2) {
 				matchups.push([participants[i], participants[i + 1]]);
@@ -292,18 +299,58 @@ document.addEventListener('tourpong_event', async()=>{
 		}
 
 		function announceNextMatch() {
-			const nextMatch = matchups.shift();
-			const playerSide = nextMatch[0];
-			const opponentSide = nextMatch[1];
+			let nextMatch = matchups.shift();
+
+			if (!nextMatch) {
+				drawTable();
+				nextMatch = matchups.shift();
+			}
+
+			playerSide = nextMatch[0];
+			guestSide = nextMatch[1];
+
+			console.log(participants);
+			console.log(matchups);
+
+			updateTournamentInfo();
 
 			const matchAnnouncement = document.getElementById('matchAnnounceOverlay');
 			const playerSideElement = document.getElementById('playerSidePlayer');
 			const guestSideElement = document.getElementById('guestSidePlayer');
-
 			if (matchAnnouncement && playerSideElement && guestSideElement) {
 				playerSideElement.textContent = playerSide;
-				guestSideElement.textContent = opponentSide;
+				guestSideElement.textContent = guestSide;
 				matchAnnouncement.classList.add('active');
+			}
+		}
+
+		function updateTournamentInfo() {
+			const currentRound = document.getElementById('currentRound');
+			const playersLeft = document.getElementById('playersLeft');
+			const nextMatch = document.getElementById('nextMatch');
+
+			let currentRoundValue;
+			let playersLeftValue = participants.length;
+			let nextMatchValue;
+
+			if (playersLeftValue <= 2)
+				currentRoundValue = 'FINALS';
+			else if (playersLeftValue <= 4)
+				currentRoundValue = 'SEMI-FINALS';
+			else if (playersLeftValue <= 8)
+				currentRoundValue = 'QUARTER FINALS';
+			else
+				currentRoundValue = `ROUND OF ${playersLeftValue}`;
+
+			if (matchups.length > 0)
+				nextMatchValue = `${matchups[0][0]} vs ${matchups[0][1]}`;
+			else
+				nextMatchValue = 'WAITING...';
+
+			if (currentRound && playersLeft && nextMatch) {
+				currentRound.textContent = currentRoundValue;
+				playersLeft.textContent = playersLeftValue;
+				nextMatch.textContent = nextMatchValue;
 			}
 		}
 
@@ -312,6 +359,9 @@ document.addEventListener('tourpong_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function gameLoop() {
+			if (gamesOver[gameID])
+				return;
+
 			context.clearRect(0, 0, boardWidth, boardHeight);
 
 			moveBall();
@@ -320,8 +370,10 @@ document.addEventListener('tourpong_event', async()=>{
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
-			if (playerScore >= 7 || opponentScore >= 7)
+			if (playerScore >= 5 || opponentScore >= 5) {
+				gamesOver[gameID] = true;
 				cleanupGame(false);
+			}
 		}
 
 		function startGame() {			
@@ -329,10 +381,13 @@ document.addEventListener('tourpong_event', async()=>{
 			context = board.getContext('2d');
 			board.width = boardWidth;
 			board.height = boardHeight;
+
+			gameID++;
+			gamesOver[gameID] = false;	
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
-			if (playerScore >= 7 || opponentScore >= 7)
+			if (playerScore >= 5 || opponentScore >= 5)
 				return;
 
 			if (playerLost) {
@@ -373,37 +428,70 @@ document.addEventListener('tourpong_event', async()=>{
 		}
 
 		function cleanupGame(fullCleanup = true) {
-			resetToDefaultSettings();
-			resetGame(true, false);
-			removeAllEventListeners();
+			if (fullCleanup) {
+				resetToDefaultSettings();
+				removeAllEventListeners();
+				participants = [];
+				matchups = [];
+			}
 
 			if (!isPaused)
 				pauseGame();
 
-			if (!fullCleanup)
+			if (!fullCleanup) {
+				gamesOver[gameID] = true;
 				gameOver();
+			}
 		}
 			
 		function gameOver() {
+			const playerIndex = participants.indexOf(playerSide);
+			if (playerIndex > -1)
+				participants.splice(playerIndex, 1);
+			
+			const opponentIndex = participants.indexOf(guestSide);
+			if (opponentIndex > -1)
+				participants.splice(opponentIndex, 1);
+			
+			if (playerScore === 5)
+				participants.push(playerSide);
+			else
+				participants.push(guestSide);
+
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
-				gameResultMessage.textContent = playerScore === 7 ? 'PLAYER WON!' : 'GUEST WON!';
+				if (participants.length > 1)
+					gameResultMessage.textContent = playerScore === 1 ? playerSide + ' WON!' : guestSide + ' WON!';
+				else
+					gameResultMessage.textContent = playerScore === 1 ? playerSide + ' WON THE TOURNAMENT!' : guestSide + ' WON THE TOURNAMENT!';
 				gameResultOverlay.classList.add('active');
 			}
 			
-			const playAgainButton = document.getElementById('btnPlayAgain');
-			if (playAgainButton) {
-				playAgainButton.addEventListener('click', () => {
-					loadPage('/tourpong');
-				});
-			}
-			
-			const quitButton = document.getElementById('btnQuit');
-			if (quitButton) {
-				quitButton.addEventListener('click', () => {
-					history.pushState(null, '', '/menu');
-					loadPage('/menu');
+			const btnPlayNextMatch = document.getElementById('btnPlayNextMatch');
+			const nextRoundMessage = document.getElementById('nextRoundMessage');
+			if (btnPlayNextMatch && nextRoundMessage) {
+				if (participants.length === 1) {
+					btnPlayNextMatch.textContent = 'FINISH TOURNAMENT';
+					nextRoundMessage.textContent = 'ROBCO INDUSTRIES CONGRATULATES YOU FOR THIS OUTSTANDING VICTORY!';
+				}
+
+				btnPlayNextMatch.addEventListener('click', () => {
+					if (participants.length > 1) {
+						playerScore = 0;
+						opponentScore = -1;
+						resetGame(true, false);
+						document.getElementById('player2Score').textContent = opponentScore;
+						document.getElementById('player1Score').textContent = playerScore;		
+						if (powerUp)
+							powerUp = null;
+					} else {
+						cleanupGame();
+						loadPage('/menu');
+					}
+
+					gameResultOverlay.classList.remove('active');
+					announceNextMatch();
 				});
 			}
 		}
