@@ -422,8 +422,8 @@ def create_match(request):
             versus = data.get('opponent', None)
             my_score = data.get('myscore', None)
             opp_score = data.get('oppscore', None)
-            if not my_score or not opp_score or not versus:
-                return JsonRequest({"error": "Can't find values"})
+            if not versus:
+                return JsonResponse({"error": "Can't find versus"})
             
             user_profile = PlayerData.objects.get(username=request.user.username)
             match_data = MatchData.objects.create(player=user_profile.id, opponent=versus, myScore=my_score, oppScore=opp_score)

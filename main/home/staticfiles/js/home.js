@@ -207,14 +207,10 @@ document.addEventListener('home_event', async()=>{
 				data.forEach((match, index) => {
 					const lastMatchElement = document.getElementById(`player${index + 1}`);
 					const lastResultElement = document.getElementById(`result${index + 1}`);
-					if(match.opponent)
-						lastMatchElement.textContent = match.opponent;
-					else
-						lastMatchElement.textContent = ``;
-					if(match.myScore && match.oppScore)
-						lastResultElement.textContent = `${match.myScore} - ${match.oppScore}`;
-					else
-						lastResultElement.textContent = ``; 
+					lastMatchElement.textContent = match.opponent;
+					const myScore = match.myScore !== undefined ? match.myScore : '0';
+					const oppScore = match.oppScore !== undefined ? match.oppScore : '0';
+					lastResultElement.textContent = `${myScore} - ${oppScore}`;
 				});
 			}  
 		} catch (error) {
