@@ -20,7 +20,7 @@ class PlayerData(models.Model):
     lastConnexion = models.DateTimeField(default=None, null=True, blank=True)
     friendsList = models.TextField(default="", null=True, blank=True)
     requestFriendsList = models.TextField(default="", null=True, blank=True)
-    rank = models.IntegerField(default=0)
+    position = models.IntegerField(default=0)
     win = models.IntegerField(default=0)
     lose = models.IntegerField(default=0)
     matches = models.IntegerField(default=0)

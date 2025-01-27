@@ -1,6 +1,7 @@
 document.addEventListener('leaderboard_event', async()=>{
 
 	function leaderboardEvent() {
+		updateKing();
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -91,6 +92,27 @@ document.addEventListener('leaderboard_event', async()=>{
 	}
 	
 	async function updateKing(){
+		try {
+			const response = await fetch('/api/get_NumberOne/', {
+				methos: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if(response.ok) {
+				const data = await response.json();
+				const BestPlayerElement = document.getElementById(`player1`);
+				const BestRateElement = document.getElementById(`win1`);
+				const BestNumberElement = document.getElementById(`matches1`);
+				BestPlayerElement.testContent = data.name;
+				BestRateElement.testContent = data.max_rate;
+				BestNumberElement.testContent = data.matches;
+			}
+		} catch  (error) {
+			console.error('Error updateKing:', error);
+		}
 		
 	}
 

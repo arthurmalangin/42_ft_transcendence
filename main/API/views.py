@@ -290,13 +290,27 @@ def getRequestFriendsList(request):
 def get_rank(request):
     if request.user.is_authenticated:
         try:
-            user_profile = PlayerData.objects.get(username=request.user)
-            return JsonResponse({'rank': user_profile.rank})
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            return JsonResponse({'rank': user_profile.position})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get rank: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
+def update_rank(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            data = PlayerData.objects.all().order_by('-win_rate')
+            position = next((i + 1 for i, player in enumerate(data) if player.id == user_profile.id), None)
+            user_profile.position = position
+            user_profile.save()
+            return JsonResponse({'Rank': user_profile.position})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to update_rank: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)            
+        
 def get_win(request):
     if request.user.is_authenticated:
         try:
@@ -458,3 +472,12 @@ def get_Lastmatches(request):
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def get_NumberOne(request):
+    try:
+        players = PlayerData.objects.all().order_by('-win_rate')[:1]
+        if players:
+            return JsonResponse({"name": players.username, "max_rate": players.max_rate, "matches": players.matches})
+    except Exception as e:
+        print("error::::::::::::::" + str(e))
+        return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
