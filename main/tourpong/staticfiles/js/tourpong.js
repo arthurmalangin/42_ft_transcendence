@@ -122,10 +122,6 @@ document.addEventListener('tourpong_event', async()=>{
 		let playerSide;
 		let guestSide;
 
-		let gameID = 0;
-		let gamesOver = [];
-		let isCurentGameOver = false;
-
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                         EVENTS                          ////////////
 	//////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +176,7 @@ document.addEventListener('tourpong_event', async()=>{
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space' && !gameResultOverlay.classList.contains('active')) {
-					startGame();
+					// startGame();
 					pauseGame();
 				}
 			});
@@ -359,9 +355,6 @@ document.addEventListener('tourpong_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function gameLoop() {
-			if (gamesOver[gameID])
-				return;
-
 			context.clearRect(0, 0, boardWidth, boardHeight);
 
 			moveBall();
@@ -370,10 +363,8 @@ document.addEventListener('tourpong_event', async()=>{
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
-			if (playerScore >= 5 || opponentScore >= 5) {
-				gamesOver[gameID] = true;
+			if (playerScore >= 5 || opponentScore >= 5)
 				cleanupGame(false);
-			}
 		}
 
 		function startGame() {			
@@ -381,9 +372,6 @@ document.addEventListener('tourpong_event', async()=>{
 			context = board.getContext('2d');
 			board.width = boardWidth;
 			board.height = boardHeight;
-
-			gameID++;
-			gamesOver[gameID] = false;	
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
@@ -438,10 +426,8 @@ document.addEventListener('tourpong_event', async()=>{
 			if (!isPaused)
 				pauseGame();
 
-			if (!fullCleanup) {
-				gamesOver[gameID] = true;
+			if (!fullCleanup)
 				gameOver();
-			}
 		}
 			
 		function gameOver() {
