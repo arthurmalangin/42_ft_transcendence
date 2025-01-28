@@ -33,4 +33,8 @@ urlpatterns = [
 	path("get_Lastmatches/", views.get_Lastmatches, name="get_Lastmatches"),
 	path("update_rank/", views.update_rank, name="update_rank"),
 	path("get_NumberOne/", views.get_NumberOne, name="get_NumberOne"),
+	path("get_thethree/", views.get_thethree, name="get_thethree"),
+	path("get_NumberOneBrick/", views.get_NumberOneBrick, name="get_NumberOneBrick"),
+	path("get_thethreeBrick/", views.get_thethreeBrick, name="get_thethreeBrick"),
+	path("create_party/", views.create_party, name="create_party"),
 ]

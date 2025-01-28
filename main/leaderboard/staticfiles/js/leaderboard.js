@@ -2,6 +2,9 @@ document.addEventListener('leaderboard_event', async()=>{
 
 	function leaderboardEvent() {
 		updateKing();
+		updatethree();
+		updateKingbrick();
+		updatethreebrick();
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -94,7 +97,7 @@ document.addEventListener('leaderboard_event', async()=>{
 	async function updateKing(){
 		try {
 			const response = await fetch('/api/get_NumberOne/', {
-				methos: 'GET',
+				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 					'X-CSRFToken': getCSRFToken()
@@ -103,17 +106,104 @@ document.addEventListener('leaderboard_event', async()=>{
 
 			if(response.ok) {
 				const data = await response.json();
-				const BestPlayerElement = document.getElementById(`player1`);
-				const BestRateElement = document.getElementById(`win1`);
-				const BestNumberElement = document.getElementById(`matches1`);
-				BestPlayerElement.testContent = data.name;
-				BestRateElement.testContent = data.max_rate;
-				BestNumberElement.testContent = data.matches;
+				console.log('players data:', data);
+				const BestPlayerElement = document.getElementById(`player`);
+				const BestRateElement = document.getElementById(`win`);
+				const BestNumberElement = document.getElementById(`matches`);
+				BestPlayerElement.textContent = `${data.username}`;
+				const win = data.win !== undefined ? data.win : '0';
+				const matches = data.matches !== undefined ? data.matches : '0';
+				BestRateElement.textContent = `${win}`;
+				BestNumberElement.textContent = `${matches}`;
 			}
 		} catch  (error) {
 			console.error('Error updateKing:', error);
 		}
-		
+	}
+
+	async function updatethree(){
+		try {
+			const response = await fetch('/api/get_thethree/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Players received:', data);
+				data.forEach((player, index) => {
+					const nameElement = document.getElementById(`player${index + 1}`);
+					const winElement = document.getElementById(`win${index + 1}`);
+					const loseElement = document.getElementById(`lose${index + 1}`);
+					const rateElement = document.getElementById(`rate${index + 1}`);
+					const win = player.win !== undefined ? player.win : '0';
+					const lose = player.lose !== undefined ? player.lose : '0';
+					const rate = player.rate !== undefined ? player.rate : '0';
+					nameElement.textContent = `${player.username}`
+					winElement.textContent = `${win}`
+					loseElement.textContent = `${lose}`
+					rateElement.textContent = `${rate}`
+				});
+			}
+		} catch  (error) {
+			console.error('Error updatethree:', error);
+		}
+	}
+
+	async function updateKingbrick(){
+		try {
+			const response = await fetch('/api/get_NumberOneBrick/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if(response.ok) {
+				const data = await response.json();
+				console.log('players data:', data);
+				const BestPlayerElement = document.getElementById(`bplayer`);
+				const BestRateElement = document.getElementById(`bscore`);
+				const BestNumberElement = document.getElementById(`bmatches`);
+				BestPlayerElement.textContent = `${data.username}`;
+				const score = data.score !== undefined ? data.score : '0';
+				const matches = data.matches !== undefined ? data.matches : '0';
+				BestRateElement.textContent = `${win}`;
+				BestNumberElement.textContent = `${matches}`;
+			}
+		} catch  (error) {
+			console.error('Error updateKing:', error);
+		}
+	}
+
+	async function updatethreebrick(){
+		try {
+			const response = await fetch('/api/get_thethreeBrick/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Players received:', data);
+				data.forEach((player, index) => {
+					const nameElement = document.getElementById(`bplayer${index + 1}`);
+					const scoreElement = document.getElementById(`bscore${index + 1}`);
+					const score = player.score !== undefined ? player.score : '0';
+					nameElement.textContent = `${player.username}`
+					scoreElement.textContent = `${score}`
+				});
+			}
+		} catch  (error) {
+			console.error('Error updatethree:', error);
+		}
 	}
 
 	function logout() {

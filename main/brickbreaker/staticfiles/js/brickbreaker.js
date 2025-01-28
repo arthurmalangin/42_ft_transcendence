@@ -351,7 +351,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				let scoreFromLives = lives * 1000;
 				let scoreFromPowerUps = powerUpsEnabled ? 0 : 2500;
 				let scoreFromAll = scoreFromBricks + scoreFromTime + scoreFromLives + scoreFromPowerUps;
-
+				saveParty(scoreFromAll, totalTime);
 				brickScore.textContent = scoreFromBricks;
 				timeScore.textContent = scoreFromTime;
 				livesScore.textContent = scoreFromLives;
@@ -700,3 +700,28 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 	initBrickbreaker();
 });
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/////////////                      UPDATE DATA                        ////////////
+	//////////////////////////////////////////////////////////////////////////////////
+
+	async function saveParty(scoreFromAll, totalTime){
+		try{
+			const response = await fetch('/api/create_party/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+				body: JSON.stringify({
+					myscore: scoreFromAll,
+					timer: totalTime,
+				}),
+			});
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error("Erreur réseau :", error);
+		}
+	}
