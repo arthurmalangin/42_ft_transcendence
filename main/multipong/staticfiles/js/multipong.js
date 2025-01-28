@@ -163,7 +163,7 @@ document.addEventListener('multipong_event', async()=>{
 				keys[e.key] = false;
 			});
 
-			addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
+			addEventListenerWithTracking(document.getElementById('btnPause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space')
@@ -206,7 +206,9 @@ document.addEventListener('multipong_event', async()=>{
 				if (overlay && overlay.classList.contains('active')) {
 					if (event.type === 'click' &&
 						event.target.id !== 'btnCloseSettingsPong' &&
+						event.target.id !== 'btnEnablePowerups' &&
 						event.target.id !== 'btnResetDefaultSettings' &&
+						event.target.id !== 'btnEnableAI' &&
 						event.target.id !== 'btnQuitSettings' &&
 						event.target.id !== 'btnPlay') {
 						event.stopPropagation();
@@ -232,6 +234,17 @@ document.addEventListener('multipong_event', async()=>{
 				const newSpeed = paddleSpeedSlider.value;
 				updatePaddleSpeed(newSpeed);
 			});
+
+			// const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			// addEventListenerWithTracking(btnEnablePowerups, 'click', function() {
+			// 	togglePowerups();
+			// });
+			
+			// const btnEnableAI = document.getElementById('btnEnableAI');
+			// addEventListenerWithTracking(btnEnableAI, 'click', function() {
+			// 	AIEnabled = !AIEnabled;
+			// 	btnEnableAI.textContent = AIEnabled ? 'DISABLE AI' : 'ENABLE AI';
+			// });
 
 			const btnResetDefaultSettings = document.getElementById('btnResetDefaultSettings');
 			addEventListenerWithTracking(btnResetDefaultSettings, 'click', function() {
@@ -329,11 +342,11 @@ document.addEventListener('multipong_event', async()=>{
 				console.log(player4.score);
 
 				// TODO not working for some stupid reason????
-				player1Score.textContent = player1.score;
+				gameResultOverlay.classList.add('active');
 				player2Score.textContent = player2.score;
+				player1Score.textContent = player1.score;
 				player3Score.textContent = player3.score;
 				player4Score.textContent = player4.score;
-				gameResultOverlay.classList.add('active');
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
@@ -409,13 +422,13 @@ document.addEventListener('multipong_event', async()=>{
 			if (ball.x <= 0 || ball.x + ball.width >= boardWidth || ball.y <= 0 || ball.y + ball.height >= boardHeight) {
 				let scoredPlayer = null;
 
-				if (ball.x <= 0) {
+				if (ball.x <= 0 + verticalPaddleWidth) {
 					scoredPlayer = players[0];
-				} else if (ball.y <= 0) {
+				} else if (ball.y <= 0 + horizontalPaddleHeight) {
 					scoredPlayer = players[1];
-				} else if (ball.y + ball.height >= boardHeight) {
+				} else if (ball.y + ball.height >= boardHeight - horizontalPaddleHeight) {
 					scoredPlayer = players[2];
-				} else if (ball.x + ball.width >= boardWidth) {
+				} else if (ball.x + ball.width >= boardWidth - verticalPaddleWidth) {
 					scoredPlayer = players[3];
 				}
 

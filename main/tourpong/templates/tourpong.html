@@ -11,7 +11,7 @@
 			<div id="btn_home" class="nav-item">
 				<span data-translate="title.main.home">&gt; HOME</span>
 			</div>
-			<div id="btn_game" class="nav-item">
+			<div id="btn_game" class="nav-item active">
 				<span data-translate="title.main.pong">&gt; PLAY</span>
 			</div>
 			<!-- <div id="btn_brickbreaker" class="nav-item active">
@@ -33,6 +33,113 @@
 		
 		<div class="panel">
 			<h2 class="panel-header">&gt; PONG TOURNAMENT</h2>
+
+			<div class="game-container">
+				<canvas id="board"></canvas>
+			
+				<nav class="nav right-nav card">
+					<div id="btnPause" class="nav-item">
+						<span>&gt; PAUSE (SPACE)</span>
+					</div>
+					<div class="game-info">
+						<h3>INSTRUCTIONS</h3>
+						<p>FIRST PLAYER TO SCORE 5 POINTS WINS</p>
+					</div>
+					<div class="game-info">
+						<h3>GAMESTATS</h3>
+						<p>PLAYER: <span id="player1Score" name="myScore">0</span></p>
+						<p>GUEST: <span id="player2Score" name="oppScore">0</span></p>
+					</div>
+					<div class="game-info">
+						<h3>PHASE MATCHES</h3>
+						<div id="matchupTable">
+							<p>WAITING...</p>
+						</div>
+					</div>
+				</nav>
+			</div>
 		</div>
+
+
+		<div id="tournamentSettingsOverlay" class="overlay active">
+			<div class="overlay-content phosphor">
+				<div class="popup-header">
+					<h2>TOURNAMENT SETTINGS</h2>
+					<p>SET THE TOURNAMENT UP AS YOU PLEASE NOW. YOU WON'T BE ABLE TO WHILE THE TOURNAMENT IS ONGOING.</p>
+					<p>WARNING: RESULTS WILL NOT BE SAVED IF THE TOURNAMENT IS EXITED BEFORE THE END.</p>
+				</div>
+				<div class="form-group">
+					<label>BALL SPEED</label>
+					<input type="range" class="input" id="ballSpeedSlider" min="1" value="2" max="3">
+				</div>
+				<div class="form-group">
+					<label>PADDLE SPEED</label>
+					<input type="range" class="input" id="paddleSpeedSlider" min="1" value="2" max="3">
+				</div>
+				<div class="form-group">
+					<button id="btnEnablePowerups" class="btn">ENABLE POWERUPS</button>
+					<label for="numPlayers">PLAYERS:</label>
+					<select id="numPlayers" class="form-control">
+						<option value="4">4</option>
+					</select>
+				</div>
+				<div class="form-group" id="PlayersNicknames1-4">
+					<input type="text" class="input" id="player1Nickname" placeholder="PLAYER1" maxlength="9">
+					<input type="text" class="input" id="player2Nickname" placeholder="PLAYER2" maxlength="9">
+					<input type="text" class="input" id="player3Nickname" placeholder="PLAYER3" maxlength="9">
+					<input type="text" class="input" id="player4Nickname" placeholder="PLAYER4" maxlength="9">
+				</div>
+				<div class="form-group" id="PlayersNicknames5-8">
+					<input type="text" class="input" id="player5Nickname" placeholder="PLAYER5" maxlength="9">
+					<input type="text" class="input" id="player6Nickname" placeholder="PLAYER6" maxlength="9">
+					<input type="text" class="input" id="player7Nickname" placeholder="PLAYER7" maxlength="9">
+					<input type="text" class="input" id="player8Nickname" placeholder="PLAYER8" maxlength="9">
+				</div>
+				<div class="form-group" id="PlayersNicknames9-12">
+					<input type="text" class="input" id="player9Nickname" placeholder="PLAYER9" maxlength="9">
+					<input type="text" class="input" id="player10Nickname" placeholder="PLAYER10" maxlength="9">
+					<input type="text" class="input" id="player11Nickname" placeholder="PLAYER11" maxlength="9">
+					<input type="text" class="input" id="player12Nickname" placeholder="PLAYER12" maxlength="9">
+				</div>
+				<div class="form-group" id="PlayersNicknames13-16">
+					<input type="text" class="input" id="player13Nickname" placeholder="PLAYER13" maxlength="9">
+					<input type="text" class="input" id="player14Nickname" placeholder="PLAYER14" maxlength="9">
+					<input type="text" class="input" id="player15Nickname" placeholder="PLAYER15" maxlength="9">
+					<input type="text" class="input" id="player16Nickname" placeholder="PLAYER16" maxlength="9">
+				</div>
+				<div class="form-group">
+					<button id="btnResetDefaultSettings" class="btn">RESET DEFAULT</button>
+					<button id="btnQuitSettings" class="btn">QUIT GAME</button>
+				</div>
+				<div class="form-group">
+					<button id="btnPlay" class="btn">SAVE & PLAY</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="gameResultOverlay" class="overlay">
+			<div class="overlay-content phosphor">
+				<div class="popup-header">
+					<h2 id="gameResultMessage">PLAYER WON!</h2>
+					<p id="nextRoundMessage">THEY REACH THE NEXT ROUND</p>
+				</div>
+				<div class="form-group">
+					<button id="btnPlayNextMatch" class="btn">NEXT MATCH</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="matchAnnounceOverlay" class="overlay">
+			<div class="overlay-content phosphor">
+				<div class="popup-header">
+					<h2>ARE YOU READY?</h2>
+					<p>FIRST PLAYER TO SCORE 5 POINTS WINS</p>
+					<p>&gt; PLAYER SIDE: <span id="playerSidePlayer">PLAYER</span></p>
+					<p>&gt; GUEST SIDE: <span id="guestSidePlayer">GUEST</span></p>
+					<h3>PRESS SPACEBAR TO START THE MATCH!</h3>
+				</div>
+			</div>
+		</div>
+		
 	</main>
 </div>

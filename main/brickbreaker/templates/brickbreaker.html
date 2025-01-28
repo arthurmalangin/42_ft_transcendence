@@ -11,7 +11,7 @@
 			<div id="btn_home" class="nav-item">
 				<span data-translate="title.main.home">&gt; HOME</span>
 			</div>
-			<div id="btn_game" class="nav-item">
+			<div id="btn_game" class="nav-item active">
 				<span data-translate="title.main.pong">&gt; PLAY</span>
 			</div>
 			<!-- <div id="btn_brickbreaker" class="nav-item active">
@@ -38,7 +38,7 @@
 				<canvas id="board"></canvas>
 
 				<nav class="nav right-nav card">
-					<div id="btn_pause" class="nav-item">
+					<div id="btnPause" class="nav-item">
 						<span>&gt; PAUSE (SPACE)</span>
 					</div>
 					<div id="btnSettingsPong" class="nav-item">
@@ -96,10 +96,10 @@
 			<div class="popup-header">
 				<h2 id="gameResultMessage">YOUR SCORE: <span id="finalScore">0</span></h2>
 			</div>
-			<p>FROM BRICKS: <span id="brickScore">0</span></p>
-			<p>FROM TIME: <span id="timeScore">0</span></p>
-			<p>FROM LIVES: <span id="livesScore">0</span></p>
-			<p>FROM POWERUPS: <span id="powerUpScore">0</span></p>
+			<p>FROM BRICKS: <span id="brickScore">NULL</span></p>
+			<p>FROM TIME: <span id="timeScore">NULL</span></p>
+			<p>FROM LIVES: <span id="livesScore">NULL</span></p>
+			<p>FROM POWERUPS: <span id="powerUpScore">NULL</span></p>
 			<div class="form-group">
 				<button id="btnPlayAgain" class="btn">PLAY AGAIN</button>
 				<button id="btnQuit" class="btn">QUIT</button>

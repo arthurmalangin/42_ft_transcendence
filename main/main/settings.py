@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 	"API",
 	"game",
     "brickbreaker",
-    "multipong"
+    "multipong",
+    "tourpong"
 ]
 
 ASGI_APPLICATION = 'main.asgi.application'
@@ -167,6 +168,7 @@ STATICFILES_DIRS = [
 	BASE_DIR / "game/staticfiles",
     BASE_DIR / "brickbreaker/staticfiles",
     BASE_DIR / "multipong/staticfiles",
+    BASE_DIR / "tourpong/staticfiles",
 ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -51,8 +51,8 @@ document.addEventListener('menuplay_event', async()=>{
 
 		const btn_pong_tournament = document.getElementById('btn_pong_tournament');
 		btn_pong_tournament.addEventListener('click', () => {
-			history.pushState(null, '', '/404');
-			loadPage('/404');
+			history.pushState(null, '', '/tourpong');
+			loadPage('/tourpong');
 		});
 
 		const btn_pong_4players = document.getElementById('btn_pong_4players');

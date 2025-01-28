@@ -159,7 +159,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				keys[e.key] = false;
 			});
 
-			addEventListenerWithTracking(document.getElementById('btn_pause'), 'click', pauseGame);
+			addEventListenerWithTracking(document.getElementById('btnPause'), 'click', pauseGame);
 
 			addEventListenerWithTracking(document, 'keydown', function(event) {
 				if (event.code === 'Space')
@@ -607,6 +607,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 			updatePaddleSpeed(2);
 			document.getElementById('ballSpeedSlider').value = 2;
 			document.getElementById('paddleSpeedSlider').value = 2;
+
+			powerUpsEnabled = false;
+			const btnEnablePowerups = document.getElementById('btnEnablePowerups');
+			btnEnablePowerups.textContent = 'ENABLE POWERUPS';
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////

@@ -79,6 +79,14 @@ const routes = {
 		needLogin: true
 	},
 
+	'/tourpong': {
+		html: '/srctourpong',
+		css: '/static/css/tourpong.css',
+		js: '/static/js/tourpong.js',
+		event: 'tourpong_event',
+		needLogin: true
+	},
+
 	'/404': {
 		html: '/home/404',
 		css: '/static/css/404.css',
