@@ -69,8 +69,8 @@ document.addEventListener('menuplay_event', async()=>{
 
 		const btn_brickbreaker_tournament = document.getElementById('btn_brickbreaker_tournament');
 		btn_brickbreaker_tournament.addEventListener('click', () => {
-			history.pushState(null, '', '/404');
-			loadPage('/404');
+			history.pushState(null, '', '/tourbrickbreaker');
+			loadPage('/tourbrickbreaker');
 		});
 	}
 

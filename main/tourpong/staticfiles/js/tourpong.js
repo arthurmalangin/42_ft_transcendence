@@ -182,12 +182,12 @@ document.addEventListener('tourpong_event', async()=>{
 			});
 
 			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
-                document.getElementById('tournamentSettingsOverlay').classList.remove('active');
+				document.getElementById('tournamentSettingsOverlay').classList.remove('active');
 				drawTable();
 				announceNextMatch();
-                // pauseGame();
-                resetGame(true, false);
-            });
+				// pauseGame();
+				resetGame(true, false);
+			});
 
 			function stopEventPropagationSettings(event) {
 				const overlay = document.getElementById('tournamentSettingsOverlay');
