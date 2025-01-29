@@ -714,7 +714,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 					'X-CSRFToken': getCSRFToken()
 				},
 				body: JSON.stringify({
-					myscore: scoreFromAll,
+					score: scoreFromAll,
 					timer: totalTime,
 				}),
 			});

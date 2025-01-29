@@ -455,13 +455,13 @@ def create_party(request):
             if not request.body:
                 return JsonResponse({"error": "Request body is empty"}, status=400)
             data = json.loads(request.body.decode('utf-8'))
-            Score = data.get('score', None)
+            score = data.get('score', None)
             timer = data.get('timer', None)
             if not score:
                 return JsonResponse({"error": "Can't find score"})
             
             user_profile = PlayerData.objects.get(username=request.user.username)
-            party_data = BrickData.objects.create(player=user_profile.id, score=Score, time=timer)
+            party_data = BrickData.objects.create(player=user_profile.id, score=score, time=timer)
             party_data.save()
             user_profile.party += 1
             user_profile.save()
@@ -527,9 +527,10 @@ def get_thethree(request):
 
 def get_NumberOneBrick(request):
     try:
-        player = PlayerData.objects.all().order_by('-win_rate').first()
-        if player:
-            return JsonResponse({"username": player.username, "score": player.score, "matches": player.matches})
+        brick = BrickData.objects.all().order_by('-score').first()
+        player = PlayerData.objects.get(id=brick.player)
+        if brick and player:
+            return JsonResponse({"username": player.username, "score": brick.score, "matches": player.party})
     except Exception as e:
         print("error::::::::::::::" + str(e))
         return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)

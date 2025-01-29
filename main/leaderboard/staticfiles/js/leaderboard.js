@@ -167,12 +167,12 @@ document.addEventListener('leaderboard_event', async()=>{
 				const data = await response.json();
 				console.log('players data:', data);
 				const BestPlayerElement = document.getElementById(`bplayer`);
-				const BestRateElement = document.getElementById(`bscore`);
+				const BestScoreElement = document.getElementById(`bscore`);
 				const BestNumberElement = document.getElementById(`bmatches`);
 				BestPlayerElement.textContent = `${data.username}`;
 				const score = data.score !== undefined ? data.score : '0';
 				const matches = data.matches !== undefined ? data.matches : '0';
-				BestRateElement.textContent = `${win}`;
+				BestScoreElement.textContent = `${score}`;
 				BestNumberElement.textContent = `${matches}`;
 			}
 		} catch  (error) {
