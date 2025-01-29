@@ -463,6 +463,8 @@ def create_party(request):
             user_profile = PlayerData.objects.get(username=request.user.username)
             party_data = BrickData.objects.create(player=user_profile.id, score=score, time=timer)
             party_data.save()
+            if user_profile.best_score < score:
+                user_profile.best_score = score
             user_profile.party += 1
             user_profile.save()
             return JsonResponse({"Success": "party created!"})
@@ -507,7 +509,7 @@ def get_NumberOne(request):
 
 def get_thethree(request):
     try:
-        players = PlayerData.objects.all().order_by('-win_rate')[1:4]
+        players = PlayerData.objects.all().order_by('-win_rate')[1:]
         if players:
             data = [
                 {
@@ -527,22 +529,21 @@ def get_thethree(request):
 
 def get_NumberOneBrick(request):
     try:
-        brick = BrickData.objects.all().order_by('-score').first()
-        player = PlayerData.objects.get(id=brick.player)
-        if brick and player:
-            return JsonResponse({"username": player.username, "score": brick.score, "matches": player.party})
+        player = PlayerData.objects.all().order_by('-best_score').first()
+        if player:
+            return JsonResponse({"username": player.username, "score": player.best_score, "matches": player.party})
     except Exception as e:
         print("error::::::::::::::" + str(e))
         return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
 
 def get_thethreeBrick(request):
     try:
-        players = PlayerData.objects.all().order_by('-win_rate')[1:4]
+        players = PlayerData.objects.all().order_by('-best_score')[1:]
         if players:
             data = [
                 {
                     "username":player.username,
-                    "score":player.score,
+                    "score":player.best_score,
                 }
                 for player in players
             ]
