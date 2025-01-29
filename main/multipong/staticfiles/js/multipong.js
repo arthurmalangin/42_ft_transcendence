@@ -330,10 +330,10 @@ document.addEventListener('multipong_event', async()=>{
 		function gameOver() {
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
-			const player1Score = document.getElementById('player1Score');
-			const player2Score = document.getElementById('player2Score');
-			const player3Score = document.getElementById('player3Score');
-			const player4Score = document.getElementById('player4Score');
+			const player1FinalScore = document.getElementById('player1FinalScore');
+			const player2FinalScore = document.getElementById('player2FinalScore');
+			const player3FinalScore = document.getElementById('player3FinalScore');
+			const player4FinalScore = document.getElementById('player4FinalScore');
 
 			if (gameResultOverlay && gameResultMessage && player1Score && player2Score && player3Score && player4Score) {
 				console.log(player1.score);
@@ -343,10 +343,10 @@ document.addEventListener('multipong_event', async()=>{
 
 				// TODO not working for some stupid reason????
 				gameResultOverlay.classList.add('active');
-				player2Score.textContent = player2.score;
-				player1Score.textContent = player1.score;
-				player3Score.textContent = player3.score;
-				player4Score.textContent = player4.score;
+				player1FinalScore.textContent = player1.score;
+				player2FinalScore.textContent = player2.score;
+				player3FinalScore.textContent = player3.score;
+				player4FinalScore.textContent = player4.score;
 			}
 			
 			const playAgainButton = document.getElementById('btnPlayAgain');
