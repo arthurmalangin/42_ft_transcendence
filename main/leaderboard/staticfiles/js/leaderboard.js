@@ -5,6 +5,8 @@ document.addEventListener('leaderboard_event', async()=>{
 		updatethree();
 		updateKingbrick();
 		updatethreebrick();
+		updateMyStat();
+		updateMyBrickStat();
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -200,6 +202,69 @@ document.addEventListener('leaderboard_event', async()=>{
 					nameElement.textContent = `${player.username}`
 					scoreElement.textContent = `${score}`
 				});
+			}
+		} catch  (error) {
+			console.error('Error updatethree:', error);
+		}
+	}
+
+	async function updateMyStat(){
+		try{
+			const response = await fetch('/api/get_myStat/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if(response.ok) {
+				const data = await response.json();
+				console.log('Player received:', data);
+				const myRankElement = document.getElementById('myrank');
+				const myWinElement = document.getElementById('mywin');
+				const myLoseElement = document.getElementById('mylose');
+				const myBestRateElement = document.getElementById('myBestRate');
+				const ActualElement = document.getElementById('myActualRate');
+				const myMatchElement = document.getElementById('mymatches');
+				const Win = data.myWin !== undefined ? data.myWin : '0';
+				const Lose = data.mylose !== undefined ? data.mylose : '0';
+				const myBest = data.myBest !== undefined ? data.myBest : '0';
+				const Actual = data.myActual !== undefined ? data.myActual : '0';
+				const Match = data.myMatch !== undefined ? data.myMatch : '0';
+				myRankElement.textContent = `${data.myRank}`
+				myWinElement.textContent = `${Win}`
+				myLoseElement.textContent = `${Lose}`
+				myBestRateElement.textContent = `${myBest}`
+				ActualElement.textContent = `${Actual}`
+				myMatchElement.textContent = `${Match}`
+			}
+		} catch  (error) {
+			console.error('Error updatethree:', error);
+		}
+	}
+	
+	async function updateMyBrickStat(){
+		try{
+			const response = await fetch('/api/get_myBrickStat/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+
+			if(response.ok) {
+				const data = await response.json();
+				console.log('Player received:', data);
+				const myRankBrickElement = document.getElementById('myrank');
+				const myScoreBrickElement = document.getElementById('myscore');
+				const myTimeBrickElement = document.getElementById('mytime');
+				const score = data.myscore !== undefined ? data.myscore : '0';
+				const time = data.mytime !== undefined ? data.mytime : '0';
+				myRankBrickElement.textContent = `${data.myRank}`
+				myScoreBrickElement.textContent = `${score}`
+				myTimeBrickElement.textContent = `${time}`
 			}
 		} catch  (error) {
 			console.error('Error updatethree:', error);

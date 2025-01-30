@@ -27,6 +27,7 @@ class PlayerData(models.Model):
     friendsList = models.TextField(default="", null=True, blank=True)
     requestFriendsList = models.TextField(default="", null=True, blank=True)
     position = models.IntegerField(default=0)
+    position_brick = models.IntegerField(default=0)
     win = models.IntegerField(default=0)
     lose = models.IntegerField(default=0)
     matches = models.IntegerField(default=0)

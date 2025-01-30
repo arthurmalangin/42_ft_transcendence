@@ -312,6 +312,20 @@ def update_rank(request):
             return JsonResponse({'error': f'failed to update_rank: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)            
         
+def update_rank_brick(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            data = PlayerData.objects.all().order_by('-best_score')
+            position = next((i + 1 for i, player in enumerate(data) if player.id == user_profile.id), None)
+            user_profile.position_brick = position
+            user_profile.save()
+            return JsonResponse({'Rank': user_profile.position_brick})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to update_rank_brick: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
 def get_win(request):
     if request.user.is_authenticated:
         try:
@@ -554,8 +568,28 @@ def get_thethreeBrick(request):
         print("error::::::::::::::" + str(e))
         return JsonResponse({'error': f'failed to get the three: {str(e)}'}, status=400)
 
-        
+def get_myStat(request):
+    if request.user.is_authenticated:
+        try:
+            player = PlayerData.objects.get(username=request.user.username)
+            if player:
+                return JsonResponse({'myRank': player.position, "myWin":player.win, "mylose":player.lose, "myBest":player.max_rate, "myActual":player.win_rate, "myMatch":player.matches})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
 
-        
-
-        
+def get_myBrickStat(request):
+    if request.user.is_authenticated:
+        try:
+            player = PlayerData.objects.get(username=request.user.username)
+            if player:
+                return JsonResponse({'myrank': player.position_brick, "myscore":player.best_score, "mytime":player.lose, "myBest":player.max_rate, "myActual":player.win_rate, "myMatch":player.matches})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
