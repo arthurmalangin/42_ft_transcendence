@@ -197,7 +197,8 @@ document.addEventListener('home_event', async()=>{
 				const data = await response.json();
 				const rateElement = document.getElementById('winRate');
 				if (data.winRate) {
-					rateElement.textContent = `${data.winRate}`;
+					const formattedRate = parseFloat(data.winRate).toFixed(2);
+					rateElement.textContent = `${formattedRate}`;
 				} else {
 					rateElement.textContent = '0';
 				}

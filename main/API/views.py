@@ -584,9 +584,13 @@ def get_myStat(request):
 def get_myBrickStat(request):
     if request.user.is_authenticated:
         try:
-            player = PlayerData.objects.get(username=request.user.username)
-            if player:
-                return JsonResponse({'myrank': player.position_brick, "myscore":player.best_score, "mytime":player.lose, "myBest":player.max_rate, "myActual":player.win_rate, "myMatch":player.matches})
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                game = BrickData.objects.filter(player=user_profile.id).order_by("-time").first()
+                if game:
+                    return JsonResponse({'myrank': user_profile.position_brick, "myscore":user_profile.best_score, "mytime":game.time})
+                else:
+                    return JsonResponse({'myrank': user_profile.position_brick, "myscore":user_profile.best_score, "mytime":None})
             else:
                 return JsonResponse({"error":"no player find"})
         except Exception as e:

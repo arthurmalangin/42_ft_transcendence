@@ -144,10 +144,12 @@ document.addEventListener('leaderboard_event', async()=>{
 					const win = player.win !== undefined ? player.win : '0';
 					const lose = player.lose !== undefined ? player.lose : '0';
 					const rate = player.rate !== undefined ? player.rate : '0';
+					const formattedRate = parseFloat(rate).toFixed(2);
+					
 					nameElement.textContent = `${player.username}`
 					winElement.textContent = `${win}`
 					loseElement.textContent = `${lose}`
-					rateElement.textContent = `${rate}`
+					rateElement.textContent = `${formattedRate}`
 				});
 			}
 		} catch  (error) {
@@ -174,6 +176,7 @@ document.addEventListener('leaderboard_event', async()=>{
 				BestPlayerElement.textContent = `${data.username}`;
 				const score = data.score !== undefined ? data.score : '0';
 				const matches = data.matches !== undefined ? data.matches : '0';
+
 				BestScoreElement.textContent = `${score}`;
 				BestNumberElement.textContent = `${matches}`;
 			}
@@ -199,6 +202,7 @@ document.addEventListener('leaderboard_event', async()=>{
 					const nameElement = document.getElementById(`bplayer${index + 1}`);
 					const scoreElement = document.getElementById(`bscore${index + 1}`);
 					const score = player.score !== undefined ? player.score : '0';
+
 					nameElement.textContent = `${player.username}`
 					scoreElement.textContent = `${score}`
 				});
@@ -227,16 +231,21 @@ document.addEventListener('leaderboard_event', async()=>{
 				const myBestRateElement = document.getElementById('myBestRate');
 				const ActualElement = document.getElementById('myActualRate');
 				const myMatchElement = document.getElementById('mymatches');
+				const Rank = data.myRank !== undefined ? data.myRank : '0';
 				const Win = data.myWin !== undefined ? data.myWin : '0';
 				const Lose = data.mylose !== undefined ? data.mylose : '0';
 				const myBest = data.myBest !== undefined ? data.myBest : '0';
 				const Actual = data.myActual !== undefined ? data.myActual : '0';
 				const Match = data.myMatch !== undefined ? data.myMatch : '0';
-				myRankElement.textContent = `${data.myRank}`
+
+				const formattedBest = parseFloat(myBest).toFixed(2);
+				const formattedActual = parseFloat(Actual).toFixed(2);
+
+				myRankElement.textContent = `${Rank}`
 				myWinElement.textContent = `${Win}`
 				myLoseElement.textContent = `${Lose}`
-				myBestRateElement.textContent = `${myBest}`
-				ActualElement.textContent = `${Actual}`
+				myBestRateElement.textContent = `${formattedBest}`
+				ActualElement.textContent = `${formattedActual}`
 				myMatchElement.textContent = `${Match}`
 			}
 		} catch  (error) {
@@ -244,6 +253,13 @@ document.addEventListener('leaderboard_event', async()=>{
 		}
 	}
 	
+	function formatGameTime(seconds) {
+		if (isNaN(seconds) || seconds < 0) return "00:00";
+		let m = Math.floor(seconds / 60);
+		let s = Math.floor(seconds % 60);
+		return [m, s].map(unit => String(unit).padStart(2, '0')).join(':');
+	}
+
 	async function updateMyBrickStat(){
 		try{
 			const response = await fetch('/api/get_myBrickStat/', {
@@ -257,14 +273,16 @@ document.addEventListener('leaderboard_event', async()=>{
 			if(response.ok) {
 				const data = await response.json();
 				console.log('Player received:', data);
-				const myRankBrickElement = document.getElementById('myrank');
-				const myScoreBrickElement = document.getElementById('myscore');
-				const myTimeBrickElement = document.getElementById('mytime');
-				const score = data.myscore !== undefined ? data.myscore : '0';
-				const time = data.mytime !== undefined ? data.mytime : '0';
-				myRankBrickElement.textContent = `${data.myRank}`
-				myScoreBrickElement.textContent = `${score}`
-				myTimeBrickElement.textContent = `${time}`
+				const myRankBrickElement = document.getElementById('myrankb');
+				const myScoreBrickElement = document.getElementById('myScore');
+				const myTimeBrickElement = document.getElementById('myTime');
+				const brank = data.myrank !== undefined ? data.myrank : '0';
+				const bscore = data.myscore !== undefined ? data.myscore : '0';
+				const btime = data.mytime !== undefined ? formatGameTime(parseFloat(data.mytime)) : '00:00';
+				
+				myRankBrickElement.textContent = `${brank}`
+				myScoreBrickElement.textContent = `${bscore}`
+				myTimeBrickElement.textContent = `${btime}`
 			}
 		} catch  (error) {
 			console.error('Error updatethree:', error);
