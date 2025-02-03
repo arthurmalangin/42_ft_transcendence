@@ -329,6 +329,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				guestSideElement.textContent = guestSide;
 				matchAnnouncement.classList.add('active');
 			}
+			totalTime = 0;
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -378,7 +379,6 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 
 		function resetGame() {
 			cooldownTime = 0;
-			isGameOver = false;
 			
 			if (player.lives <= 0) {
 				player.lives = 0
@@ -396,7 +396,6 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			}
 			document.getElementById('guestLives').textContent = guest.lives;
 		
-
 			ball1.speed = ballSpeed;
 			ball2.speed = ballSpeed;
 			ball1.velocityX = 0;
@@ -435,6 +434,12 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				participants = [];
 				matchups = [];
 			}
+
+			isGameOver = false;
+			bricks = [];
+			context.clearRect(0, 0, boardWidth, boardHeight);
+
+			loadCSVLevel('/static/level_42_tournament.csv', generateBricksFromCSV);
 
 			if (!isPaused)
 				pauseGame();
