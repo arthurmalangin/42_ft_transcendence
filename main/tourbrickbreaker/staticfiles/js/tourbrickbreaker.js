@@ -337,13 +337,16 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 		function gameLoop() {
-			context.clearRect(Math.ceil(ball1.x), Math.ceil(ball1.y), ball1.width, ball1.height);
-			context.clearRect(Math.ceil(ball2.x), Math.ceil(ball2.y), ball2.width, ball2.height);
-			context.clearRect(player.x, player.y, player.width, player.height);
-			context.clearRect(guest.x, guest.y, guest.width, guest.height);
+			// context.clearRect(Math.ceil(ball1.x), Math.ceil(ball1.y), ball1.width, ball1.height);
+			// context.clearRect(Math.ceil(ball2.x), Math.ceil(ball2.y), ball2.width, ball2.height);
+			// context.clearRect(player.x, player.y, player.width, player.height);
+			// context.clearRect(guest.x, guest.y, guest.width, guest.height);
+
+			context.clearRect(0, 0, boardWidth, boardHeight);
+
 			player.x = Math.min(Math.max(player.x, 0), boardWidth - player.width);
 			
-			moveballs();
+			moveBalls();
 			updatePlayersPosition();
 			movePowerUp();
 			draw();
@@ -406,7 +409,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			context.clearRect(Math.ceil(ball1.x), Math.ceil(ball1.y), ball1.width, ball1.height);
 			context.clearRect(Math.ceil(ball2.x), Math.ceil(ball2.y), ball2.width, ball2.height);
 			context.clearRect(player.x, player.y, player.width, player.height);
-			context.clearRect(guest.x, guest.y, guest.width, guest.height); 
+			context.clearRect(guest.x, guest.y, guest.width, guest.height);
 
 			player.x = 175;
 			guest.x = 375;
@@ -638,7 +641,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			for (let r = 0; r < bricks.length; r++) {
 				for (let c = 0; c < bricks[r].length; c++) {
 					const brick = bricks[r][c];
-					if (brick && !brick.isBroken && brick.needsRedraw) {
+					// if (brick && !brick.isBroken && brick.needsRedraw) {
+					if (brick && !brick.isBroken) {
 						context.clearRect(brick.x, brick.y, brick.width, brick.height);
 						context.fillStyle = brick.color;
 						context.fillRect(brick.x + 3, brick.y + 3, brick.width - 6, brick.height - 6);
@@ -655,16 +659,26 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 		function updatePlayersPosition() {
 			if ((keys['a'] || keys['A']) && player.x > 0)
 				player.x -= player.speed;
-			if ((keys['d'] || keys['D']) && player.x + paddleWidth < boardWidth)
-				player.x += player.speed;
+			if (keys['d'] || keys['D'] && player.x + player.width < boardWidth) {
+				let moveRightFlag = playerCanMoveRight();
+				if (moveRightFlag != -1)
+					player.x += player.speed;
+				if (moveRightFlag === 0 && guest.x + guest.width < boardWidth)
+					guest.x += player.speed;
+			}
 
-			if ((keys['ArrowLeft']) && guest.x > 0)
-				guest.x -= guest.speed;
+			if (keys['ArrowLeft'] && guest.x > 0) {
+				let moveLeftFlag = guestCanMoveLeft();
+				if (moveLeftFlag != -1)
+					guest.x -= guest.speed;
+				if (moveLeftFlag === 0)
+					player.x -= guest.speed;
+			}
 			if ((keys['ArrowRight']) && guest.x + paddleWidth < boardWidth)
 				guest.x += guest.speed;
 		}
 
-		function moveballs() {
+		function moveBalls() {
 			if (cooldownTime < 3) {
 				resetBallPosition(1);
 				resetBallPosition(2);
@@ -809,6 +823,22 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				isGameOver = true;
 		
 			context.clearRect(brick.x, brick.y, brick.width, brick.height);
+		}
+
+		function playerCanMoveRight() {
+			if (player.x + player.width < guest.x - player.speed)
+				return 1;
+			else if (!keys['ArrowLeft'] && guest.x + guest.width < boardWidth)
+				return 0;
+			return -1;
+		}
+
+		function guestCanMoveLeft() {
+			if (guest.x > player.x + player.width + guest.speed)
+				return 1;
+			else if (!keys['d'] && !keys['D'] && player.x > 0)
+				return 0;
+			return -1;
 		}
 
 	//////////////////////////////////////////////////////////////////////////////////
