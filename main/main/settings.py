@@ -50,7 +50,8 @@ INSTALLED_APPS = [
 	"game",
     "brickbreaker",
     "multipong",
-    "tourpong"
+    "tourpong",
+    "mystats"
 ]
 
 ASGI_APPLICATION = 'main.asgi.application'
@@ -168,6 +169,7 @@ STATICFILES_DIRS = [
 	BASE_DIR / "game/staticfiles",
     BASE_DIR / "brickbreaker/staticfiles",
     BASE_DIR / "multipong/staticfiles",
+    BASE_DIR / "mystats/staticfiles",
     BASE_DIR / "tourpong/staticfiles",
 ]
 # Default primary key field type

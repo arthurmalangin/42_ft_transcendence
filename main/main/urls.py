@@ -26,6 +26,7 @@ urlpatterns = [
 	path('srcfriends/', include("friends.urls")),
 	path('srcgame/', include("game.urls")),
 	path('srcbrickbreaker/', include("brickbreaker.urls")),
+	path('srcmystats/', include("mystats.urls")),
 	path('srcmultipong/', include("multipong.urls")),
 	path('srctourpong/', include("tourpong.urls")),
 	path('api/', include("API.urls")),

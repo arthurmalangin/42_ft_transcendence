@@ -71,6 +71,14 @@ const routes = {
 		needLogin: true
 	},
 
+	'/mystats': {
+		html: '/srcmystats',
+		css: '/static/css/mystats.css',
+		js: '/static/js/mystats.js',
+		event: 'mystats_event',
+		needLogin: true
+	},
+
 	'/multipong': {
 		html: '/srcmultipong',
 		css: '/static/css/multipong.css',

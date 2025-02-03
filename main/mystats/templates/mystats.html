@@ -6,14 +6,15 @@
 		<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
 	</header>
 	<main class="main-content">
+		<!-- Navigation -->
 		<nav class="nav">
-			<div id="btn_home" class="nav-item active">
+			<div id="btn_home" class="nav-item">
 				<span data-translate="title.main.home">&gt; HOME</span>
 			</div>
 			<div id="btn_game" class="nav-item">
 				<span data-translate="title.main.pong">&gt; PLAY</span>
 			</div>
-			<!-- <div id="btn_brickbreaker" class="nav-item">
+			<!-- <div id="btn_brickbreaker" class="nav-item active">
 				<span data-translate="title.main.brickbreaker">&gt; PLAY BRICKBREAKER</span>
 			</div> -->
 			<div id="btn_friends" class="nav-item">
@@ -22,7 +23,7 @@
 			<div id="btn_leaderboard" class="nav-item">
 				<span data-translate="title.main.leaderboard">&gt; LEADERBOARD</span>
 			</div>
-			<div id="btn_mystats" class="nav-item">
+			<div id="btn_mystats" class="nav-item active">
 				<span data-translate="title.main.mystats">&gt; MY STATS</span>
 			</div>
 			<div id="btn_settings" class="nav-item">
@@ -32,53 +33,60 @@
 				<span data-translate="title.main.logout">&gt; LOG OUT</span>
 			</div>
 		</nav>
-
-		<!-- Main content panel -->
+		
 		<div class="panel">
-			<h2 class="panel-header">&gt; WELCOME BACK, </h2>
-			
-			<!-- Stats -->
+			<h2 class="panel-header">&gt; MY STATS</h2>
 			<div class="grid">
 				<div class="card">
-					<h3>RANK</h3>
-					<p id="rank"></p>
+					<h3>PONG</h3>
+					<table class="table">
+						<tbody>
+							<tr>
+								<td>RANK</td>
+								<td id="myrank">...</td>
+							</tr>
+							<tr>
+								<td>WIN</td>
+								<td id="mywin">...</td>
+							</tr>
+							<tr>
+								<td>LOSE</td>
+								<td id="mylose">...</td>
+							</tr>
+							<tr>
+								<td>BEST WIN RATE</td>
+								<td id="myBestRate">...</td>
+							</tr>
+							<tr>
+								<td>ACTUAL WIN RATE</td>
+								<td id="myActualRate">...</td>
+							</tr>
+							<tr>
+								<td>TOTAL MATCHES</td>
+								<td id="mymatches">...</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<div class="card">
-					<h3>MATCHES</h3>
-					<p id="match"></p>
+					<h3>BRICKBREAKER</h3>
+					<table class="table">
+						<tbody>
+							<tr>
+								<td>RANK</td>
+								<td id="myrankb">...</td>
+							</tr>
+							<tr>
+								<td>BEST SCORE</td>
+								<td id="myScore">...</td>
+							</tr>
+							<tr>
+								<td>BEST TIME</td>
+								<td id="myTime">...</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<div class="card">
-					<h3>WIN RATE</h3>
-					<p id="winRate"></p>
-				</div>
-			</div>
-
-			<!-- Quick Play -->
-			<div class="card" style="margin-top: 1rem;">
-				<h3>QUICK PLAY</h3>
-				<div style="display: flex; gap: 1rem; margin-top: 1rem;">
-					<button class="btn">CLASSIC MODE</button>
-					<button class="btn">TOURNAMENT MODE</button>
-				</div>
-			</div>
-
-			<!-- Recent Matches -->
-			<div class="card" style="margin-top: 1rem;">
-				<h3>RECENT MATCHES</h3>
-				<table class="table">
-					<tr>
-						<td id="player1">vs ...</td>
-						<td style="color: var(--terminal-green);" id="result1"> - </td>
-					</tr>
-					<tr>
-						<td id="player2">vs ...</td>
-						<td style="color: var(--terminal-green)" id="result2"> - </td>
-					</tr>
-					<tr>
-						<td id="player3">vs ...</td>
-						<td style="color: var(--terminal-green);" id="result3"> - </td>
-					</tr>
-				</table>
 			</div>
 		</div>
 	</main>

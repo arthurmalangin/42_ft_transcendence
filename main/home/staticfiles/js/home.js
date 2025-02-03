@@ -40,6 +40,12 @@ document.addEventListener('home_event', async()=>{
 			history.pushState(null, '', '/menu');
 			loadPage('/menu');
 		});
+
+		const mystatsLabel = document.getElementById('btn_mystats');
+		mystatsLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/mystats');
+			loadPage('/mystats');
+		});
 		
 		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
 		// brickbreakerLabel.addEventListener('click', () => {
