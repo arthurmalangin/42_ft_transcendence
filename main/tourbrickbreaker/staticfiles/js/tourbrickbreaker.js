@@ -352,8 +352,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			draw();
 
 			totalTime += FRAME_DURATION / 1000;
-			const minutes = Math.floor(totalTime / 60);
-			const seconds = (totalTime % 60).toFixed(1);
+			// const minutes = Math.floor(totalTime / 60);
+			// const seconds = (totalTime % 60).toFixed(1);
 			// document.getElementById('time').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
 			if (totalTime >= 60 && totalTime < 220 && totalTime - lastGameAction >= 10) {
