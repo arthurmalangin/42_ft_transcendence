@@ -255,3 +255,17 @@ input[type="text"] {
 #PlayersNicknames13-16 {
 	display: none;
 }
+
+#gameResultStats {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 1rem;
+}
+
+#playerStats {
+	display: flex;
+	flex-direction: column;
+	width: 45%;
+}

@@ -273,7 +273,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			});
 		}
 
-	addAllEventListeners();
+		addAllEventListeners();
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                    TOURNAMENT MGMT                      ////////////
@@ -287,7 +287,6 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				}
 				participants.push(input.value);
 			}
-			console.log(participants);
 			return participants;
 		}
 
@@ -379,6 +378,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 
 		function resetGame() {
 			cooldownTime = 0;
+			isGameOver = false;
 			
 			if (player.lives <= 0) {
 				player.lives = 0
@@ -429,10 +429,12 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 		}
 
 		function cleanupGame(fullCleanup = true) {
-			resetToDefaultSettings();
-			// lives++;
-			resetGame();
-			removeAllEventListeners();
+			if (fullCleanup) {
+				resetToDefaultSettings();
+				removeAllEventListeners();
+				participants = [];
+				matchups = [];
+			}
 
 			if (!isPaused)
 				pauseGame();
@@ -504,7 +506,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			const playerFinalScoreText = document.getElementById('playerFinalScore');
 			const guestFinalScoreText = document.getElementById('guestFinalScore');
-			if (gameResultOverlay && gameResultMessage && playerFinalScore && opponentFinalScore) {
+			if (gameResultOverlay && gameResultMessage && playerFinalScoreText && guestFinalScoreText) {
 				playerFinalScoreText.textContent = playerFinalScore;
 				guestFinalScoreText.textContent = opponentFinalScore;
 				if (participants.length > 1)
@@ -529,8 +531,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 						player.lives = 3;
 						guest.lives = 3;
 						resetGame(true, false);
-						document.getElementById('playerScore').textContent = guestScore;
-						document.getElementById('guestScore').textContent = playerScore;
+						document.getElementById('playerScore').textContent = playerScore;
+						document.getElementById('guestScore').textContent = guestScore;
 						document.getElementById('playerLives').textContent = player.lives;
 						document.getElementById('guestLives').textContent = guest.lives;		
 						if (powerUp)
@@ -859,7 +861,6 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				velocityX: 0,
 				velocityY: 0.5
 			};
-			console.log(powerUp);
 		}
 
 		function movePowerUp() {

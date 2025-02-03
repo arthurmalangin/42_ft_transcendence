@@ -62,7 +62,6 @@
 			</div>
 		</div>
 
-
 		<div id="tournamentSettingsOverlay" class="overlay active">
 			<div class="overlay-content phosphor">
 				<div class="popup-header">
@@ -125,17 +124,23 @@
 					<h2 id="gameResultMessage">PLAYER WON!</h2>
 					<p id="nextRoundMessage">THEY REACH THE NEXT ROUND</p>
 
-					<h3 id="playerScoreMessage">PLAYER SCORE: <span id="playerFinalScore">0</span></h3>
-					<p>FROM BRICKS: <span id="brickScorePlayer">NULL</span></p>
-					<p>FROM TIME: <span id="timeScorePlayer">NULL</span></p>
-					<p>FROM LIVES: <span id="livesScorePlayer">NULL</span></p>
-					<p>FROM POWERUPS: <span id="powerUpScorePlayer">NULL</span></p>
-					
-					<h3 id="playerScoreMessage">GUEST SCORE: <span id="guestFinalScore">0</span></h3>
-					<p>FROM BRICKS: <span id="brickScoreGuest">NULL</span></p>
-					<p>FROM TIME: <span id="timeScoreGuest">NULL</span></p>
-					<p>FROM LIVES: <span id="livesScoreGuest">NULL</span></p>
-					<p>FROM POWERUPS: <span id="powerUpScoreGuest">NULL</span></p>
+					<div id="gameResultStats">
+						<div id="playerStats">
+							<h3 id="playerScoreMessage">PLAYER SCORE: <span id="playerFinalScore">0</span></h3>
+							<p>FROM BRICKS: <span id="brickScorePlayer">NULL</span></p>
+							<p>FROM TIME: <span id="timeScorePlayer">NULL</span></p>
+							<p>FROM LIVES: <span id="livesScorePlayer">NULL</span></p>
+							<p>FROM POWERUPS: <span id="powerUpScorePlayer">NULL</span></p>
+						</div>
+						<div id="playerStats">
+							<h3 id="playerScoreMessage">GUEST SCORE: <span id="guestFinalScore">0</span></h3>
+							<p>FROM BRICKS: <span id="brickScoreGuest">NULL</span></p>
+							<p>FROM TIME: <span id="timeScoreGuest">NULL</span></p>
+							<p>FROM LIVES: <span id="livesScoreGuest">NULL</span></p>
+							<p>FROM POWERUPS: <span id="powerUpScoreGuest">NULL</span></p>
+						</div>
+					</div>
+
 				</div>
 				<div class="form-group">
 					<button id="btnPlayNextMatch" class="btn">NEXT MATCH</button>
