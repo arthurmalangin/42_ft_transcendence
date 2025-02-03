@@ -754,6 +754,7 @@ document.addEventListener('game_event', async()=>{
 	async function updateScore(playerScore, opponentScore, versus) {
 		await updateMatches(playerScore);
 		await updateData();
+		await updateRank();
 		await saveMatches(playerScore, opponentScore, versus);
 	}
 
@@ -815,6 +816,23 @@ document.addEventListener('game_event', async()=>{
 	async function updateData(){
 		try{
 			const response = await fetch('/api/update_win_rate/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
+	}
+
+	async function updateRank(){
+		try{
+			const response = await fetch('/api/update_rank/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

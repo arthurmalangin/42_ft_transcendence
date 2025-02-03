@@ -7,6 +7,7 @@ from django.contrib.auth import login
 import json
 from settings.models import PlayerData
 from settings.models import MatchData
+from settings.models import BrickData
 from asgiref.sync import sync_to_async
 
 def is_auth(request):
@@ -290,11 +291,39 @@ def getRequestFriendsList(request):
 def get_rank(request):
     if request.user.is_authenticated:
         try:
-            user_profile = PlayerData.objects.get(username=request.user)
-            return JsonResponse({'rank': user_profile.rank})
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            return JsonResponse({'rank': user_profile.position})
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get rank: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def update_rank(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            data = PlayerData.objects.all().order_by('-win_rate')
+            position = next((i + 1 for i, player in enumerate(data) if player.id == user_profile.id), None)
+            user_profile.position = position
+            user_profile.save()
+            return JsonResponse({'Rank': user_profile.position})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to update_rank: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)            
+        
+def update_rank_brick(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            data = PlayerData.objects.all().order_by('-best_score')
+            position = next((i + 1 for i, player in enumerate(data) if player.id == user_profile.id), None)
+            user_profile.position_brick = position
+            user_profile.save()
+            return JsonResponse({'Rank': user_profile.position_brick})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to update_rank_brick: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
 def get_win(request):
@@ -434,6 +463,30 @@ def create_match(request):
             return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
+def create_party(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        try:
+            if not request.body:
+                return JsonResponse({"error": "Request body is empty"}, status=400)
+            data = json.loads(request.body.decode('utf-8'))
+            score = data.get('score', None)
+            timer = data.get('timer', None)
+            if not score:
+                return JsonResponse({"error": "Can't find score"})
+            
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            party_data = BrickData.objects.create(player=user_profile.id, score=score, time=timer)
+            party_data.save()
+            if user_profile.best_score < score:
+                user_profile.best_score = score
+            user_profile.party += 1
+            user_profile.save()
+            return JsonResponse({"Success": "party created!"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to create match: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
 def get_Lastmatches(request):
     if request.user.is_authenticated:
         try:
@@ -457,4 +510,90 @@ def get_Lastmatches(request):
         except Exception as e:
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def get_NumberOne(request):
+    try:
+        player = PlayerData.objects.all().order_by('-win_rate').first()
+        if player:
+            return JsonResponse({"username": player.username, "win": player.win, "matches": player.matches})
+    except Exception as e:
+        print("error::::::::::::::" + str(e))
+        return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
+
+def get_thethree(request):
+    try:
+        players = PlayerData.objects.all().order_by('-win_rate')[1:]
+        if players:
+            data = [
+                {
+                    "username":player.username,
+                    "win":player.win,
+                    "lose":player.lose,
+                    "rate":player.win_rate,
+                }
+                for player in players
+            ]
+            return JsonResponse(data, safe=False)
+        else:
+            return JsonResponse([], safe=False)
+    except Exception as e:
+        print("error::::::::::::::" + str(e))
+        return JsonResponse({'error': f'failed to get the three: {str(e)}'}, status=400)
+
+def get_NumberOneBrick(request):
+    try:
+        player = PlayerData.objects.all().order_by('-best_score').first()
+        if player:
+            return JsonResponse({"username": player.username, "score": player.best_score, "matches": player.party})
+    except Exception as e:
+        print("error::::::::::::::" + str(e))
+        return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
+
+def get_thethreeBrick(request):
+    try:
+        players = PlayerData.objects.all().order_by('-best_score')[1:]
+        if players:
+            data = [
+                {
+                    "username":player.username,
+                    "score":player.best_score,
+                }
+                for player in players
+            ]
+            return JsonResponse(data, safe=False)
+        else:
+            return JsonResponse([], safe=False)
+    except Exception as e:
+        print("error::::::::::::::" + str(e))
+        return JsonResponse({'error': f'failed to get the three: {str(e)}'}, status=400)
+
+def get_myStat(request):
+    if request.user.is_authenticated:
+        try:
+            player = PlayerData.objects.get(username=request.user.username)
+            if player:
+                return JsonResponse({'myRank': player.position, "myWin":player.win, "mylose":player.lose, "myBest":player.max_rate, "myActual":player.win_rate, "myMatch":player.matches})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def get_myBrickStat(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                game = BrickData.objects.filter(player=user_profile.id).order_by("-time").first()
+                if game:
+                    return JsonResponse({'myrank': user_profile.position_brick, "myscore":user_profile.best_score, "mytime":game.time})
+                else:
+                    return JsonResponse({'myrank': user_profile.position_brick, "myscore":user_profile.best_score, "mytime":None})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
