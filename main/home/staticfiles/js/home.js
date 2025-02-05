@@ -1,7 +1,7 @@
 document.addEventListener('home_event', async()=>{
 	function homeEvent() {
 		updateWelcomeMessage();
-		updateRank();
+		update_Rank();
 		updateWinRate();
 		updateMatches();
 		updateLastMatches();
@@ -119,7 +119,47 @@ document.addEventListener('home_event', async()=>{
 		}
 	}
 
+	async function update_Rank(){
+		await updateRankBrick();
+		await updateRank();
+		await getRank();
+	}
+	
+	async function updateRankBrick(){
+		try{
+			const response = await fetch('/api/update_rank_brick/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
+	}
+
 	async function updateRank(){
+		try{
+			const response = await fetch('/api/update_rank/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
+	}
+
+	async function getRank(){
 		try{
 			const response = await fetch('/api/get_rank/', {
 				method: 'GET',
@@ -157,7 +197,8 @@ document.addEventListener('home_event', async()=>{
 				const data = await response.json();
 				const rateElement = document.getElementById('winRate');
 				if (data.winRate) {
-					rateElement.textContent = `${data.winRate}`;
+					const formattedRate = parseFloat(data.winRate).toFixed(2);
+					rateElement.textContent = `${formattedRate}`;
 				} else {
 					rateElement.textContent = '0';
 				}

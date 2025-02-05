@@ -31,4 +31,13 @@ urlpatterns = [
 	path("update_win_rate/", views.update_win_rate, name="update_win_rate"),
 	path("create_match/", views.create_match, name="create_match"),
 	path("get_Lastmatches/", views.get_Lastmatches, name="get_Lastmatches"),
+	path("update_rank/", views.update_rank, name="update_rank"),
+	path("update_rank_brick/", views.update_rank_brick, name="update_rank_brick"),
+	path("get_NumberOne/", views.get_NumberOne, name="get_NumberOne"),
+	path("get_thethree/", views.get_thethree, name="get_thethree"),
+	path("get_NumberOneBrick/", views.get_NumberOneBrick, name="get_NumberOneBrick"),
+	path("get_thethreeBrick/", views.get_thethreeBrick, name="get_thethreeBrick"),
+	path("create_party/", views.create_party, name="create_party"),
+	path("get_myStat/", views.get_myStat, name="get_myStat"),
+	path("get_myBrickStat/", views.get_myBrickStat, name="get_myBrickStat"),
 ]

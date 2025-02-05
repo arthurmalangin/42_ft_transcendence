@@ -87,6 +87,14 @@ const routes = {
 		needLogin: true
 	},
 
+	'/tourbrickbreaker': {
+		html: '/srctourbrickbreaker',
+		css: '/static/css/tourbrickbreaker.css',
+		js: '/static/js/tourbrickbreaker.js',
+		event: 'tourbrickbreaker_event',
+		needLogin: true
+	},
+
 	'/404': {
 		html: '/home/404',
 		css: '/static/css/404.css',
