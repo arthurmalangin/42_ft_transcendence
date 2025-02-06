@@ -27,9 +27,9 @@ RUN cd /usr/local/src && \
 
 # Download and install Nginx source code
 RUN cd /usr/local/src && \
-    wget http://nginx.org/download/nginx-1.27.3.tar.gz && \
-    tar -xzvf nginx-1.27.3.tar.gz && \
-    mv nginx-1.27.3 nginx
+    wget http://nginx.org/download/nginx-1.27.4.tar.gz && \
+    tar -xzvf nginx-1.27.4.tar.gz && \
+    mv nginx-1.27.4 nginx
 
 # Download and install ModSecurity-nginx connector
 RUN cd /usr/local/src && \
