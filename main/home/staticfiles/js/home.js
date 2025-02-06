@@ -41,11 +41,17 @@ document.addEventListener('home_event', async()=>{
 			loadPage('/menu');
 		});
 		
-		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		// brickbreakerLabel.addEventListener('click', () => {
-			// 	history.pushState(null, '', '/brickbreaker');
-			// 	loadPage('/brickbreaker');
-			// });
+		const quickPongLabel = document.getElementById('quickPlayPong');
+		quickPongLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/game');
+			loadPage('/game');
+		});
+
+		const quickTourpongLabel = document.getElementById('quickPlayTourpong');
+		quickTourpongLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/tourpong');
+			loadPage('/tourpong');
+		});
 		}
 		
 		homeEvent();

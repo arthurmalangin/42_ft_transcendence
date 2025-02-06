@@ -1,21 +1,41 @@
 {
 	"title.main.home": "> HOME",
 	"title.main.pong": "> PLAY",
-	"title.main.brickbreaker": "> PLAY BRICKBREAKER",
 	"title.main.friends": "> FRIENDS",
 	"title.main.leaderboard": "> LEADERBOARD",
 	"title.main.settings": "> SETTINGS",
 	"title.main.logout": "> LOG OUT",
-  
+
+	"home.rank": "RANK",
+	"home.matches": "MATCHES",
+	"home.win_rate": "WIN RATE",
+	"home.quick_play": "QUICK PLAY",
+	"home.classic_mode": "CLASSIC PONG",
+	"home.tournament_mode": "TOURNAMENT PONG",
+	"home.recent_matches": "RECENT MATCHES",
+
 	"settings.maintitle": "> SYSTEM SETTINGS",
+
 	"settings.profil.title": "PROFILE",
 	"settings.profil.username": "USERNAME",
 	"settings.profil.username_btn": "CHANGE USERNAME",
 	"settings.profil.password": "PASSWORD",
-	"settings.profil.password_placeholder": "Enter New Password",
+	"settings.profil.password_placeholder": "ENTER NEW PASSWORD",
 	"settings.profil.password_btn": "CHANGE PASSWORD",
 	"settings.profil.avatar": "AVATAR",
-	"settings.profil.avatar_upload_placeholder": "No file selected",
-	"settings.profil.avatar_upload_btn": "UPLOAD"
-  }
-  
+	"settings.profil.avatar_upload_placeholder": "NO FILE SELECTED",
+	"settings.profil.avatar_upload_btn": "UPLOAD",
+	"settings.language.title": "LANGUAGE",
+	"settings.language.system": "SYSTEM LANGUAGE",
+	"settings.language.english": "ENGLISH",
+	"settings.language.french": "FRANÇAIS",
+	"settings.language.spanish": "ESPAÑOL",
+
+	"friends.list.title": "> FRIENDS LIST",
+
+	"friends.list.add_friend": "ADD FRIEND",
+	"friends.list.pending_requests": "> PENDING REQUESTS",
+	"friends.list.current_friends": "> CURRENT FRIENDS",
+	"friends.popup.add_friend": "> ADD FRIEND",
+	"friends.popup.search_players": "SEARCH PLAYERS..."
+}
