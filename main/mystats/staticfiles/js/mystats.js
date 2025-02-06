@@ -6,46 +6,46 @@ document.addEventListener('mystats_event', async()=>{
 		registerLabel.addEventListener('click', () => {
 			logout();
 		});
-
+		
 		const leaderboardLabel = document.getElementById('btn_leaderboard');
 		leaderboardLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/leaderboard');
 			loadPage('/leaderboard');
 		});
-
+		
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/settings');
 		});
-
+		
 		const homeLabel = document.getElementById('btn_home');
 		homeLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/');
 			loadPage('/');
 		});
-
+		
 		const friendsLabel = document.getElementById('btn_friends');
 		friendsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/friends');
 			loadPage('/friends');
 		});
-
+		
 		const gameLabel = document.getElementById('btn_game');
 		gameLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/menu');
 			loadPage('/menu');
 		});
-
+		
 		const mystatsLabel = document.getElementById('btn_mystats');
 		mystatsLabel.addEventListener('click', () => {
 			history.pushState(null, '', '/mystats');
 			loadPage('/mystats');
 		});
 	}
-
+	
 	mystatsEvent();
-
+	
 	async function updateMyStat(){
 		try{
 			const response = await fetch('/api/get_myStat/', {
@@ -55,7 +55,7 @@ document.addEventListener('mystats_event', async()=>{
 					'X-CSRFToken': getCSRFToken()
 				}
 			});
-
+			
 			if(response.ok) {
 				const data = await response.json();
 				console.log('Player received:', data);
@@ -71,16 +71,17 @@ document.addEventListener('mystats_event', async()=>{
 				const myBest = data.myBest !== undefined ? data.myBest : '0';
 				const Actual = data.myActual !== undefined ? data.myActual : '0';
 				const Match = data.myMatch !== undefined ? data.myMatch : '0';
-
+				
 				const formattedBest = parseFloat(myBest).toFixed(2);
 				const formattedActual = parseFloat(Actual).toFixed(2);
-
+				
 				myRankElement.textContent = `${Rank}`
 				myWinElement.textContent = `${Win}`
 				myLoseElement.textContent = `${Lose}`
 				myBestRateElement.textContent = `${formattedBest}`
 				ActualElement.textContent = `${formattedActual}`
 				myMatchElement.textContent = `${Match}`
+				drawCanva(Win, Lose);
 			}
 		} catch  (error) {
 			console.error('Error updatethree:', error);
@@ -123,4 +124,26 @@ document.addEventListener('mystats_event', async()=>{
 		}
 	}
 
+	function	drawCanva(Win, Lose){
+		const ctx = document.getElementById('pongChart');
+
+		new Chart(ctx, {
+		  type: 'bar',
+		  data: {
+			labels: ['Win', 'Lose'],
+			datasets: [{
+			  label: '# of Matches',
+			  data: [Win, Lose],
+			  borderWidth: 1
+			}]
+		  },
+		  options: {
+			scales: {
+			  y: {
+				beginAtZero: true
+			  }
+			}
+		  }
+		});
+	}
 })

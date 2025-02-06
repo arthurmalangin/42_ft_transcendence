@@ -5,8 +5,6 @@ document.addEventListener('leaderboard_event', async()=>{
 		updatethree();
 		updateKingbrick();
 		updatethreebrick();
-		updateMyStat();
-		updateMyBrickStat();
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
