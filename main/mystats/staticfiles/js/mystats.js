@@ -81,7 +81,7 @@ document.addEventListener('mystats_event', async()=>{
 				myBestRateElement.textContent = `${formattedBest}`
 				ActualElement.textContent = `${formattedActual}`
 				myMatchElement.textContent = `${Match}`
-				drawCanva(Win, Lose);
+				drawCanva(Win, Lose, "pongChart");
 			}
 		} catch  (error) {
 			console.error('Error updatethree:', error);
@@ -124,17 +124,20 @@ document.addEventListener('mystats_event', async()=>{
 		}
 	}
 
-	function	drawCanva(Win, Lose){
-		const ctx = document.getElementById('pongChart');
+	function	drawCanva(Win, Lose, element){
+		const ctx = document.getElementById(`${element}`);
 
 		new Chart(ctx, {
 		  type: 'bar',
 		  data: {
 			labels: ['Win', 'Lose'],
 			datasets: [{
-			  label: '# of Matches',
+			  label: 'Ratio Win/Lose',
 			  data: [Win, Lose],
-			  borderWidth: 1
+			  borderColor: '#00ff00',
+			  backgroundColor: '#00ff00',
+			  borderWidth: 1,
+			  barPercentage: 0.5
 			}]
 		  },
 		  options: {
