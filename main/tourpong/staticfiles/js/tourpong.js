@@ -188,12 +188,12 @@ document.addEventListener('tourpong_event', async()=>{
 			});
 
 			addEventListenerWithTracking(document.getElementById('btnPlay'), 'click', function() {
-                document.getElementById('tournamentSettingsOverlay').classList.remove('active');
+				document.getElementById('tournamentSettingsOverlay').classList.remove('active');
 				drawTable();
 				announceNextMatch();
-                // pauseGame();
-                resetGame(true, false);
-            });
+				// pauseGame();
+				resetGame(true, false);
+			});
 
 			function stopEventPropagationSettings(event) {
 				const overlay = document.getElementById('tournamentSettingsOverlay');
@@ -334,7 +334,7 @@ document.addEventListener('tourpong_event', async()=>{
 			updatePaddlePositions();
 			checkPowerUpCollisions();
 
-			if (playerScore >= 2 || opponentScore >= 2)
+			if (playerScore >= 5 || opponentScore >= 5)
 				cleanupGame(false);
 		}
 
@@ -346,7 +346,7 @@ document.addEventListener('tourpong_event', async()=>{
 		}
 
 		function resetGame(playerLost, spawnPowerUpFlag = true) {
-			if (playerScore >= 2 || opponentScore >= 2)
+			if (playerScore >= 5 || opponentScore >= 5)
 				return;
 
 			if (playerLost) {
@@ -410,7 +410,7 @@ document.addEventListener('tourpong_event', async()=>{
 			if (opponentIndex > -1)
 				participants.splice(opponentIndex, 1);
 			
-			if (playerScore === 2)
+			if (playerScore === 5)
 				participants.push(playerSide);
 			else
 				participants.push(guestSide);
@@ -419,9 +419,9 @@ document.addEventListener('tourpong_event', async()=>{
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			if (gameResultOverlay && gameResultMessage) {
 				if (participants.length > 1)
-					gameResultMessage.textContent = playerScore === 2 ? playerSide + ' WON!' : guestSide + ' WON!';
+					gameResultMessage.textContent = playerScore === 5 ? playerSide + ' WON!' : guestSide + ' WON!';
 				else
-					gameResultMessage.textContent = playerScore === 2 ? playerSide + ' WON THE TOURNAMENT!' : guestSide + ' WON THE TOURNAMENT!';
+					gameResultMessage.textContent = playerScore === 5 ? playerSide + ' WON THE TOURNAMENT!' : guestSide + ' WON THE TOURNAMENT!';
 				gameResultOverlay.classList.add('active');
 			}
 			

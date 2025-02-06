@@ -48,7 +48,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 	/////////////                       VARIABLES                         ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-
 	function initBrickbreaker() {
 		let board;
 		let boardWidth = 500;

@@ -122,12 +122,12 @@ document.addEventListener('settings_event', async()=>{
 		await loadLanguage(await getLangPlayer());
 		async function loadLanguage(lang) {
 			try {
-			const response = await fetch(`/static/lang/${lang}.json`);
-			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
-			const translations = await response.json();
-			applyTranslations(translations);
+				const response = await fetch(`/static/lang/${lang}.json`);
+				if (!response.ok) throw new Error("COuld not load JSON file");
+				const translations = await response.json();
+				applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+				console.error("Erreur :", error);
 			}
 		};
 

@@ -29,6 +29,7 @@ urlpatterns = [
 	path('srcmystats/', include("mystats.urls")),
 	path('srcmultipong/', include("multipong.urls")),
 	path('srctourpong/', include("tourpong.urls")),
+	path('srctourbrickbreaker/', include("tourbrickbreaker.urls")),
 	path('api/', include("API.urls")),
     path('admin/', admin.site.urls),
 ]

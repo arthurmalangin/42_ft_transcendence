@@ -1,0 +1,41 @@
+{
+	"title.main.home": "> INICIO",
+	"title.main.pong": "> JUGAR",
+	"title.main.friends": "> AMIGOS",
+	"title.main.leaderboard": "> CLASIFICACIONES",
+	"title.main.settings": "> CONFIGURACION",
+	"title.main.logout": "> CERRAR SESION",
+
+	"home.rank": "POSICION",
+	"home.matches": "PARTIDOS",
+	"home.win_rate": "TASA DE VICTORIAS",
+	"home.quick_play": "JUEGO RAPIDO",
+	"home.classic_mode": "PONG CLASICO",
+	"home.tournament_mode": "PONG TORNEO",
+	"home.recent_matches": "PARTIDOS RECIENTES",
+
+	"settings.maintitle": "> CONFIGURACION DEL SISTEMA",
+
+	"settings.profil.title": "PERFIL",
+	"settings.profil.username": "NOMBRE DE USUARIO",
+	"settings.profil.username_btn": "CAMBIAR NOMBRE DE USUARIO",
+	"settings.profil.password": "CONTRASENA",
+	"settings.profil.password_placeholder": "INGRESAR NUEVA CONTRASENA",
+	"settings.profil.password_btn": "CAMBIAR CONTRASENA",
+	"settings.profil.avatar": "AVATAR",
+	"settings.profil.avatar_upload_placeholder": "NINGUN ARCHIVO SELECCIONADO",
+	"settings.profil.avatar_upload_btn": "SUBIR",
+	"settings.language.title": "IDIOMA",
+	"settings.language.system": "IDIOMA DEL SISTEMA",
+	"settings.language.english": "INGLES",
+	"settings.language.french": "FRANCES",
+	"settings.language.spanish": "ESPANOL",
+
+	"friends.list.title": "> LISTA DE AMIGOS",
+
+	"friends.list.add_friend": "AGREGAR AMIGO",
+	"friends.list.pending_requests": "> SOLICITUDES PENDIENTES",
+	"friends.list.current_friends": "> AMIGOS ACTUALES",
+	"friends.popup.add_friend": "> AGREGAR AMIGO",
+	"friends.popup.search_players": "BUSCAR JUGADORES"
+}
