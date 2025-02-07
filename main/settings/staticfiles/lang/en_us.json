@@ -29,8 +29,8 @@
 	"settings.language.title": "LANGUAGE",
 	"settings.language.system": "SYSTEM LANGUAGE",
 	"settings.language.english": "ENGLISH",
-	"settings.language.french": "FRANÇAIS",
-	"settings.language.spanish": "ESPAÑOL",
+	"settings.language.french": "FRENCH",
+	"settings.language.spanish": "SPANISH",
 
 	"friends.list.title": "> FRIENDS LIST",
 
@@ -38,5 +38,23 @@
 	"friends.list.pending_requests": "> PENDING REQUESTS",
 	"friends.list.current_friends": "> CURRENT FRIENDS",
 	"friends.popup.add_friend": "> ADD FRIEND",
-	"friends.popup.search_players": "SEARCH PLAYERS..."
+	"friends.popup.search_players": "SEARCH PLAYERS",
+
+	"leaderboard.pong.title": "> PONG RANKINGS",
+
+	"leaderboard.pong.card.player": "TOP PLAYER",
+	"leaderboard.pong.card.wins": "TOTAL WINS",
+	"leaderboard.pong.card.matches": "TOTAL MATCHES",
+	"leaderboard.pong.table.rank": "RANK",
+	"leaderboard.pong.table.name": "NAME",
+	"leaderboard.pong.table.wins": "WINS",
+	"leaderboard.pong.table.losses": "LOSSES",
+	"leaderboard.pong.table.winrate": "WIN RATE",
+	"leaderboard.brickbreaker.title": "> BRICKBREAKER RANKINGS",
+	"leaderboard.brickbreaker.player": "TOP PLAYER",
+	"leaderboard.brickbreaker.bestscore": "BEST SCORE",
+	"leaderboard.brickbreaker.games": "TOTAL GAMES",
+	"leaderboard.brickbreaker.rank": "RANK",
+	"leaderboard.brickbreaker.name": "NAME",
+	"leaderboard.brickbreaker.score": "SCORE"
 }

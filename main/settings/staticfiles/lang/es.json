@@ -38,5 +38,23 @@
 	"friends.list.pending_requests": "> SOLICITUDES PENDIENTES",
 	"friends.list.current_friends": "> AMIGOS ACTUALES",
 	"friends.popup.add_friend": "> AGREGAR AMIGO",
-	"friends.popup.search_players": "BUSCAR JUGADORES"
+	"friends.popup.search_players": "BUSCAR JUGADORES",
+
+	"leaderboard.pong.title": "> CLASIFICACIONES DE PONG",
+
+	"leaderboard.pong.card.player": "MEJOR JUGADOR",
+	"leaderboard.pong.card.wins": "VICTORIAS TOTALES",
+	"leaderboard.pong.card.matches": "PARTIDOS TOTALES",
+	"leaderboard.pong.table.rank": "RANGO",
+	"leaderboard.pong.table.name": "NOMBRE",
+	"leaderboard.pong.table.wins": "VICTORIAS",
+	"leaderboard.pong.table.losses": "DERROTAS",
+	"leaderboard.pong.table.winrate": "TASA DE VICTORIAS",
+	"leaderboard.brickbreaker.title": "> CLASIFICACIONES DE BRICKBREAKER",
+	"leaderboard.brickbreaker.player": "MEJOR JUGADOR",
+	"leaderboard.brickbreaker.bestscore": "MEJOR PUNTUACION",
+	"leaderboard.brickbreaker.games": "JUEGOS TOTALES",
+	"leaderboard.brickbreaker.rank": "RANGO",
+	"leaderboard.brickbreaker.name": "NOMBRE",
+	"leaderboard.brickbreaker.score": "PUNTUACION"
 }
