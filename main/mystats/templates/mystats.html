@@ -72,22 +72,41 @@
 					<canvas id="pongChart" width="250" height="200"></canvas>
 				</div>
 			</div>
-			<div class="grid">
+			<div class="grid" style="margin-top: 1rem;">
 				<div class="card">
 					<h3>BRICKBREAKER</h3>
 					<table class="table">
+						<thead>
+							<td>RANK</td>
+							<td>BEST SCORE</td>
+							<td>TIME</td>
+						</thead>
 						<tbody>
 							<tr>
-								<td>RANK</td>
 								<td id="myrankb">...</td>
-							</tr>
-							<tr>
-								<td>BEST SCORE</td>
 								<td id="myScore">...</td>
+								<td id="myTime">...</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table" style="margin-top: 1rem;">
+						<h4>RECENT GAMES</h4>
+						<thead>
+							<td>SCORE</td>
+							<td>TIME</td>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="gamebrick1">...</td>
+								<td id="timebrick1">...</td>
 							</tr>
 							<tr>
-								<td>BEST TIME</td>
-								<td id="myTime">...</td>
+								<td id="gamebrick2">...</td>
+								<td id="timebrick2">...</td>
+							</tr>
+							<tr>
+								<td id="gamebrick3">...</td>
+								<td id="timebrick3">...</td>
 							</tr>
 						</tbody>
 					</table>
