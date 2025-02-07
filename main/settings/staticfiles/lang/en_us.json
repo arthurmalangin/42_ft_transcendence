@@ -112,6 +112,20 @@
     "pong.settings.title": "GAME SETTINGS",
     "pong.settings.warning": "WARNING: OPENING THE SETTINGS DURING A GAME WILL RESULT IN A LOST POINT!",
 	"pong.result.play_again": "PLAY AGAIN",
-    "pong.result.quit": "QUIT"
+    "pong.result.quit": "QUIT",
+
+	"multipong.title": "> PONG (4 PLAYERS)",
+
+    "multipong.pause": "> PAUSE (SPACE)",
+    "multipong.settings": "> SETTINGS (ESC)",
+    "multipong.instructions.title": "INSTRUCTIONS",
+	"multipong.instructions.text": "FIRST PLAYER TO SCORE 7 POINTS WINS",
+	"multipong.controls.title": "CONTROLS",
+	"multipong.gamestats.title": "GAMESTATS",
+	"multipong.settings.title": "GAME SETTINGS",
+    "multipong.settings.warning": "WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESET CURRENT POINT!",
+	"multipong.result.message": "GAME OVER! FINAL SCORES:",
+    "multipong.result.play_again": "PLAY AGAIN",
+    "multipong.result.quit": "QUIT"
 
 }

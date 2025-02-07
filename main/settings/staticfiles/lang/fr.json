@@ -112,6 +112,19 @@
     "pong.settings.title": "PARAMETRES DU JEU",
     "pong.settings.warning": "ATTENTION: OUVRIR LES PARAMETRES DU JEU PENDANT UNE PARTIE ENTRAINERA LA PERTE D'UN POINT!",
     "pong.result.play_again": "REJOUER",
-    "pong.result.quit": "QUITTER"
+    "pong.result.quit": "QUITTER",
+
+	"multipong.title": "> PONG (4 JOUEURS)",
+	"multipong.pause": "> PAUSE (ESPACE)",
+	"multipong.settings": "> PARAMÈTRES (ÉCHAP)",
+	"multipong.instructions.text": "LE PREMIER JOUEUR À MARQUER 7 POINTS GAGNE",
+	"multipong.controls.title": "COMMANDES",
+	"multipong.gamestats.title": "STATISTIQUES",
+	"multipong.instructions.title": "INSTRUCTIONS",
+	"multipong.settings.title": "PARAMÈTRES",
+    "multipong.settings.warning": "ATTENTION: OUVRIR LES PARAMÈTRES DU JEU PENDANT UNE PARTIE RÉINITIALISERA LE POINT ACTUEL!",
+	"multipong.result.message": "JEU TERMINÉ! SCORES FINAUX:",
+    "multipong.result.play_again": "REJOUER",
+    "multipong.result.quit": "QUITTER"
 
 }

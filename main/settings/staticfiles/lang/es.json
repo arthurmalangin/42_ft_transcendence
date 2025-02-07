@@ -112,6 +112,18 @@
     "pong.settings.title": "AJUSTES",
     "pong.settings.warning": "ADVERTENCIA: ¡ABRIR LOS AJUSTES DEL JUEGO DURANTE UNA PARTIDA RESULTARA EN LA PERDIDA DE UN PUNTO!",
     "pong.result.play_again": "JUGAR DE NUEVO",
-    "pong.result.quit": "SALIR"
+    "pong.result.quit": "SALIR",
 
+	"multipong.title": "> PONG (4 JUGADORES)",
+    "multipong.pause": "> PAUSA (ESPACIO)",
+    "multipong.settings": "> AJUSTES (ESC)",
+    "multipong.instructions.title": "INSTRUCCIONES",
+	"multipong.instructions.text": "EL PRIMER JUGADOR EN ANOTAR 7 PUNTOS GANA",
+	"multipong.controls.title": "CONTROLES",
+	"multipong.gamestats.title": "ESTADÍSTICAS",
+	"multipong.settings.title": "AJUSTES",
+    "multipong.settings.warning": "ADVERTENCIA: ¡ABRIR LOS AJUSTES DEL JUEGO DURANTE UNA PARTIDA REINICIARÁ EL PUNTO ACTUAL!",
+	"multipong.result.message": "¡JUEGO TERMINADO! PUNTUACIONES FINALES:",
+    "multipong.result.play_again": "JUGAR DE NUEVO",
+    "multipong.result.quit": "SALIR"
 }
