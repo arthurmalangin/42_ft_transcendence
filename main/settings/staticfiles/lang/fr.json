@@ -38,11 +38,11 @@
 	"friends.list.pending_requests": "> DEMANDES EN ATTENTE",
 	"friends.list.current_friends": "> AMIS ACTUELS",
 	"friends.popup.add_friend": "> AJOUTER AMI",
-	"friends.popup.search_players": "RECHERCHER JOUEURS",
+	"friends.popup.search_players": "RECHERCHER PLAYERS",
 
 	"leaderboard.pong.title": "> CLASSEMENTS PONG",
 
-	"leaderboard.pong.card.player": "MEILLEUR JOUEUR",
+	"leaderboard.pong.card.player": "MEILLEUR PLAYER",
 	"leaderboard.pong.card.wins": "VICTOIRES TOTALES",
 	"leaderboard.pong.card.matches": "MATCHS TOTAUX",
 	"leaderboard.pong.table.rank": "CLASSEMENT",
@@ -50,11 +50,52 @@
 	"leaderboard.pong.table.wins": "VICTOIRES",
 	"leaderboard.pong.table.losses": "DEFAITES",
 	"leaderboard.pong.table.winrate": "TAUX DE VICTOIRES",
+
 	"leaderboard.brickbreaker.title": "> CLASSEMENTS BRICKBREAKER",
-	"leaderboard.brickbreaker.player": "MEILLEUR JOUEUR",
+
+	"leaderboard.brickbreaker.player": "MEILLEUR PLAYER",
 	"leaderboard.brickbreaker.bestscore": "MEILLEUR SCORE",
 	"leaderboard.brickbreaker.games": "NOMBRE PARTIES",
 	"leaderboard.brickbreaker.rank": "CLASSEMENT",
 	"leaderboard.brickbreaker.name": "NOM",
-	"leaderboard.brickbreaker.score": "SCORE"
+	"leaderboard.brickbreaker.score": "SCORE",
+
+	"brickbreaker.title": "> BRICKBREAKER",
+
+	"brickbreaker.pause": "> PAUSE (ESPACE)",
+	"brickbreaker.settings": "> PARAMETRES (ECHAP)",
+	"brickbreaker.instructions.title": "INSTRUCTIONS",
+	"brickbreaker.instructions.text": "DETRUISEZ TOUTES LES BRIQUES LE PLUS RAPIDEMENT POSSIBLE",
+	"brickbreaker.controls.title": "COMMANDES",
+	"brickbreaker.controls.text": "PLAYER: A/D | ←/→",
+	"brickbreaker.gamestats.title": "STATISTIQUES",
+	"brickbreaker.gamestats.lives": "VIES: ",
+	"brickbreaker.gamestats.score": "SCORE: ",
+	"brickbreaker.gamestats.time": "TEMPS: ",
+	"brickbreaker.settings.title": "PARAMETRES",
+	"brickbreaker.settings.warning": "ATTENTION: OUVRIR LES PARAMETRES PENDANT UNE PARTIE ENTRAINERA LA PERTE D'UNE VIE!",
+	"brickbreaker.result.message": "VOTRE SCORE: ",
+	"brickbreaker.result.brick_score": "BRIQUES: ",
+	"brickbreaker.result.time_score": "TEMPS: ",
+	"brickbreaker.result.lives_score": "VIES: ",
+	"brickbreaker.result.powerup_score": "POWER-UPS: ",
+	"brickbreaker.result.play_again": "REJOUER",
+	"brickbreaker.result.quit": "QUITTER",
+
+	"pong.title": "> PONG",
+
+    "pong.pause": "> PAUSE (ESPACE)",
+    "pong.settings": "> PARAMÈTRES (ECHAP)",
+    "pong.instructions.title": "INSTRUCTIONS",
+    "pong.instructions.text": "LE PREMIER PLAYER A MARQUER 7 POINTS GAGNE",
+    "pong.controls.title": "COMMANDES",
+    "pong.controls.player": "PLAYER: W/S",
+    "pong.controls.guest": "GUEST: ↑/↓",
+    "pong.gamestats.title": "STATISTIQUES DE JEU",
+    "pong.gamestats.player": "PLAYER: ",
+    "pong.gamestats.guest": "GUEST: ",
+    "pong.settings.title": "PARAMETRES DU JEU",
+    "pong.settings.warning": "ATTENTION: OUVRIR LES PARAMETRES DU JEU PENDANT UNE PARTIE ENTRAINERA LA PERTE D'UN POINT!",
+    "pong.result.play_again": "REJOUER",
+    "pong.result.quit": "QUITTER"
 }

@@ -42,12 +42,6 @@ document.addEventListener('settings_event', async()=>{
 			history.pushState(null, '', '/mystats');
 			loadPage('/mystats');
 		});
-		
-		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		// brickbreakerLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/brickbreaker');
-		// 	loadPage('/brickbreaker');
-		// });
 
 		const btn_username = document.getElementById('btn_username');
 		btn_username.addEventListener('click', async () => {
@@ -372,7 +366,6 @@ document.addEventListener('settings_event', async()=>{
 			console.log("Error user_is_42 : " + data.error);
 		}
 	}
-
 
 	function getCSRFToken() {
 		const csrfCookie = document.cookie

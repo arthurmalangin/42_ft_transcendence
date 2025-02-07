@@ -676,4 +676,50 @@ document.addEventListener('tourpong_event', async()=>{
 		})
 		.catch(error => console.error("Erreur réseau : ", error));
 	}
+
+	langModule();
+	
+	async function langModule() {
+		await loadLanguage(await getLangPlayer());
+		async function loadLanguage(lang) {
+			try {
+			const response = await fetch(`/static/lang/${lang}.json`);
+			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
+			const translations = await response.json();
+			applyTranslations(translations);
+			} catch (error) {
+			console.error("Erreur :", error);
+			}
+		};
+
+		function applyTranslations(translations) {
+			document.querySelectorAll("[data-translate]").forEach((element) => {
+			const key = element.getAttribute("data-translate");
+			if (translations[key]) {
+				element.textContent = translations[key];
+			}
+			});
+		};
+	}
+
+	async function getLangPlayer() {
+		try {
+			const response = await fetch('/api/getUserLang/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				if (data.lang) {
+					return data.lang;
+				}
+			}
+		} catch (error) {
+			console.error('Error getLangPlayer:', error);
+		}
+	}
 });

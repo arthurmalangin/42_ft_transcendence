@@ -31,43 +31,43 @@
 		</nav>
 
 		<div class="panel">
-			<h2 class="panel-header">&gt; PONG</h2>
+			<h2 class="panel-header" data-translate="pong.title"></h2>
 
-			<div class="game-container">
-				<canvas id="board"></canvas>
-			
-				<nav class="nav right-nav card">
-					<div id="btnPause" class="nav-item">
-						<span>&gt; PAUSE (SPACE)</span>
-					</div>
-					<div id="btnSettingsPong" class="nav-item">
-						<span>&gt; SETTINGS (ESC)</span>
-					</div>
-					<div class="game-info">
-						<h3>INSTRUCTIONS</h3>
-						<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
-					</div>
-					<div class="game-info">
-						<h3>CONTROLS</h3>
-						<p>PLAYER: W/S</p>
-						<p>GUEST: UP/DOWN</p>
-					</div>
-					<div class="game-info">
-						<h3>GAMESTATS</h3>
-						<p>PLAYER: <span id="player1Score" name="myScore">0</span></p>
-						<p>GUEST: <span id="player2Score" name="oppScore">0</span></p>
-					</div>
-				</nav>
-			</div>
+		<div class="game-container">
+			<canvas id="board"></canvas>
+
+			<nav class="nav right-nav card">
+				<div id="btnPause" class="nav-item">
+					<span data-translate="pong.pause"></span>
+				</div>
+				<div id="btnSettingsPong" class="nav-item">
+					<span data-translate="pong.settings"></span>
+				</div>
+				<div class="game-info">
+					<h3 data-translate="pong.instructions.title"></h3>
+					<p data-translate="pong.instructions.text"></p>
+				</div>
+				<div class="game-info">
+					<h3 data-translate="pong.controls.title"></h3>
+					<p data-translate="pong.controls.player"></p>
+					<p data-translate="pong.controls.guest"></p>
+				</div>
+				<div class="game-info">
+					<h3 data-translate="pong.gamestats.title"></h3>
+					<p data-translate="pong.gamestats.player"><span id='player1Score' name='myScore'>0</span></p>
+					<p data-translate="pong.gamestats.guest"><span id='player2Score' name='oppScore'>0</span></p>
+				</div>
+			</nav>
 		</div>
-	</main>
+	</div>
+</main>
 
 	<div id="settingsOverlay" class="overlay active">
 		<div class="overlay-content phosphor">
 			<button class="popup-close" id="btnCloseSettingsPong">×</button>
 			<div class="popup-header">
-				<h2>GAME SETTINGS</h2>
-				<p>WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESULT IN A LOST POINT!</p>
+				<h2 data-translate="pong.settings.title"></h2>
+				<p data-translate="pong.settings.warning"></p>
 			</div>
 			<div class="form-group">
 				<label>BALL SPEED</label>
@@ -97,8 +97,8 @@
 				<h2 id="gameResultMessage">PLAYER WON!</h2>
 			</div>
 			<div class="form-group">
-				<button id="btnPlayAgain" class="btn">PLAY AGAIN</button>
-				<button id="btnQuit" class="btn">QUIT</button>
+				<button id="btnPlayAgain" class="btn" data-translate="brickbreaker.result.play_again"></button>
+				<button id="btnQuit" class="btn" data-translate="brickbreaker.result.quit"></button>
 			</div>
 		</div>
 	</div>

@@ -50,11 +50,50 @@
 	"leaderboard.pong.table.wins": "WINS",
 	"leaderboard.pong.table.losses": "LOSSES",
 	"leaderboard.pong.table.winrate": "WIN RATE",
+
 	"leaderboard.brickbreaker.title": "> BRICKBREAKER RANKINGS",
+
 	"leaderboard.brickbreaker.player": "TOP PLAYER",
 	"leaderboard.brickbreaker.bestscore": "BEST SCORE",
 	"leaderboard.brickbreaker.games": "TOTAL GAMES",
 	"leaderboard.brickbreaker.rank": "RANK",
 	"leaderboard.brickbreaker.name": "NAME",
-	"leaderboard.brickbreaker.score": "SCORE"
+	"leaderboard.brickbreaker.score": "SCORE",
+
+	"brickbreaker.title": "> BRICKBREAKER",
+
+	"brickbreaker.pause": "> PAUSE (SPACE)",
+	"brickbreaker.settings": "> SETTINGS (ESC)",
+	"brickbreaker.instructions.title": "INSTRUCTIONS",
+	"brickbreaker.instructions.text": "DESTROY ALL THE BRICKS AS FAST AS POSSIBLE",
+	"brickbreaker.controls.title": "CONTROLS",
+	"brickbreaker.controls.text": "PLAYER: A/D | ←/→",
+	"brickbreaker.gamestats.title": "GAMESTATS",
+	"brickbreaker.gamestats.lives": "LIVES: ",
+	"brickbreaker.gamestats.score": "SCORE: ",
+	"brickbreaker.gamestats.time": "TIME: ",
+	"brickbreaker.settings.title": "GAME SETTINGS",
+	"brickbreaker.settings.warning": "WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESULT IN A LOST LIFE!",
+	"brickbreaker.result.message": "YOUR SCORE: ",
+	"brickbreaker.result.brick_score": "FROM BRICKS: ",
+	"brickbreaker.result.time_score": "FROM TIME: ",
+	"brickbreaker.result.lives_score": "FROM LIVES: ",
+	"brickbreaker.result.powerup_score": "FROM POWERUPS: ",
+	"brickbreaker.result.play_again": "PLAY AGAIN",
+	"brickbreaker.result.quit": "QUIT",
+
+	"pong.title": "> PONG",
+    "pong.pause": "> PAUSE (SPACE)",
+    "pong.settings": "> SETTINGS (ESC)",
+    "pong.instructions.title": "INSTRUCTIONS",
+    "pong.instructions.text": "FIRST PLAYER TO SCORE 7 POINTS WINS",
+    "pong.controls.title": "CONTROLS",
+    "pong.controls.player": "PLAYER: W/S",
+    "pong.controls.guest": "GUEST: ↑/↓",
+    "pong.gamestats.title": "GAME STATS",
+    "pong.gamestats.player": "PLAYER: ",
+    "pong.gamestats.guest": "GUEST: ",
+    "pong.settings.title": "GAME SETTINGS",
+    "pong.settings.warning": "WARNING: OPENING THE SETTINGS DURING A GAME WILL RESULT IN A LOST POINT!"
+
 }

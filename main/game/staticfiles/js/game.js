@@ -769,77 +769,91 @@ document.addEventListener('game_event', async()=>{
 		})
 		.catch(error => console.error("Erreur réseau : ", error));
 	}
+
+	langModule();
+	
+	async function langModule() {
+		await loadLanguage(await getLangPlayer());
+		async function loadLanguage(lang) {
+			try {
+			const response = await fetch(`/static/lang/${lang}.json`);
+			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
+			const translations = await response.json();
+			applyTranslations(translations);
+			} catch (error) {
+			console.error("Erreur :", error);
+			}
+		};
+
+		function applyTranslations(translations) {
+			document.querySelectorAll("[data-translate]").forEach((element) => {
+			const key = element.getAttribute("data-translate");
+			if (translations[key]) {
+				element.textContent = translations[key];
+			}
+			});
+		};
+	}
+
+	async function getLangPlayer() {
+		try {
+			const response = await fetch('/api/getUserLang/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				if (data.lang) {
+					return data.lang;
+				}
+			}
+		} catch (error) {
+			console.error('Error getLangPlayer:', error);
+		}
+	}
 })
 
 	//////////////////////////////////////////////////////////////////////////////////
 	/////////////                      UPDATE DATA                        ////////////
 	//////////////////////////////////////////////////////////////////////////////////
 
-	async function updateScore(playerScore, opponentScore, versus) {
-		await updateMatches(playerScore);
-		await updateData();
-		await updateRank();
-		await saveMatches(playerScore, opponentScore, versus);
-	}
+async function updateScore(playerScore, opponentScore, versus) {
+	await updateMatches(playerScore);
+	await updateData();
+	await updateRank();
+	await saveMatches(playerScore, opponentScore, versus);
+}
 
-	async function saveMatches(playerScore, opponentScore, versus){
-		try{
-			const response = await fetch('/api/create_match/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-CSRFToken': getCSRFToken()
-				},
-				body: JSON.stringify({
-					opponent: versus,
-					myscore: playerScore,
-					oppscore: opponentScore,
-				}),
-			});
-			if (!response.ok) {
-				throw new Error(`Erreur API : ${response.statusText}`);
-			}
-		} catch (error) {
-			console.error("Erreur réseau :", error);
+async function saveMatches(playerScore, opponentScore, versus){
+	try{
+		const response = await fetch('/api/create_match/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': getCSRFToken()
+			},
+			body: JSON.stringify({
+				opponent: versus,
+				myscore: playerScore,
+				oppscore: opponentScore,
+			}),
+		});
+		if (!response.ok) {
+			throw new Error(`Erreur API : ${response.statusText}`);
 		}
+	} catch (error) {
+		console.error("Erreur réseau :", error);
 	}
+}
 
-	async function updateMatches(playerScore){
-		if(playerScore == 7)
-			try{
-				const response = await fetch('/api/add_win/', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': getCSRFToken()
-					}
-				});
-				if (!response.ok) {
-					throw new Error(`Erreur API : ${response.statusText}`);
-				}
-			} catch (error) {
-				console.error('Erreur lors de l’appel API :', error);
-			}
-		else
-			try{
-				const response = await fetch('/api/add_lose/', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': getCSRFToken()
-					}
-				});
-				if (!response.ok) {
-					throw new Error(`Erreur API : ${response.statusText}`);
-				}
-			} catch (error) {
-				console.error('Erreur lors de l’appel API :', error);
-			}
-	}
-
-	async function updateData(){
+async function updateMatches(playerScore){
+	if(playerScore == 7)
 		try{
-			const response = await fetch('/api/update_win_rate/', {
+			const response = await fetch('/api/add_win/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -852,11 +866,9 @@ document.addEventListener('game_event', async()=>{
 		} catch (error) {
 			console.error('Erreur lors de l’appel API :', error);
 		}
-	}
-
-	async function updateRank(){
+	else
 		try{
-			const response = await fetch('/api/update_rank/', {
+			const response = await fetch('/api/add_lose/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -869,5 +881,38 @@ document.addEventListener('game_event', async()=>{
 		} catch (error) {
 			console.error('Erreur lors de l’appel API :', error);
 		}
+}
+
+async function updateData(){
+	try{
+		const response = await fetch('/api/update_win_rate/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': getCSRFToken()
+			}
+		});
+		if (!response.ok) {
+			throw new Error(`Erreur API : ${response.statusText}`);
+		}
+	} catch (error) {
+		console.error('Erreur lors de l’appel API :', error);
 	}
-		
+}
+
+async function updateRank(){
+	try{
+		const response = await fetch('/api/update_rank/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-CSRFToken': getCSRFToken()
+			}
+		});
+		if (!response.ok) {
+			throw new Error(`Erreur API : ${response.statusText}`);
+		}
+	} catch (error) {
+		console.error('Erreur lors de l’appel API :', error);
+	}
+}
