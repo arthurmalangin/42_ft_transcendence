@@ -41,12 +41,6 @@ document.addEventListener('menuplay_event', async()=>{
 			loadPage('/mystats');
 		});
 
-		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		// brickbreakerLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/brickbreaker');
-		// 	loadPage('/brickbreaker');
-		// });
-
 		// Game mode cards
 
 		const btn_pong_classic = document.getElementById('btn_pong_classic');
@@ -81,5 +75,23 @@ document.addEventListener('menuplay_event', async()=>{
 	}
 
 	menuEvent();
+
+	function logout() {
+		fetch('/srclogin/logout/', {
+			method: 'POST',
+			headers: {
+				'X-CSRFToken': getCSRFToken()
+			},
+		})
+		.then(response => {
+			if (response.ok) {
+				history.pushState(null, '', '/login');
+				loadPage('/login');
+			} else {
+				console.error("Erreur lors de la déconnexion.");
+			}
+		})
+		.catch(error => console.error("Erreur réseau : ", error));
+	}
 
 });

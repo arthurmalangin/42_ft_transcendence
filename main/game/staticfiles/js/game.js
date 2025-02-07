@@ -751,6 +751,24 @@ document.addEventListener('game_event', async()=>{
 	}
 
 	initPong();
+
+	function logout() {
+		fetch('/srclogin/logout/', {
+			method: 'POST',
+			headers: {
+				'X-CSRFToken': getCSRFToken()
+			},
+		})
+		.then(response => {
+			if (response.ok) {
+				history.pushState(null, '', '/login');
+				loadPage('/login');
+			} else {
+				console.error("Erreur lors de la déconnexion.");
+			}
+		})
+		.catch(error => console.error("Erreur réseau : ", error));
+	}
 })
 
 	//////////////////////////////////////////////////////////////////////////////////
