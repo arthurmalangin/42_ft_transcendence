@@ -216,7 +216,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.error('Error updating winrate:', error);
 		}
 	}
 
@@ -240,7 +240,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.error('Error updating matches:', error);
 		}
 	}
 
@@ -267,7 +267,7 @@ document.addEventListener('home_event', async()=>{
 				});
 			}  
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.error('Error updating last matches:', error);
 		}
 }
 	

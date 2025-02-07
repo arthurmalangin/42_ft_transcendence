@@ -31,6 +31,7 @@ urlpatterns = [
 	path("update_win_rate/", views.update_win_rate, name="update_win_rate"),
 	path("create_match/", views.create_match, name="create_match"),
 	path("get_Lastmatches/", views.get_Lastmatches, name="get_Lastmatches"),
+	path("get_LastGames/", views.get_LastGames, name="get_LastGames"),
 	path("update_rank/", views.update_rank, name="update_rank"),
 	path("update_rank_brick/", views.update_rank_brick, name="update_rank_brick"),
 	path("get_NumberOne/", views.get_NumberOne, name="get_NumberOne"),

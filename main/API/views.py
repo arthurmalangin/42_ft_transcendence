@@ -512,6 +512,30 @@ def get_Lastmatches(request):
             return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
 
+def get_LastGames(request):
+    if request.user.is_authenticated:
+        try:
+            user_profile = PlayerData.objects.get(username=request.user.username)
+            if user_profile:
+                games = BrickData.objects.filter(player=user_profile.id).order_by("-date")[:3]
+                if games:
+                    data = [
+                        {
+                            "scorebrk":game.score,
+                            "timebrk":game.time,
+                        }
+                        for game in games
+                    ]
+                    return JsonResponse(data, safe=False)
+                else:
+                    return JsonResponse([], safe=False) 
+            else:
+                return JsonResponse({"error": "not player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get last match: {str(e)}'}, status=400)
+    return JsonResponse({'error': 'User not authenticated'}, status=400)
+
 def get_NumberOne(request):
     try:
         player = PlayerData.objects.all().order_by('-win_rate').first()

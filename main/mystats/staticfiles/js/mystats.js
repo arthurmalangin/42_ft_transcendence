@@ -1,7 +1,10 @@
 document.addEventListener('mystats_event', async()=>{
 	function mystatsEvent() {
+		console.log("mystatsEvent called");
+		console.log("updateRecentGames reference:", updateRecentGames);
 		updateMyStat();
 		updateMyBrickStat();
+		updateRecentGames();
 		const registerLabel = document.getElementById('btn_logout');
 		registerLabel.addEventListener('click', () => {
 			logout();
@@ -94,7 +97,7 @@ document.addEventListener('mystats_event', async()=>{
 		let s = Math.floor(seconds % 60);
 		return [m, s].map(unit => String(unit).padStart(2, '0')).join(':');
 	}
-
+	
 	async function updateMyBrickStat(){
 		try{
 			const response = await fetch('/api/get_myBrickStat/', {
@@ -104,7 +107,7 @@ document.addEventListener('mystats_event', async()=>{
 					'X-CSRFToken': getCSRFToken()
 				}
 			});
-
+			
 			if(response.ok) {
 				const data = await response.json();
 				console.log('Player received:', data);
@@ -123,30 +126,59 @@ document.addEventListener('mystats_event', async()=>{
 			console.error('Error updatethree:', error);
 		}
 	}
+	
+	async function updateRecentGames(){
+		console.log("recent games!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+		try{
+			const response = await fetch('/api/get_LastGames/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Games received:', data);
+				data.forEach((game, index) => {
+					const lastGameElement = document.getElementById(`gamebrick${index + 1}`);
+					const lastTimeElement = document.getElementById(`timebrick${index + 1}`);
+					const scorebck = game.scorebrk !== undefined ? game.scorebrk : '0';
+					const timebck = game.timebrk !== undefined ? formatGameTime(parseFloat(game.timebrk)) : '00:00';
+					lastGameElement.textContent = `${scorebck}`;
+					lastTimeElement.textContent = `${timebck}`;
+				});
+			}  
+		} catch (error) {
+			console.error('Error updating games:', error);
+		}
+	}
 
 	function	drawCanva(Win, Lose, element){
 		const ctx = document.getElementById(`${element}`);
-
+		
 		new Chart(ctx, {
-		  type: 'bar',
-		  data: {
-			labels: ['Win', 'Lose'],
-			datasets: [{
-			  label: 'Ratio Win/Lose',
-			  data: [Win, Lose],
-			  borderColor: '#00ff00',
-			  backgroundColor: '#00ff00',
-			  borderWidth: 1,
-			  barPercentage: 0.5
-			}]
-		  },
-		  options: {
-			scales: {
-			  y: {
-				beginAtZero: true
-			  }
+			type: 'bar',
+			data: {
+				labels: ['Win', 'Lose'],
+				datasets: [{
+					label: 'Ratio Win/Lose',
+					data: [Win, Lose],
+					borderColor: '#00ff00',
+					backgroundColor: '#00ff00',
+					borderWidth: 1,
+					barPercentage: 0.5
+				}]
+			},
+			options: {
+				scales: {
+					y: {
+						beginAtZero: true
+					}
+				}
 			}
-		  }
 		});
 	}
+	
 })
