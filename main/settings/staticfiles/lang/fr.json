@@ -38,11 +38,11 @@
 	"friends.list.pending_requests": "> DEMANDES EN ATTENTE",
 	"friends.list.current_friends": "> AMIS ACTUELS",
 	"friends.popup.add_friend": "> AJOUTER AMI",
-	"friends.popup.search_players": "RECHERCHER PLAYERS",
+	"friends.popup.search_players": "RECHERCHER JOUEURS",
 
 	"leaderboard.pong.title": "> CLASSEMENTS PONG",
 
-	"leaderboard.pong.card.player": "MEILLEUR PLAYER",
+	"leaderboard.pong.card.player": "MEILLEUR JOUEUR",
 	"leaderboard.pong.card.wins": "VICTOIRES TOTALES",
 	"leaderboard.pong.card.matches": "MATCHS TOTAUX",
 	"leaderboard.pong.table.rank": "CLASSEMENT",
@@ -53,12 +53,27 @@
 
 	"leaderboard.brickbreaker.title": "> CLASSEMENTS BRICKBREAKER",
 
-	"leaderboard.brickbreaker.player": "MEILLEUR PLAYER",
+	"leaderboard.brickbreaker.player": "MEILLEUR JOUEUR",
 	"leaderboard.brickbreaker.bestscore": "MEILLEUR SCORE",
 	"leaderboard.brickbreaker.games": "NOMBRE PARTIES",
 	"leaderboard.brickbreaker.rank": "CLASSEMENT",
 	"leaderboard.brickbreaker.name": "NOM",
 	"leaderboard.brickbreaker.score": "SCORE",
+
+	"menu.pong_classic.title": "PONG_CLASSIQUE",
+	"menu.pong_classic.description": "MATCH 1V1 - CONTRE UN ADVERSAIRE LOCAL OU PONG_BOT_V3.9",
+	"menu.pong_tournament.title": "PONG_TOURNOI",
+	"menu.pong_tournament.description": "COMPETITION A 4 JOUEURS CONTRE DES ADVERSAIRES LOCAUX",
+	"menu.pong_4players.title": "PONG_4JOUEURS",
+	"menu.pong_4players.description": "NOUVEAU MODE DE JEU DE ROBCO - DETRUISEZ 3 ADVERSAIRES À LA FOIS",
+	"menu.brickbreaker_classic.title": "CASSE-BRIQUES_CLASSIQUE",
+	"menu.brickbreaker_classic.description": "ESSAYEZ DE BATTRE VOTRE MEILLEUR SCORE DANS CE MODE SOLO",
+	"menu.brickbreaker_tournament.title": "CASSE-BRIQUES_TOURNOI",
+	"menu.brickbreaker_tournament.description": "COMPETITION A 4 JOUEURS CONTRE DES ADVERSAIRES LOCAUX",
+	"menu.gta_6.title": "GRAND THEFT AUTO VI",
+	"menu.gta_6.description": "[CONFIDENTIEL] PERSONNEL AUTORISÉ SEULEMENT",
+	"menu.start_game": "COMMENCER LE JEU",
+	"menu.play_gta_6": "JOUER A GTA VI",
 
 	"brickbreaker.title": "> BRICKBREAKER",
 
@@ -87,7 +102,7 @@
     "pong.pause": "> PAUSE (ESPACE)",
     "pong.settings": "> PARAMÈTRES (ECHAP)",
     "pong.instructions.title": "INSTRUCTIONS",
-    "pong.instructions.text": "LE PREMIER PLAYER A MARQUER 7 POINTS GAGNE",
+    "pong.instructions.text": "LE PREMIER JOUEUR A MARQUER 7 POINTS GAGNE",
     "pong.controls.title": "COMMANDES",
     "pong.controls.player": "PLAYER: W/S",
     "pong.controls.guest": "GUEST: ↑/↓",
@@ -98,4 +113,5 @@
     "pong.settings.warning": "ATTENTION: OUVRIR LES PARAMETRES DU JEU PENDANT UNE PARTIE ENTRAINERA LA PERTE D'UN POINT!",
     "pong.result.play_again": "REJOUER",
     "pong.result.quit": "QUITTER"
+
 }

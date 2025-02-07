@@ -60,6 +60,21 @@
 	"leaderboard.brickbreaker.name": "NAME",
 	"leaderboard.brickbreaker.score": "SCORE",
 
+	"menu.pong_classic.title": "PONG_CLASSIC",
+	"menu.pong_classic.description": "1V1 MATCH - AGAINST LOCAL OPPONENT OR PONG_BOT_V3.9",
+	"menu.pong_tournament.title": "PONG_TOURNAMENT",
+	"menu.pong_tournament.description": "COMPETE IN A 4 PLAYER BRACKET AGAINST LOCAL OPPONENTS",
+	"menu.pong_4players.title": "PONG_4PLAYERS",
+	"menu.pong_4players.description": "ROBCO'S NEW EXCITING GAME MODE - DESTROY 3 OPPONENTS AT ONCE",
+	"menu.brickbreaker_classic.title": "BRICKBREAKER_CLASSIC",
+	"menu.brickbreaker_classic.description": "TRY TO BEAT YOUR HIGH-SCORE IN THIS SOLO MODE",
+	"menu.brickbreaker_tournament.title": "BRICKBREAKER_TOURNAMENT",
+	"menu.brickbreaker_tournament.description": "COMPETE IN A 4 PLAYER BRACKET AGAINST LOCAL OPPONENTS",
+	"menu.gta_6.title": "GRAND THEFT AUTO VI",
+	"menu.gta_6.description": "[CONFIDENTIAL] AUTHORIZED PERSONNEL ONLY",
+	"menu.start_game": "START GAME",
+	"menu.play_gta_6": "PLAY GTA VI",
+
 	"brickbreaker.title": "> BRICKBREAKER",
 
 	"brickbreaker.pause": "> PAUSE (SPACE)",
@@ -83,6 +98,7 @@
 	"brickbreaker.result.quit": "QUIT",
 
 	"pong.title": "> PONG",
+
     "pong.pause": "> PAUSE (SPACE)",
     "pong.settings": "> SETTINGS (ESC)",
     "pong.instructions.title": "INSTRUCTIONS",
@@ -94,6 +110,8 @@
     "pong.gamestats.player": "PLAYER: ",
     "pong.gamestats.guest": "GUEST: ",
     "pong.settings.title": "GAME SETTINGS",
-    "pong.settings.warning": "WARNING: OPENING THE SETTINGS DURING A GAME WILL RESULT IN A LOST POINT!"
+    "pong.settings.warning": "WARNING: OPENING THE SETTINGS DURING A GAME WILL RESULT IN A LOST POINT!",
+	"pong.result.play_again": "PLAY AGAIN",
+    "pong.result.quit": "QUIT"
 
 }
