@@ -2,12 +2,12 @@ all : up
 
 up:
 	@echo "Docker up"
-	@docker compose -f ./docker/docker-compose.yml up --build
+	@docker compose -f ./docker-compose.yml up --build
 	@docker ps
 
 silent:
 	@echo "Docker up"
-	@docker compose -f ./docker/docker-compose.yml up --build -d
+	@docker compose -f ./docker-compose.yml up --build -d
 	@docker ps
 
 clear: down stop
@@ -19,14 +19,14 @@ prune:
 
 down:
 	@echo "Docker down.."
-	@docker compose -f ./docker/docker-compose.yml down -v
+	@docker compose -f ./docker-compose.yml down -v
 
 stop:
 	@echo "Docker stop"
-	@docker compose -f ./docker/docker-compose.yml stop
+	@docker compose -f ./docker-compose.yml stop
 
 start:
-	@docker compose -f ./docker/docker-compose.yml start
+	@docker compose -f ./docker-compose.yml start
 
 status: 
 	@docker ps

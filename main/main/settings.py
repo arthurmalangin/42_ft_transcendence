@@ -12,16 +12,55 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import socket
+import environ
+import os
+import base64
+import hvac
+from requests.exceptions import ConnectionError, RequestException
+
+# Initialise environ
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+# settup the vault client
+client = hvac.Client(
+    url='http://vault:8200',
+    token= env('VAULT_DEV_ROOT_TOKEN_ID'),
+)
+
+# Function to get secret from Vault
+def get_vault_secret(path, key):
+    try:
+        secret = client.secrets.kv.v2.read_secret_version(path=path)
+        return secret['data']['data'][key]
+    except (ConnectionError, RequestException) as e:
+        print(f'Failed to connect to Vault server: {e}')
+        return None
+
+# Récupérer les secrets depuis Vault
+POSTGRES_USER = get_vault_secret('database/credentials', 'username')
+POSTGRES_PASSWORD = get_vault_secret('database/credentials', 'password')
+POSTGRES_DB = get_vault_secret('database/credentials', 'dbname')
+SECRET_KEY = get_vault_secret('django/secret', 'secret_key')
+
+# try:
+#     # Generate a new secret key using the transit secrets engine
+#     generate_response = client.secrets.transit.generate_data_key(
+#         name='django-secret-key',
+#         key_type='plaintext',
+#     )
+#     # Decode the base64 encoded key
+#     SECRET_KEY = base64.b64decode(generate_response['data']['plaintext']).decode('utf-8')
+#     print('Secret key generated successfully.')
+# except (ConnectionError, RequestException) as e:
+#     print(f'Failed to connect to Vault server: {e}')
+#     # Fallback to a default secret key or handle the error appropriately
+#     SECRET_KEY = 'fallback-secret-key'
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5&-vxf7+fuz*mhb-y*ag@kk-l8k69_apx5238x%h4b82%vuh=3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -107,20 +146,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'main.wsgi.application'
 
 
+# Initialise environ
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+# Lire le fichier .env
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Configuration de la base de données
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ft_transcendence',
-        'USER': 'ft_user',
-        'PASSWORD': 'ft_password',
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
         'HOST': 'db',  # Nom du service Docker pour PostgreSQL
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

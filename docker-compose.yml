@@ -1,0 +1,86 @@
+services:
+  vault:
+    build:
+      dockerfile: ./docker/src/vault/Dockerfile
+      args:
+        VAULT_ADDR: ${VAULT_ADDR}
+    container_name: vault
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
+      VAULT_DEV_LISTEN_ADDRESS: ${VAULT_DEV_LISTEN_ADDRESS}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      DJ_SECRET_KEY: ${DJ_SECRET_KEY}
+    volumes:
+      - vault_data:/vault/data
+    networks:
+      - backend_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8200/v1/sys/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  nginx:
+    build:
+      dockerfile: ./docker/src/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    depends_on:
+      - web
+    networks:
+      - backend_network
+
+  redis:
+    container_name: redis
+    image: redis:6
+    ports:
+      - "6379:6379"
+    networks:
+      - backend_network
+
+  web:
+    container_name: web
+    build:
+      dockerfile: ./docker/src/django/Dockerfile
+    # ports:
+    #   - "6379:6379"
+    volumes:
+      - ./main:/app/main
+      # - ./main/staticfiles:/app/main/staticfiles
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_DEV_ROOT_TOKEN_ID}
+      - DEBUG=${WEB_DEBUG}
+    depends_on:
+      - db
+      - redis
+      - vault
+    networks:
+      - backend_network
+      
+  db:
+    container_name: db
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - backend_network
+      
+volumes:
+  postgres_data:
+  vault_data:
+
+networks:
+  backend_network:
+    driver: bridge

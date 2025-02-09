@@ -30,9 +30,3 @@ rate_limit {
 telemetry {
   prometheus_retention_time = "24h"
 }
-
-# Seal configuration (optional, for auto unseal)
-# seal "awskms" {
-#   region = "us-east-1"
-#   kms_key_id = "your-kms-key-id"
-# }
