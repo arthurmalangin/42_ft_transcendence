@@ -58,7 +58,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 		let paddleHeight = 10;
 		let paddleSpeed = 2;
 
-		let lives = 3;
+		let lives = 999;
 		let playerScore = 0;
 		let guestScore = 0;
 
@@ -94,7 +94,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			velocityY: -ballSpeed,
 			x: boardWidth / 2 - ballWidth / 2,
 			y: 490 - ballHeight - paddleHeight,
-			lastTouch: player
+			lastTouch: player,
+			onFire: false,
 		};
 
 		let ball2 = {
@@ -105,7 +106,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			velocityY: -ballSpeed,
 			x: boardWidth / 2 - ballWidth / 2,
 			y: 490 - ballHeight - paddleHeight,
-			lastTouch: guest
+			lastTouch: guest,
+			onFire: false,
 		};
 
 		let bricks = [];
@@ -118,7 +120,6 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 		];
 
 		let powerUpsEnabled = false;
-		let ballOnFire = false;
 		
 		let powerUp = null;
 		const powerUpTypes = {
@@ -674,7 +675,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				if (moveLeftFlag === 0)
 					player.x -= guest.speed;
 			}
-			if ((keys['ArrowRight']) && guest.x + paddleWidth < boardWidth)
+			if ((keys['ArrowRight']) && guest.x + guest.width < boardWidth)
 				guest.x += guest.speed;
 		}
 
@@ -781,10 +782,10 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			
 					const minCollision = Math.min(collisionFromLeft, collisionFromRight, collisionFromTop, collisionFromBottom);
 			
-					if (!ballOnFire && (minCollision === collisionFromLeft || minCollision === collisionFromRight)) {
+					if (!ball.onFire && (minCollision === collisionFromLeft || minCollision === collisionFromRight)) {
 						ball.x -= ball.velocityX;
 						ball.velocityX *= -1;
-					} else if (!ballOnFire) {
+					} else if (!ball.onFire) {
 						ball.y -= ball.velocityY;
 						ball.velocityY *= -1;
 					}
@@ -819,7 +820,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				document.getElementById('guestScore').textContent = guestScore;
 			}
 		
-			if (playerScore + guestScore === 7410) // TODO calc max score
+			if (playerScore + guestScore === 74100) // TODO calc max score
 				isGameOver = true;
 		
 			context.clearRect(brick.x, brick.y, brick.width, brick.height);
@@ -907,51 +908,59 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			powerUp.y += powerUp.velocityY;
 
 			[player, guest].forEach(paddle => {
-				if (powerUp.x + powerUp.width >= paddle.x && powerUp.x <= paddle.x + paddle.width && powerUp.y + powerUp.height >= paddle.y) {
-					applyPowerUp(powerUp);
+				if (powerUp && powerUp.x + powerUp.width >= paddle.x && powerUp.x <= paddle.x + paddle.width && powerUp.y + powerUp.height >= paddle.y) {
+					applyPowerUp(powerUp, paddle);
 					powerUp = null;
 					return;
 				}
 			});
 
-			for (let r = 0; r < bricks.length; r++) {
-				for (let c = 0; c < bricks[r].length; c++) {
-					const brick = bricks[r][c];
-					if (brick && !brick.isBroken) {
-						if (
-							powerUp.x < brick.x + brick.width &&
-							powerUp.x + powerUp.width > brick.x &&
-							powerUp.y < brick.y + brick.height &&
-							powerUp.y + powerUp.height > brick.y
-						) {
-							brick.needsRedraw = true;
-						}
-					}
-				}
-			}
+			// for (let r = 0; r < bricks.length; r++) {
+			// 	for (let c = 0; c < bricks[r].length; c++) {
+			// 		const brick = bricks[r][c];
+			// 		if (brick && !brick.isBroken) {
+			// 			if (
+			// 				powerUp.x < brick.x + brick.width &&
+			// 				powerUp.x + powerUp.width > brick.x &&
+			// 				powerUp.y < brick.y + brick.height &&
+			// 				powerUp.y + powerUp.height > brick.y
+			// 			) {
+			// 				brick.needsRedraw = true;
+			// 			}
+			// 		}
+			// 	}
+			// }
 
-			if (powerUp.y > boardHeight) {
+			if (powerUp && powerUp.y > boardHeight) {
 				powerUp = null;
 			}
 		}
 
-		function applyPowerUp(powerUp) {
-			if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
-				if (player.x + player.width / 2 >= boardWidth / 2) {
-					player.x -= 25;
-				}
-				player.width += 25;
+		function applyPowerUp(powerUp, paddle) {
+			console.log(powerUp.type, paddle);
 
-				if (guest.x + guest.width / 2 >= boardWidth / 2) {
-					guest.x -= 25;
+			if (powerUp.type === powerUpTypes.ENLARGE_PADDLE) {
+				if (paddle === player) {
+					player.x -= 12;
+					player.width += 25;
+					console.log("enlarging player paddle");
+					console.log(paddle);
+				} else if (paddle === guest) {
+					guest.x -= 12;
+					guest.width += 25;
+					console.log("enlarging guest paddle");
+					console.log(paddle);
 				}
-				guest.width += 25;
 			}
 			else {
-				ballOnFire = true;
-				setTimeout(() => {
-					ballOnFire = false;
-				}, 5000);
+				[ball1, ball2].forEach(ball => {
+					if (ball.lastTouch === paddle) {
+						ball.onFire = true;
+						setTimeout(() => {
+							ball.onFire = false;
+						}, 5000);
+					}
+				});
 			}
 		}
 

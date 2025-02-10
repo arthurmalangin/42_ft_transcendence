@@ -90,7 +90,8 @@ INSTALLED_APPS = [
     "brickbreaker",
     "multipong",
     "tourpong",
-    "tourbrickbreaker"
+    "tourbrickbreaker",
+    "mystats"
 ]
 
 ASGI_APPLICATION = 'main.asgi.application'
@@ -144,15 +145,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'main.wsgi.application'
-
-
-# Initialise environ
-env = environ.Env(
-    DEBUG=(bool, False)
-)
-
-# Lire le fichier .env
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -216,6 +208,7 @@ STATICFILES_DIRS = [
 	BASE_DIR / "game/staticfiles",
     BASE_DIR / "brickbreaker/staticfiles",
     BASE_DIR / "multipong/staticfiles",
+    BASE_DIR / "mystats/staticfiles",
     BASE_DIR / "tourpong/staticfiles",
     BASE_DIR / "tourbrickbreaker/staticfiles",
 ]

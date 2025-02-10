@@ -34,6 +34,12 @@ document.addEventListener('multipong_event', async()=>{
 			history.pushState(null, '', '/menu');
 			loadPage('/menu');
 		});
+
+		const mystatsLabel = document.getElementById('btn_mystats');
+		mystatsLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/mystats');
+			loadPage('/mystats');
+		});
 	}
 
 	multipongEvent();
@@ -336,12 +342,11 @@ document.addEventListener('multipong_event', async()=>{
 			const player4FinalScore = document.getElementById('player4FinalScore');
 
 			if (gameResultOverlay && gameResultMessage && player1Score && player2Score && player3Score && player4Score) {
-				console.log(player1.score);
-				console.log(player2.score);
-				console.log(player3.score);
-				console.log(player4.score);
+				// console.log(player1.score);
+				// console.log(player2.score);
+				// console.log(player3.score);
+				// console.log(player4.score);
 
-				// TODO not working for some stupid reason????
 				gameResultOverlay.classList.add('active');
 				player1FinalScore.textContent = player1.score;
 				player2FinalScore.textContent = player2.score;

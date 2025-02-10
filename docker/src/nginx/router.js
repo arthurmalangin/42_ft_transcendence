@@ -71,6 +71,14 @@ const routes = {
 		needLogin: true
 	},
 
+	'/mystats': {
+		html: '/srcmystats',
+		css: '/static/css/mystats.css',
+		js: '/static/js/mystats.js',
+		event: 'mystats_event',
+		needLogin: true
+	},
+
 	'/multipong': {
 		html: '/srcmultipong',
 		css: '/static/css/multipong.css',
@@ -175,6 +183,10 @@ function unloadJs() {
 
 function loadJsEvent(box_js, eventName, js_path) {
 	unloadJs();
+	const chartscript = document.createElement('script');
+	chartscript.src = "https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js";
+	chartscript.id = 'char_app_script';
+	box_js.appendChild(chartscript);
 	const script = document.createElement('script');
 	script.src = js_path;
 	script.type = 'module';

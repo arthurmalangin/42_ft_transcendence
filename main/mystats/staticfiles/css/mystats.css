@@ -1,0 +1,191 @@
+/* Base styles */
+:root {
+	--terminal-green: #00ff00;
+	--terminal-bg: #001800;
+}
+  
+body {
+	margin: 0;
+	font-family: monospace;
+	background-color: var(--terminal-bg);
+	color: var(--terminal-green);
+	line-height: 1.5;
+}
+
+/* Layout */
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.header {
+	margin-bottom: 2rem;
+	border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+	padding-bottom: 1rem;
+}
+
+.main-content {
+	display: flex;
+	gap: 2rem;
+}
+
+  /* Terminal effects */
+  .scanline {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+  }
+  
+  .scanline::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	background: rgba(0, 255, 0, 0.1);
+	animation: scan 6s linear infinite;
+  }
+  
+  @keyframes scan {
+	0% { transform: translateY(-100%); }
+	100% { transform: translateY(100%); }
+  }
+  
+  .phosphor {
+	animation: glow 2s ease-in-out infinite;
+  }
+  
+  @keyframes glow {
+	0% { text-shadow: 0 0 1px var(--terminal-green); }
+	50% { text-shadow: 0 0 2px var(--terminal-green); }
+	100% { text-shadow: 0 0 1px var(--terminal-green); }
+  }
+  
+  .crt::before {
+	content: " ";
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: 
+	  linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+	  linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+	background-size: 100% 2px, 3px 100%;
+	pointer-events: none;
+	z-index: 2;
+  }
+
+/* Navigation */
+.nav {
+	width: 200px;
+	flex-shrink: 0;
+}
+
+.nav-item {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.nav-item:hover {
+	background-color: rgba(0, 255, 0, 0.1);
+}
+
+.nav-item.active {
+	border-left: 2px solid var(--terminal-green);
+}
+
+.right-nav .nav-item {
+    border-left: none;
+    border-right: 2px solid var(--terminal-green);
+}
+
+.right-nav .game-info {
+	margin-top: 2rem;
+	padding: 0 1rem;
+	min-width: 220px;
+}
+
+/* Content panels */
+.panel {
+	flex: 1;
+	border: 1px solid var(--terminal-green);
+	padding: 1.5rem;
+}
+
+.panel-header {
+	font-size: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1rem;
+}
+
+.card {
+	border: 1px solid rgba(0, 255, 0, 0.3);
+	padding: 1rem;
+	overflow-y: auto;
+}
+
+.game-container {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+}
+
+/* Buttons */
+.form-group .btn {
+	background: transparent;
+	border: 1px solid var(--terminal-green);
+	color: var(--terminal-green);
+	padding: 0.5rem 1rem;
+	min-width: 45%;
+	cursor: pointer;
+	transition: background-color 0.2s;
+}
+
+.btn:hover {
+	background-color: rgba(0, 255, 0, 0.1);
+}
+
+.form-group #btnPlay {
+	min-width: 100%;
+}
+
+/* Tables */
+.table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table th,
+.table td {
+	padding: 0.75rem;
+	border: 1px solid rgba(0, 255, 0, 0.3);
+	text-align: left;
+}
+
+/* Forms */
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.input {
+	background: transparent;
+	border: 1px solid var(--terminal-green);
+	color: var(--terminal-green);
+	padding: 0.5rem;
+	width: 100%;
+	font-family: monospace;
+}

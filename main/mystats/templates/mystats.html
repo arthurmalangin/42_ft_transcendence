@@ -1,0 +1,117 @@
+<div class="scanline"></div>
+<div class="crt"></div>
+<div class="container phosphor">
+	<header class="header">
+		<h1>ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</h1>
+		<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
+	</header>
+	<main class="main-content">
+		<!-- Navigation -->
+		<nav class="nav">
+			<div id="btn_home" class="nav-item">
+				<span data-translate="title.main.home">&gt; HOME</span>
+			</div>
+			<div id="btn_game" class="nav-item">
+				<span data-translate="title.main.pong">&gt; PLAY</span>
+			</div>
+			<!-- <div id="btn_brickbreaker" class="nav-item active">
+				<span data-translate="title.main.brickbreaker">&gt; PLAY BRICKBREAKER</span>
+			</div> -->
+			<div id="btn_friends" class="nav-item">
+				<span data-translate="title.main.friends">&gt; FRIENDS</span>
+			</div>
+			<div id="btn_leaderboard" class="nav-item">
+				<span data-translate="title.main.leaderboard">&gt; LEADERBOARD</span>
+			</div>
+			<div id="btn_mystats" class="nav-item active">
+				<span data-translate="title.main.mystats">&gt; MY STATS</span>
+			</div>
+			<div id="btn_settings" class="nav-item">
+				<span data-translate="title.main.settings">&gt; SETTINGS</span>
+			</div>
+			<div id="btn_logout" class="nav-item">
+				<span data-translate="title.main.logout">&gt; LOG OUT</span>
+			</div>
+		</nav>
+		
+		<div class="panel">
+			<h2 class="panel-header">&gt; MY STATS</h2>
+			<div class="grid">
+				<div class="card">
+					<h3>PONG</h3>
+					<table class="table">
+						<tbody>
+							<tr>
+								<td>RANK</td>
+								<td id="myrank">...</td>
+							</tr>
+							<tr>
+								<td>WIN</td>
+								<td id="mywin">...</td>
+							</tr>
+							<tr>
+								<td>LOSE</td>
+								<td id="mylose">...</td>
+							</tr>
+							<tr>
+								<td>BEST WIN RATE</td>
+								<td id="myBestRate">...</td>
+							</tr>
+							<tr>
+								<td>ACTUAL WIN RATE</td>
+								<td id="myActualRate">...</td>
+							</tr>
+							<tr>
+								<td>TOTAL MATCHES</td>
+								<td id="mymatches">...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div>
+					<canvas id="pongChart" width="250" height="200"></canvas>
+				</div>
+			</div>
+			<div class="grid" style="margin-top: 1rem;">
+				<div class="card">
+					<h3>BRICKBREAKER</h3>
+					<table class="table">
+						<thead>
+							<td>RANK</td>
+							<td>BEST SCORE</td>
+							<td>TIME</td>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="myrankb">...</td>
+								<td id="myScore">...</td>
+								<td id="myTime">...</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table" style="margin-top: 1rem;">
+						<h4>RECENT GAMES</h4>
+						<thead>
+							<td>SCORE</td>
+							<td>TIME</td>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="gamebrick1">...</td>
+								<td id="timebrick1">...</td>
+							</tr>
+							<tr>
+								<td id="gamebrick2">...</td>
+								<td id="timebrick2">...</td>
+							</tr>
+							<tr>
+								<td id="gamebrick3">...</td>
+								<td id="timebrick3">...</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>

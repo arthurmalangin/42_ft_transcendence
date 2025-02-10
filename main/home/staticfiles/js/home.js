@@ -40,12 +40,24 @@ document.addEventListener('home_event', async()=>{
 			history.pushState(null, '', '/menu');
 			loadPage('/menu');
 		});
+
+		const mystatsLabel = document.getElementById('btn_mystats');
+		mystatsLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/mystats');
+			loadPage('/mystats');
+		});
 		
-		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		// brickbreakerLabel.addEventListener('click', () => {
-			// 	history.pushState(null, '', '/brickbreaker');
-			// 	loadPage('/brickbreaker');
-			// });
+		const quickPongLabel = document.getElementById('quickPlayPong');
+		quickPongLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/game');
+			loadPage('/game');
+		});
+
+		const quickTourpongLabel = document.getElementById('quickPlayTourpong');
+		quickTourpongLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/tourpong');
+			loadPage('/tourpong');
+		});
 		}
 		
 		homeEvent();
@@ -204,7 +216,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.error('Error updating winrate:', error);
 		}
 	}
 
@@ -228,7 +240,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.error('Error updating matches:', error);
 		}
 	}
 
@@ -255,7 +267,7 @@ document.addEventListener('home_event', async()=>{
 				});
 			}  
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.error('Error updating last matches:', error);
 		}
 }
 	

@@ -35,6 +35,12 @@ document.addEventListener('friends_event', async()=>{
 			loadPage('/menu');
 		});
 
+		const mystatsLabel = document.getElementById('btn_mystats');
+		mystatsLabel.addEventListener('click', () => {
+			history.pushState(null, '', '/mystats');
+			loadPage('/mystats');
+		});
+
 		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
 		// brickbreakerLabel.addEventListener('click', () => {
 		// 	history.pushState(null, '', '/brickbreaker');
