@@ -531,8 +531,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 					if (participants.length > 1) {
 						playerScore = 0;
 						guestScore = 0;
-						player.lives = 3;
-						guest.lives = 3;
+						player.lives = 5;
+						guest.lives = 5;
 						resetGame(true, false);
 						document.getElementById('playerScore').textContent = playerScore;
 						document.getElementById('guestScore').textContent = guestScore;
