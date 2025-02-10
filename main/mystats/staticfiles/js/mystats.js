@@ -128,7 +128,6 @@ document.addEventListener('mystats_event', async()=>{
 	}
 	
 	async function updateRecentGames(){
-		console.log("recent games!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		try{
 			const response = await fetch('/api/get_LastGames/', {
 				method: 'GET',
