@@ -424,6 +424,13 @@ document.addEventListener('friends_event', async()=>{
 		.catch(error => console.error("Erreur réseau : ", error));
 	}
 
+	function formatGameTime(seconds) {
+		if (isNaN(seconds) || seconds < 0) return "00:00";
+		let m = Math.floor(seconds / 60);
+		let s = Math.floor(seconds % 60);
+		return [m, s].map(unit => String(unit).padStart(2, '0')).join(':');
+	}
+
 	async function updateUserStat(username){
 		try{
 			const response = await fetch(`/api/get_UserStat/?name=${encodeURIComponent(username)}`, {
@@ -476,7 +483,7 @@ document.addEventListener('friends_event', async()=>{
 				console.log('Player received:', data);
 				const UserRankBrickElement = document.getElementById('userrankb');
 				const UserScoreBrickElement = document.getElementById('userScore');
-				const UserTimeBrickElement = document.getElementById('userTime');
+				const UserTimeBrickElement = document.getElementById('userTime');	
 				const brank = data.Userrank !== undefined ? data.Userrank : '0';
 				const bscore = data.Userscore !== undefined ? data.Userscore : '0';
 				const btime = data.Usertime !== undefined ? formatGameTime(parseFloat(data.Usertime)) : '00:00';

@@ -332,16 +332,16 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		function cleanupGame(fullCleanup = true) {
 			console.log("cleaning up game");
-			resetToDefaultSettings();
 			lives++;
 			resetGame();
 			removeAllEventListeners();
-
+			
 			if (!isPaused)
 				pauseGame();
-
+			
 			if (!fullCleanup)
 				gameOver();
+			resetToDefaultSettings();
 		}
 
 		function gameOver() {
