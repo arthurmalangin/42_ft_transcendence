@@ -255,8 +255,10 @@ document.addEventListener('friends_event', async()=>{
 
 					function triggerOverlay(username) {
 						const overlay = document.getElementById('friendProfilePopup');
-						overlay.style.display = 'flex';
 						overlay.querySelector('.popup-header h2').innerText = `${username} STATS`;
+						updateUserStat(username);
+						updateUserBrickStat(username);
+						overlay.style.display = 'flex';
 					}
 				}
 			
@@ -420,6 +422,72 @@ document.addEventListener('friends_event', async()=>{
 			}
 		})
 		.catch(error => console.error("Erreur réseau : ", error));
+	}
+
+	async function updateUserStat(username){
+		try{
+			const response = await fetch(`/api/get_UserStat/?name=${encodeURIComponent(username)}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+			});
+			
+			if(response.ok) {
+				const data = await response.json();
+				console.log('Player received:', data);
+				const UserRankElement = document.getElementById('userrank');
+				const UserWinElement = document.getElementById('userwin');
+				const UserLoseElement = document.getElementById('userlose');
+				const ActualElement = document.getElementById('userActualRate');
+				const UserMatchElement = document.getElementById('usermatches');
+				const Rank = data.UserRank !== undefined ? data.UserRank : '0';
+				const Win = data.UserWin !== undefined ? data.UserWin : '0';
+				const Lose = data.Userlose !== undefined ? data.Userlose : '0';
+				const Actual = data.UserActual !== undefined ? data.UserActual : '0';
+				const Match = data.UserMatch !== undefined ? data.UserMatch : '0';
+				
+				const formattedActual = parseFloat(Actual).toFixed(2);
+				
+				UserRankElement.textContent = `${Rank}`
+				UserWinElement.textContent = `${Win}`
+				UserLoseElement.textContent = `${Lose}`
+				ActualElement.textContent = `${formattedActual}`
+				UserMatchElement.textContent = `${Match}`
+			}
+		} catch  (error) {
+			console.error('Error updateUserstat:', error);
+		}
+	}
+
+	async function updateUserBrickStat(username){
+		try{
+			const response = await fetch(`/api/get_UserBrickStat/?name=${encodeURIComponent(username)}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+			});
+			
+			if(response.ok) {
+				const data = await response.json();
+				console.log('Player received:', data);
+				const UserRankBrickElement = document.getElementById('userrankb');
+				const UserScoreBrickElement = document.getElementById('userScore');
+				const UserTimeBrickElement = document.getElementById('userTime');
+				const brank = data.Userrank !== undefined ? data.Userrank : '0';
+				const bscore = data.Userscore !== undefined ? data.Userscore : '0';
+				const btime = data.Usertime !== undefined ? formatGameTime(parseFloat(data.Usertime)) : '00:00';
+				
+				UserRankBrickElement.textContent = `${brank}`
+				UserScoreBrickElement.textContent = `${bscore}`
+				UserTimeBrickElement.textContent = `${btime}`
+			}
+		} catch  (error) {
+			console.error('Error updatethree:', error);
+		}
 	}
 
 	async function user_is_online(user) {

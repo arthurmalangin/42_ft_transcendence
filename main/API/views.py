@@ -624,3 +624,35 @@ def get_myBrickStat(request):
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def get_UserStat(request):
+        try:
+            username = request.GET.get('name')
+            if not username:
+                return JsonResponse({"error": "Can't find username"})
+            player = PlayerData.objects.get(username=username)
+            if player:
+                return JsonResponse({'UserRank': player.position, "UserWin":player.win, "Userlose":player.lose, "UserActual":player.win_rate, "UserMatch":player.matches})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
+
+def get_UserBrickStat(request):
+        try:
+            username = request.GET.get('name')
+            if not username:
+                return JsonResponse({"error": "Can't find username"})
+            user_profile = PlayerData.objects.get(username=username)
+            if user_profile:
+                game = BrickData.objects.filter(player=user_profile.id).order_by("-time").first()
+                if game:
+                    return JsonResponse({'Userrank': user_profile.position_brick, "Userscore":user_profile.best_score, "Usertime":game.time})
+                else:
+                    return JsonResponse({'Userrank': user_profile.position_brick, "Userscore":user_profile.best_score, "Usertime":None})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
