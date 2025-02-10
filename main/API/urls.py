@@ -41,4 +41,6 @@ urlpatterns = [
 	path("create_party/", views.create_party, name="create_party"),
 	path("get_myStat/", views.get_myStat, name="get_myStat"),
 	path("get_myBrickStat/", views.get_myBrickStat, name="get_myBrickStat"),
+	path("get_UserStat/", views.get_UserStat, name="get_UserStat"),
+	path("get_UserBrickStat/", views.get_UserBrickStat, name="get_UserBrickStat"),
 ]
