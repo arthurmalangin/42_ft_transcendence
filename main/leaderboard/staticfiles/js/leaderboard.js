@@ -225,7 +225,8 @@ document.addEventListener('leaderboard_event', async()=>{
 		})
 		.then(response => {
 			if (response.ok) {
-				window.location.href = '/login/';
+				history.pushState(null, '', '/login');
+				loadPage('/login');
 			} else {
 				console.error("Erreur lors de la déconnexion.");
 			}
