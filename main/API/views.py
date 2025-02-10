@@ -174,7 +174,10 @@ def sendRequestFriends(request):
             if new_friend is None:
                 return JsonResponse({"error": "Provide name for new friend."}, status=400)
             user_profile = PlayerData.objects.get(username=new_friend)
+            toAdd_profile = PlayerData.objects.get(username=request.user.username)
             if user_profile:
+                if user_profile.username == toAdd_profile.username:
+                   return JsonResponse({"error": "you can't add yourself as friend!"})
                 if user_profile.requestFriendsList:
                     request_friends_list = user_profile.requestFriendsList.split(',')
                     if request.user.username not in request_friends_list:
