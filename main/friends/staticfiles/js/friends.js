@@ -228,19 +228,36 @@ document.addEventListener('friends_event', async()=>{
 					}
 			
 					currentFriendContainer.innerHTML = tabRequest.map(request => `
-					<div class="card" data-id="current-friend${request.id}" style="margin-top: 1rem;">
-						<div class="friend-item">
-							<div>
-								<span class="status-indicator status-${request.status}"></span>
-								${request.name}
-							</div>
-							<div class="friend-actions">
-								<button class="btn">MESSAGE</button>
-								<button class="btn">INVITE</button>
+						<div class="card" data-id="current-friend${request.id}" style="margin-top: 1rem;">
+							<div class="friend-item">
+								<div>
+									<span class="status-indicator status-${request.status}"></span>
+									${request.name}
+								</div>
+								<div class="friend-actions">
+									<button class="btn profile-btn" data-username="${request.name}">PROFILE</button>
+								</div>
 							</div>
 						</div>
-					</div>
 					`).join('');
+
+					document.querySelectorAll('.profile-btn').forEach(button => {
+						button.addEventListener('click', function() {
+							const username = this.getAttribute('data-username');
+							triggerOverlay(username);
+						});
+					});
+
+					document.getElementById('closeProfilePopup').addEventListener('click', function() {
+						const overlay = document.getElementById('friendProfilePopup');
+						overlay.style.display = 'none';
+					});
+
+					function triggerOverlay(username) {
+						const overlay = document.getElementById('friendProfilePopup');
+						overlay.style.display = 'flex';
+						overlay.querySelector('.popup-header h2').innerText = `${username} STATS`;
+					}
 				}
 			
 				displayCurrentFriends();
