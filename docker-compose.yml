@@ -14,6 +14,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       DJ_SECRET_KEY: ${DJ_SECRET_KEY}
+      CLIENT_42_ID: ${CLIENT_42_ID}
+      CLIENT_42_SC: ${CLIENT_42_SC}
     volumes:
       - vault_data:/vault/data
     networks:

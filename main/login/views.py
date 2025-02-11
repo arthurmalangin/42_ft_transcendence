@@ -10,7 +10,32 @@ from settings.models import MatchData
 from settings.models import BrickData
 import requests
 import base64
+import environ
+import os
+import hvac
 from django.contrib.auth.hashers import make_password
+from requests.exceptions import ConnectionError, RequestException
+
+
+# Initialise environ
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+# settup the vault client
+client = hvac.Client(
+    url='http://vault:8200',
+    token= env('VAULT_DEV_ROOT_TOKEN_ID'),
+)
+
+# Function to get secret from Vault
+def get_vault_secret(path, key):
+    try:
+        secret = client.secrets.kv.v2.read_secret_version(path=path)
+        return secret['data']['data'][key]
+    except (ConnectionError, RequestException) as e:
+        print(f'Failed to connect to Vault server: {e}')
+        return None
 
 def index(request):
 	print("login render html call !")
@@ -119,6 +144,10 @@ def _updateAvatar42Img(pdata, linkIntraPics):
 		print("Erreur lors de la récupération de l'image.")
 
 
+# Récupérer les secrets depuis Vault
+CLIENT_42_ID=get_vault_secret('42_API/credentials', 'client_id')
+CLIENT_42_SC=get_vault_secret('42_API/credentials', 'client_secret')
+
 def _get42Info(token):
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get('https://api.intra.42.fr/v2/me', headers=headers)
@@ -127,8 +156,8 @@ def _get42Info(token):
 def _getApiToken():
     body = {
         "grant_type": "client_credentials",
-        "client_id": "u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174",
-        "client_secret": "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"
+        "client_id": CLIENT_42_ID,
+        "client_secret": CLIENT_42_SC
     }
     headers = {"Content-Type": "application/json; charset=utf-8"}
     response = requests.post('https://api.intra.42.fr/oauth/token', headers=headers, json=body)
@@ -143,8 +172,8 @@ def _getToken(reurl, code):
     # return access_token
     body = {
         "grant_type": "authorization_code",
-        "client_id": "u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174",
-        "client_secret": "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",
+        "client_id": CLIENT_42_ID,
+        "client_secret": CLIENT_42_SC,
         "code": code,
         "redirect_uri": reurl
     }
