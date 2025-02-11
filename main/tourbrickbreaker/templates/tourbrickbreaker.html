@@ -9,53 +9,53 @@
 		<!-- Navigation -->
 		<nav class="nav">
 			<div id="btn_home" class="nav-item">
-				<span data-translate="title.main.home">&gt; HOME</span>
+				<span data-translate="title.main.home"></span>
 			</div>
-			<div id="btn_game" class="nav-item active">
-				<span data-translate="title.main.pong">&gt; PLAY</span>
+			<div id="btn_game" class="nav-item">
+				<span data-translate="title.main.pong"></span>
 			</div>
-			<!-- <div id="btn_brickbreaker" class="nav-item active">
-				<span data-translate="title.main.brickbreaker">&gt; PLAY BRICKBREAKER</span>
-			</div> -->
 			<div id="btn_friends" class="nav-item">
-				<span data-translate="title.main.friends">&gt; FRIENDS</span>
+				<span data-translate="title.main.friends"></span>
 			</div>
 			<div id="btn_leaderboard" class="nav-item">
-				<span data-translate="title.main.leaderboard">&gt; LEADERBOARD</span>
+				<span data-translate="title.main.leaderboard"></span>
+			</div>
+			<div id="btn_mystats" class="nav-item active">
+				<span data-translate="title.main.mystats"></span>
 			</div>
 			<div id="btn_settings" class="nav-item">
-				<span data-translate="title.main.settings">&gt; SETTINGS</span>
+				<span data-translate="title.main.settings"></span>
 			</div>
 			<div id="btn_logout" class="nav-item">
-				<span data-translate="title.main.logout">&gt; LOG OUT</span>
+				<span data-translate="title.main.logout"></span>
 			</div>
 		</nav>
 		
 		<div class="panel">
-			<h2 class="panel-header">&gt; BRICKBREAKER TOURNAMENT</h2>
-
+			<h2 class="panel-header" data-translate="tourbrickbreaker.title"></h2>
+		
 			<div class="game-container">
 				<canvas id="board"></canvas>
 			
 				<nav class="nav right-nav card">
 					<div id="btnPause" class="nav-item">
-						<span>&gt; PAUSE (SPACE)</span>
+						<span data-translate="tourbrickbreaker.pause"></span>
 					</div>
 					<div class="game-info">
-						<h3>INSTRUCTIONS</h3>
-						<p>DESTROY MORE BRICKS THAN YOUR OPPONENT</p>
+						<h3 data-translate="tourbrickbreaker.instructions.title"></h3>
+						<p data-translate="tourbrickbreaker.instructions.text"></p>
 					</div>
 					<div class="game-info">
-						<h3>GAMESTATS</h3>
-						<h4>LIVES:</h4> 
+						<h3 data-translate="tourbrickbreaker.gamestats.title"></h3>
+						<h4 data-translate="tourbrickbreaker.gamestats.lives"></h4>		
 						<p>PLAYER: <span id="playerLives">5</span> | GUEST: <span id="guestLives">5</span></p>
-						<h4>SCORE:</h4> 
+						<h4 data-translate="tourbrickbreaker.gamestats.score"></h4>
 						<p>PLAYER: <span id="playerScore">0</span> | GUEST: <span id="guestScore">0</span></p>
 					</div>
 					<div class="game-info">
-						<h3>PHASE MATCHES</h3>
+						<h3 data-translate="tourbrickbreaker.gamestats.phase_matches"></h3>
 						<div id="matchupTable">
-							<p>WAITING...</p>
+							<p>...</p>
 						</div>
 					</div>
 				</nav>
@@ -65,9 +65,9 @@
 		<div id="tournamentSettingsOverlay" class="overlay active">
 			<div class="overlay-content phosphor">
 				<div class="popup-header">
-					<h2>TOURNAMENT SETTINGS</h2>
-					<p>SET THE TOURNAMENT UP AS YOU PLEASE NOW. YOU WON'T BE ABLE TO WHILE THE TOURNAMENT IS ONGOING.</p>
-					<p>WARNING: RESULTS WILL NOT BE SAVED IF THE TOURNAMENT IS EXITED BEFORE THE END.</p>
+					<h2 data-translate="tourbrickbreaker.settings.title"></h2>
+					<p data-translate="tourbrickbreaker.settings.description"></p>
+					<p data-translate="tourbrickbreaker.settings.warning"></p>
 				</div>
 				<div class="form-group">
 					<label>BALL SPEED</label>
@@ -127,17 +127,17 @@
 					<div id="gameResultStats">
 						<div id="playerStats">
 							<h3 id="playerScoreMessage">PLAYER SCORE: <span id="playerFinalScore">0</span></h3>
-							<p>FROM BRICKS: <span id="brickScorePlayer">NULL</span></p>
-							<p>FROM TIME: <span id="timeScorePlayer">NULL</span></p>
-							<p>FROM LIVES: <span id="livesScorePlayer">NULL</span></p>
-							<p>FROM POWERUPS: <span id="powerUpScorePlayer">NULL</span></p>
+							<p>FROM BRICKS: <span id="brickScorePlayer">...</span></p>
+							<p>FROM TIME: <span id="timeScorePlayer">...</span></p>
+							<p>FROM LIVES: <span id="livesScorePlayer">...</span></p>
+							<p>FROM POWERUPS: <span id="powerUpScorePlayer">...</span></p>
 						</div>
 						<div id="playerStats">
 							<h3 id="playerScoreMessage">GUEST SCORE: <span id="guestFinalScore">0</span></h3>
-							<p>FROM BRICKS: <span id="brickScoreGuest">NULL</span></p>
-							<p>FROM TIME: <span id="timeScoreGuest">NULL</span></p>
-							<p>FROM LIVES: <span id="livesScoreGuest">NULL</span></p>
-							<p>FROM POWERUPS: <span id="powerUpScoreGuest">NULL</span></p>
+							<p>FROM BRICKS: <span id="brickScoreGuest">...</span></p>
+							<p>FROM TIME: <span id="timeScoreGuest">...</span></p>
+							<p>FROM LIVES: <span id="livesScoreGuest">...</span></p>
+							<p>FROM POWERUPS: <span id="powerUpScoreGuest">...</span></p>
 						</div>
 					</div>
 
@@ -151,11 +151,23 @@
 		<div id="matchAnnounceOverlay" class="overlay">
 			<div class="overlay-content phosphor">
 				<div class="popup-header">
-					<h2>ARE YOU READY?</h2>
-					<p>DESTROY MORE BRICKS THAN YOUR OPPONENT</p>
-					<p>&gt; PLAYER SIDE: <span id="playerSidePlayer">PLAYER</span></p>
-					<p>&gt; GUEST SIDE: <span id="guestSidePlayer">GUEST</span></p>
-					<h3>PRESS SPACEBAR TO START THE MATCH!</h3>
+					<h2 data-translate="tourbrickbreaker.match_announce.ready"></h2>
+					<p data-translate="tourbrickbreaker.match_announce.instructions"></p>
+					<p><span data-translate="tourbrickbreaker.match_announce.player_side"></span><span id="playerSidePlayer">PLAYER</span></p>
+					<p><span data-translate="tourbrickbreaker.match_announce.guest_side"></span><span id="guestSidePlayer">GUEST</span></p>
+					<h3 data-translate="tourbrickbreaker.match_announce.start_prompt"></h3>
+				</div>
+			</div>
+		</div>
+
+		<div id="matchAnnounceOverlay" class="overlay">
+			<div class="overlay-content phosphor">
+				<div class="popup-header">
+					<h2 data-translate="tourbrickbreaker.match_announce.ready"></h2>
+					<p data-translate="tourbrickbreaker.match_announce.instructions"></p>
+					<p>&gt; <span data-translate="tourbrickbreaker.match_announce.player_side"></span>: <span id="playerSidePlayer">PLAYER</span></p>
+					<p>&gt; <span data-translate="tourbrickbreaker.match_announce.guest_side"></span>: <span id="guestSidePlayer">GUEST</span></p>
+					<h3 data-translate="tourbrickbreaker.match_announce.start_prompt"></h3>
 				</div>
 			</div>
 		</div>
