@@ -120,6 +120,22 @@
     "multipong.result.play_again": "PLAY AGAIN",
     "multipong.result.quit": "QUIT",
 
+	"tourpong.title": "> PONG TOURNAMENT",
+
+	"tourpong.pause": "> PAUSE (SPACE)",
+	"tourpong.instructions.title": "INSTRUCTIONS",
+	"tourpong.instructions.text": "FIRST PLAYER TO SCORE 5 POINTS WINS",
+	"tourpong.gamestats.title": "GAMESTATS",
+	"tourpong.phase_matches.title": "PHASE MATCHES",
+	"tourpong.settings.title": "TOURNAMENT SETTINGS",
+	"tourpong.settings.description": "SET THE TOURNAMENT UP AS YOU PLEASE NOW. YOU WON'T BE ABLE TO WHILE THE TOURNAMENT IS ONGOING.",
+	"tourpong.settings.warning": "WARNING: RESULTS WILL NOT BE SAVED IF THE TOURNAMENT IS EXITED BEFORE THE END.",
+	"tourpong.match_announce.ready": "ARE YOU READY?",
+	"tourpong.match_announce.instructions": "FIRST PLAYER TO SCORE 5 POINTS WINS",
+	"tourpong.match_announce.player_side": "> PLAYER SIDE: ",
+	"tourpong.match_announce.guest_side": "> GUEST SIDE: ",
+	"tourpong.match_announce.start_prompt": "PRESS SPACEBAR TO START THE MATCH!",
+
 	"brickbreaker.title": "> BRICKBREAKER",
 
 	"brickbreaker.pause": "> PAUSE (SPACE)",
@@ -140,5 +156,23 @@
 	"brickbreaker.result.lives_score": "FROM LIVES: ",
 	"brickbreaker.result.powerup_score": "FROM POWERUPS: ",
 	"brickbreaker.result.play_again": "PLAY AGAIN",
-	"brickbreaker.result.quit": "QUIT"
+	"brickbreaker.result.quit": "QUIT",
+
+	"tourbrickbreaker.title": "> BRICKBREAKER TOURNAMENT",
+	
+	"tourbrickbreaker.pause": "> PAUSE (SPACE)",
+	"tourbrickbreaker.instructions.title": "INSTRUCTIONS",
+	"tourbrickbreaker.instructions.text": "DESTROY MORE BRICKS THAN YOUR OPPONENT",
+	"tourbrickbreaker.gamestats.title": "GAMESTATS",
+	"tourbrickbreaker.gamestats.lives": "LIVES:",
+	"tourbrickbreaker.gamestats.score": "SCORE:",
+	"tourbrickbreaker.gamestats.phase_matches": "PHASE MATCHES",
+	"tourbrickbreaker.settings.title": "TOURNAMENT SETTINGS",
+	"tourbrickbreaker.settings.description": "SET THE TOURNAMENT UP AS YOU PLEASE NOW. YOU WON'T BE ABLE TO WHILE THE TOURNAMENT IS ONGOING.",
+	"tourbrickbreaker.settings.warning": "WARNING: RESULTS WILL NOT BE SAVED IF THE TOURNAMENT IS EXITED BEFORE THE END.",
+	"tourbrickbreaker.match_announce.ready": "ARE YOU READY?",
+	"tourbrickbreaker.match_announce.instructions": "DESTROY MORE BRICKS THAN YOUR OPPONENT",
+	"tourbrickbreaker.match_announce.player_side": "> PLAYER SIDE: ",
+	"tourbrickbreaker.match_announce.guest_side": "> GUEST SIDE: ",
+	"tourbrickbreaker.match_announce.start_prompt": "PRESS SPACEBAR TO START THE MATCH!"
 }

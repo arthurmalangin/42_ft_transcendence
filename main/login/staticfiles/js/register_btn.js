@@ -49,7 +49,7 @@ document.addEventListener('register_event', async()=>{
 			} catch (error) {
 				alert('Une erreur s\'est produite. Veuillez réessayer.');
 				// errorMessage.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
-				console.error('Erreur:', error);
+				console.log('Erreur:', error);
 			}
 		});
 	}

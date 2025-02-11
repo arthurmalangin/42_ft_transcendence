@@ -59,6 +59,7 @@
 	"leaderboard.brickbreaker.score": "PUNTUACION",
 
 	"mystats.title": "> MIS ESTADISTICAS",
+
     "mystats.pong.title": "PONG",
     "mystats.pong.rank": "RANGO",
     "mystats.pong.win": "VICTORIA",
@@ -68,10 +69,10 @@
     "mystats.pong.total_matches": "PARTIDOS TOTALES",
     "mystats.brickbreaker.title": "ROMPELADRILLOS",
     "mystats.brickbreaker.rank": "RANGO",
-    "mystats.brickbreaker.best_score": "MEJOR PUNTUACIÓN",
+    "mystats.brickbreaker.best_score": "MEJOR PUNTUACION",
     "mystats.brickbreaker.best_time": "TIEMPO",
     "mystats.brickbreaker.recent_games": "PARTIDOS RECIENTES",
-    "mystats.brickbreaker.score": "PUNTUACIÓN",
+    "mystats.brickbreaker.score": "PUNTUACION",
     "mystats.brickbreaker.time": "TIEMPO",
 
 	"menu.pong_classic.title": "PONG_CLASICO",
@@ -107,6 +108,7 @@
     "pong.result.quit": "SALIR",
 
 	"multipong.title": "> PONG (4 JUGADORES)",
+
     "multipong.pause": "> PAUSA (ESPACIO)",
     "multipong.settings": "> AJUSTES (ESC)",
     "multipong.instructions.title": "INSTRUCCIONES",
@@ -119,6 +121,22 @@
     "multipong.result.play_again": "JUGAR DE NUEVO",
     "multipong.result.quit": "SALIR",
 
+	"tourpong.title": "> TORNEO DE PONG",
+	
+    "tourpong.pause": "> PAUSA (ESPACIO)",
+    "tourpong.instructions.title": "INSTRUCCIONES",
+    "tourpong.instructions.text": "EL PRIMER JUGADOR EN ANOTAR 5 PUNTOS GANA",
+    "tourpong.gamestats.title": "ESTADÍSTICAS DEL JUEGO",
+    "tourpong.phase_matches.title": "PARTIDOS DE FASE",
+    "tourpong.settings.title": "CONFIGURACION DEL TORNEO",
+    "tourpong.settings.description": "CONFIGURA EL TORNEO COMO DESEES AHORA. NO PODRAS HACERLO DURANTE EL TORNEO.",
+    "tourpong.settings.warning": "ADVERTENCIA: LOS RESULTADOS NO SE GUARDARAN SI SE SALE DEL TORNEO ANTES DE QUE TERMINE.",
+    "tourpong.match_announce.ready": "¿ESTAS LISTO?",
+    "tourpong.match_announce.instructions": "EL PRIMER JUGADOR EN ANOTAR 5 PUNTOS GANA",
+    "tourpong.match_announce.player_side": "> LADO DEL JUGADOR: ",
+    "tourpong.match_announce.guest_side": "> LADO DEL INVITADO: ",
+    "tourpong.match_announce.start_prompt": "¡PRESIONA LA BARRA ESPACIADORA PARA COMENZAR EL PARTIDO!",
+
 	"brickbreaker.title": "> BRICKBREAKER",
 
 	"brickbreaker.pause": "> PAUSA (ESPACIO)",
@@ -129,15 +147,32 @@
 	"brickbreaker.controls.text": "PLAYER: A/D | ←/→",
 	"brickbreaker.gamestats.title": "ESTADISTICAS DEL JUEGO",
 	"brickbreaker.gamestats.lives": "VIDAS: ",
-	"brickbreaker.gamestats.score": "PUNTUACIÓN: ",
+	"brickbreaker.gamestats.score": "PUNTUACION: ",
 	"brickbreaker.gamestats.time": "TIEMPO: ",
 	"brickbreaker.settings.title": "AJUSTES DEL JUEGO",
-	"brickbreaker.settings.warning": "ADVERTENCIA: ¡ABRIR LOS AJUSTES DEL JUEGO DURANTE UNA PARTIDA RESULTARA EN LA PÉRDIDA DE UNA VIDA!",
-	"brickbreaker.result.message": "TU PUNTUACIÓN: ",
+	"brickbreaker.settings.warning": "ADVERTENCIA: ¡ABRIR LOS AJUSTES DEL JUEGO DURANTE UNA PARTIDA RESULTARA EN LA PERDIDA DE UNA VIDA!",
+	"brickbreaker.result.message": "TU PUNTUACION: ",
 	"brickbreaker.result.brick_score": "LADRILLOS: ",
 	"brickbreaker.result.time_score": "TIEMPO: ",
 	"brickbreaker.result.lives_score": "VIDAS: ",
 	"brickbreaker.result.powerup_score": "POWER-UPS: ",
 	"brickbreaker.result.play_again": "JUGAR DE NUEVO",
-	"brickbreaker.result.quit": "SALIR"
+	"brickbreaker.result.quit": "SALIR",
+
+	"tourbrickbreaker.title": "> TORNEO DE BRICKBREAKER",
+    "tourbrickbreaker.pause": "> PAUSA (ESPACIO)",
+    "tourbrickbreaker.instructions.title": "INSTRUCCIONES",
+    "tourbrickbreaker.instructions.text": "DESTRUYE MAS LADRILLOS QUE TU OPONENTE",
+    "tourbrickbreaker.gamestats.title": "ESTADÍSTICAS DEL JUEGO",
+    "tourbrickbreaker.gamestats.lives": "VIDAS:",
+    "tourbrickbreaker.gamestats.score": "PUNTUACION:",
+    "tourbrickbreaker.gamestats.phase_matches": "PARTIDOS DE FASE",
+    "tourbrickbreaker.settings.title": "CONFIGURACION DEL TORNEO",
+    "tourbrickbreaker.settings.description": "CONFIGURA EL TORNEO COMO DESEES AHORA. NO PODRAS HACERLO DURANTE EL TORNEO.",
+    "tourbrickbreaker.settings.warning": "ADVERTENCIA: LOS RESULTADOS NO SE GUARDARAN SI SE SALE DEL TORNEO ANTES DE QUE TERMINE.",
+    "tourbrickbreaker.match_announce.ready": "¿ESTAS LISTO?",
+    "tourbrickbreaker.match_announce.instructions": "DESTRUYE MAS LADRILLOS QUE TU OPONENTE",
+    "tourbrickbreaker.match_announce.player_side": "> LADO DEL JUGADOR: ",
+    "tourbrickbreaker.match_announce.guest_side": "> LADO DEL INVITADO: ",
+    "tourbrickbreaker.match_announce.start_prompt": "¡PRESIONA LA BARRA ESPACIADORA PARA COMENZAR EL PARTIDO!"
 }

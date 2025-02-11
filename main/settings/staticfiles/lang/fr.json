@@ -59,6 +59,7 @@
 	"leaderboard.brickbreaker.score": "SCORE",
 
 	"mystats.title": "> MES STATISTIQUES",
+
     "mystats.pong.title": "PONG",
     "mystats.pong.rank": "RANG",
     "mystats.pong.win": "VICTOIRE",
@@ -107,6 +108,7 @@
     "pong.result.quit": "QUITTER",
 
 	"multipong.title": "> PONG (4 JOUEURS)",
+
 	"multipong.pause": "> PAUSE (ESPACE)",
 	"multipong.settings": "> PARAMETRES (ECHAP)",
 	"multipong.instructions.text": "LE PREMIER JOUEUR A MARQUER 7 POINTS GAGNE",
@@ -118,6 +120,22 @@
 	"multipong.result.message": "JEU TERMINE! SCORES FINAUX:",
     "multipong.result.play_again": "REJOUER",
     "multipong.result.quit": "QUITTER",
+
+	"tourpong.title": "> TOURNOI PONG",
+
+    "tourpong.pause": "> PAUSE (ESPACE)",
+    "tourpong.instructions.title": "INSTRUCTIONS",
+    "tourpong.instructions.text": "LE PREMIER JOUEUR A MARQUER 5 POINTS GAGNE",
+    "tourpong.gamestats.title": "STATISTIQUES DE JEU",
+    "tourpong.phase_matches.title": "MATCHS DE PHASE",
+    "tourpong.settings.title": "PARAMETRES DU TOURNOI",
+    "tourpong.settings.description": "CONFIGUREZ LE TOURNOI COMME VOUS LE SOUHAITEZ MAINTENANT. VOUS NE POURREZ PAS LE FAIRE PENDANT LE TOURNOI.",
+    "tourpong.settings.warning": "ATTENTION : LES RESULTATS NE SERONT PAS ENREGISTRES SI LE TOURNOI EST QUITTE AVANT LA FIN.",
+    "tourpong.match_announce.ready": "ÊTES-VOUS PRÊT?",
+    "tourpong.match_announce.instructions": "LE PREMIER JOUEUR A MARQUER 5 POINTS GAGNE",
+    "tourpong.match_announce.player_side": "> COTE JOUEUR : ",
+    "tourpong.match_announce.guest_side": "> COTE INVITE : ",
+    "tourpong.match_announce.start_prompt": "APPUYEZ SUR LA BARRE D'ESPACE POUR COMMENCER LE MATCH!",
 
 	"brickbreaker.title": "> BRICKBREAKER",
 
@@ -139,5 +157,22 @@
 	"brickbreaker.result.lives_score": "VIES: ",
 	"brickbreaker.result.powerup_score": "POWER-UPS: ",
 	"brickbreaker.result.play_again": "REJOUER",
-	"brickbreaker.result.quit": "QUITTER"
+	"brickbreaker.result.quit": "QUITTER",
+
+	"tourbrickbreaker.title": "> TOURNOI DE BRICKBREAKER",
+    "tourbrickbreaker.pause": "> PAUSE (ESPACE)",
+    "tourbrickbreaker.instructions.title": "INSTRUCTIONS",
+    "tourbrickbreaker.instructions.text": "DETRUISEZ PLUS DE BRIQUES QUE VOTRE ADVERSAIRE",
+    "tourbrickbreaker.gamestats.title": "STATISTIQUES DE JEU",
+    "tourbrickbreaker.gamestats.lives": "VIES:",
+    "tourbrickbreaker.gamestats.score": "SCORE:",
+    "tourbrickbreaker.gamestats.phase_matches": "MATCHS DE PHASE",
+    "tourbrickbreaker.settings.title": "PARAMETRES DU TOURNOI",
+    "tourbrickbreaker.settings.description": "CONFIGUREZ LE TOURNOI COMME VOUS LE SOUHAITEZ MAINTENANT. VOUS NE POURREZ PAS LE FAIRE PENDANT LE TOURNOI.",
+    "tourbrickbreaker.settings.warning": "ATTENTION : LES RESULTATS NE SERONT PAS ENREGISTRES SI LE TOURNOI EST QUITTE AVANT LA FIN.",
+    "tourbrickbreaker.match_announce.ready": "ÊTES-VOUS PRÊT?",
+    "tourbrickbreaker.match_announce.instructions": "DETRUISEZ PLUS DE BRIQUES QUE VOTRE ADVERSAIRE",
+    "tourbrickbreaker.match_announce.player_side": "> COTE JOUEUR : ",
+    "tourbrickbreaker.match_announce.guest_side": "> COTE INVITE : ",
+    "tourbrickbreaker.match_announce.start_prompt": "APPUYEZ SUR LA BARRE D'ESPACE POUR COMMENCER LE MATCH!"
 }
