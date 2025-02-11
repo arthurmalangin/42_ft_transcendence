@@ -2,14 +2,9 @@ FROM hashicorp/vault:latest
 
 RUN mkdir -p /vault/config/ /vault/init/ /vault/policy/
 
-<<<<<<< Updated upstream
-# Install curl
-RUN apk add --no-cache curl
-=======
 # Install dependencies
 RUN apk update
 RUN apk add --no-cache curl openssl openssl-dev jq
->>>>>>> Stashed changes
 
 # Copy custom Vault configuration file
 COPY ./docker/src/vault/vault-config.hcl /vault/config/vault-config.hcl

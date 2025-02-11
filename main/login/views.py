@@ -11,8 +11,6 @@ from settings.models import BrickData
 import requests
 import base64
 from django.contrib.auth.hashers import make_password
-<<<<<<< Updated upstream
-=======
 from requests.exceptions import ConnectionError, RequestException
 
 
@@ -35,7 +33,6 @@ def get_vault_secret(path, key):
     except (ConnectionError, RequestException) as e:
         print(f'Failed to connect to Vault server: {e}')
         return None
->>>>>>> Stashed changes
 
 def index(request):
 	print("login render html call !")
