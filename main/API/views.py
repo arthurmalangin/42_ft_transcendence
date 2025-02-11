@@ -174,14 +174,17 @@ def sendRequestFriends(request):
             if new_friend is None:
                 return JsonResponse({"error": "Provide name for new friend."}, status=400)
             user_profile = PlayerData.objects.get(username=new_friend)
+            toAdd_profile = PlayerData.objects.get(username=request.user.username)
             if user_profile:
+                if user_profile.username == toAdd_profile.username:
+                   return JsonResponse({"error": "you can't add yourself as friend!"})
                 if user_profile.requestFriendsList:
                     request_friends_list = user_profile.requestFriendsList.split(',')
                     if request.user.username not in request_friends_list:
                         user_profile.requestFriendsList += "," + request.user.username
                         user_profile.save()
                     else:
-                        return JsonResponse({"error": "Request Already Send"}, status=400)
+                        return JsonResponse({"error": "Request Already Send"}, status=200)
                 else:
                     user_profile.requestFriendsList = request.user.username
                     user_profile.save()
@@ -442,6 +445,26 @@ def setUserLang(request):
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
 
+def updateUserRank(request):
+    if request.method == 'POST':
+        try:
+            if not request.body:
+                return JsonResponse({"error": "Request body is empty"}, status=400)
+            data = json.loads(request.body.decode('utf-8'))
+            username = data.get('name', None)
+            if not username:
+                return JsonResponse({"error": "Can't find username"})
+            user_profile = PlayerData.objects.get(username=username)
+            score = PlayerData.objects.all().order_by('-best_score')
+            position = next((i + 1 for i, player in enumerate(score) if player.id == user_profile.id), None)
+            user_profile.position_brick = position
+            user_profile.save()
+            return JsonResponse({'Rank': user_profile.position_brick})
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
+
+
+
 def create_match(request):
     if request.user.is_authenticated and request.method == 'POST':
         try:
@@ -621,3 +644,35 @@ def get_myBrickStat(request):
             print("error::::::::::::::" + str(e))
             return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
     return JsonResponse({'error': 'User not authenticated'}, status=400)
+
+def get_UserStat(request):
+        try:
+            username = request.GET.get('name')
+            if not username:
+                return JsonResponse({"error": "Can't find username"})
+            player = PlayerData.objects.get(username=username)
+            if player:
+                return JsonResponse({'UserRank': player.position, "UserWin":player.win, "Userlose":player.lose, "UserActual":player.win_rate, "UserMatch":player.matches})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)
+
+def get_UserBrickStat(request):
+        try:
+            username = request.GET.get('name')
+            if not username:
+                return JsonResponse({"error": "Can't find username"})
+            user_profile = PlayerData.objects.get(username=username)
+            if user_profile:
+                game = BrickData.objects.filter(player=user_profile.id).order_by("-time").first()
+                if game:
+                    return JsonResponse({'Userrank': user_profile.position_brick, "Userscore":user_profile.best_score, "Usertime":game.time})
+                else:
+                    return JsonResponse({'Userrank': user_profile.position_brick, "Userscore":user_profile.best_score, "Usertime":None})
+            else:
+                return JsonResponse({"error":"no player find"})
+        except Exception as e:
+            print("error::::::::::::::" + str(e))
+            return JsonResponse({'error': f'failed to get my stats: {str(e)}'}, status=400)

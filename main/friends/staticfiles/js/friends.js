@@ -64,7 +64,7 @@ document.addEventListener('friends_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -95,7 +95,7 @@ document.addEventListener('friends_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 	
@@ -138,7 +138,7 @@ document.addEventListener('friends_event', async()=>{
 				if (response.ok && data.user_exist)
 					displayResults(searchTerm);
 			} catch (error) {
-				console.error('Erreur request:', error);
+				console.log('Erreur request:', error);
 				alert('Error: ');
 			}
 		});
@@ -159,7 +159,6 @@ document.addEventListener('friends_event', async()=>{
 		}
 
 		async function addFriend(user) {
-			// alert(`TODO: send request friend to ${user}`);
 			try {
 				const response = await fetch('/api/sendRequestFriends/', {
 					method: 'POST',
@@ -178,7 +177,7 @@ document.addEventListener('friends_event', async()=>{
 					console.log("Error sendRequestFriends : " + data.error);
 				}
 			} catch (error) {
-				console.error('Erreur request:', error);
+				console.log('Erreur request:', error);
 				alert('Error: ');
 			}
 			popup.classList.remove('active');
@@ -228,19 +227,37 @@ document.addEventListener('friends_event', async()=>{
 					}
 			
 					currentFriendContainer.innerHTML = tabRequest.map(request => `
-					<div class="card" data-id="current-friend${request.id}" style="margin-top: 1rem;">
-						<div class="friend-item">
-							<div>
-								<span class="status-indicator status-${request.status}"></span>
-								${request.name}
-							</div>
-							<div class="friend-actions">
-								<button class="btn">MESSAGE</button>
-								<button class="btn">INVITE</button>
+						<div class="card" data-id="current-friend${request.id}" style="margin-top: 1rem;">
+							<div class="friend-item">
+								<div>
+									<span class="status-indicator status-${request.status}"></span>
+									${request.name}
+								</div>
+								<div class="friend-actions">
+									<button class="btn profile-btn" data-username="${request.name}">PROFILE</button>
+								</div>
 							</div>
 						</div>
-					</div>
 					`).join('');
+
+					document.querySelectorAll('.profile-btn').forEach(button => {
+						button.addEventListener('click', function() {
+							const username = this.getAttribute('data-username');
+							triggerOverlay(username);
+						});
+					});
+
+					document.getElementById('closeProfilePopup').addEventListener('click', function() {
+						const overlay = document.getElementById('friendProfilePopup');
+						overlay.style.display = 'none';
+					});
+
+					function triggerOverlay(username) {
+						const overlay = document.getElementById('friendProfilePopup');
+						overlay.querySelector('.popup-header h2').innerText = `${username} STATS`;
+						updateAll(username);
+						overlay.style.display = 'flex';
+					}
 				}
 			
 				displayCurrentFriends();
@@ -248,7 +265,7 @@ document.addEventListener('friends_event', async()=>{
 				console.log("response.ok && data.requestFriendsList not passed !");
 			}
 		} catch (error) {
-			console.error('Erreur request:', error);
+			console.log('Erreur request:', error);
 			alert('Error: ');
 		}
 
@@ -343,7 +360,7 @@ document.addEventListener('friends_event', async()=>{
 								console.log("Error acceptFriendsRequest : " + data.error);
 							}
 						} catch (error) {
-							console.error('Erreur request:', error);
+							console.log('Erreur request:', error);
 							alert('Error: ');
 						}
 					} else {
@@ -368,7 +385,7 @@ document.addEventListener('friends_event', async()=>{
 								console.log("Error acceptFriendsRequest : " + data.error);
 							}
 						} catch (error) {
-							console.error('Erreur request:', error);
+							console.log('Erreur request:', error);
 							alert('Error: ');
 						}
 					}
@@ -380,7 +397,7 @@ document.addEventListener('friends_event', async()=>{
 				console.log("response.ok && data.requestFriendsList not passed !");
 			}
 		} catch (error) {
-			console.error('Erreur request:', error);
+			console.log('Erreur request:', error);
 			alert('Error: ');
 		}
 
@@ -399,10 +416,110 @@ document.addEventListener('friends_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
+	}
+
+	function formatGameTime(seconds) {
+		if (isNaN(seconds) || seconds < 0) return "00:00";
+		let m = Math.floor(seconds / 60);
+		let s = Math.floor(seconds % 60);
+		return [m, s].map(unit => String(unit).padStart(2, '0')).join(':');
+	}
+
+	async function updateAll(username){
+		await updateUserRank(username);
+		await updateUserStat(username);
+		await updateUserBrickStat(username);
+	}
+
+	async function updateUserRank(username){
+		try{
+			const response = await fetch('/api/updateUserRank/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+				body: JSON.stringify({
+					name: username
+				})
+			});
+
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
+	}
+
+	async function updateUserStat(username){
+		try{
+			const response = await fetch(`/api/get_UserStat/?name=${encodeURIComponent(username)}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+			});
+			
+			if(response.ok) {
+				const data = await response.json();
+				console.log('Player received:', data);
+				const UserRankElement = document.getElementById('userrank');
+				const UserWinElement = document.getElementById('userwin');
+				const UserLoseElement = document.getElementById('userlose');
+				const ActualElement = document.getElementById('userActualRate');
+				const UserMatchElement = document.getElementById('usermatches');
+				const Rank = data.UserRank !== undefined ? data.UserRank : '0';
+				const Win = data.UserWin !== undefined ? data.UserWin : '0';
+				const Lose = data.Userlose !== undefined ? data.Userlose : '0';
+				const Actual = data.UserActual !== undefined ? data.UserActual : '0';
+				const Match = data.UserMatch !== undefined ? data.UserMatch : '0';
+				
+				const formattedActual = parseFloat(Actual).toFixed(2);
+				
+				UserRankElement.textContent = `${Rank}`
+				UserWinElement.textContent = `${Win}`
+				UserLoseElement.textContent = `${Lose}`
+				ActualElement.textContent = `${formattedActual}`
+				UserMatchElement.textContent = `${Match}`
+			}
+		} catch  (error) {
+			console.log('Error updateUserstat:', error);
+		}
+	}
+
+	async function updateUserBrickStat(username){
+		try{
+			const response = await fetch(`/api/get_UserBrickStat/?name=${encodeURIComponent(username)}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+			});
+			
+			if(response.ok) {
+				const data = await response.json();
+				console.log('Player received:', data);
+				const UserRankBrickElement = document.getElementById('userrankb');
+				const UserScoreBrickElement = document.getElementById('userScore');
+				const UserTimeBrickElement = document.getElementById('userTime');	
+				const brank = data.Userrank !== undefined ? data.Userrank : '0';
+				const bscore = data.Userscore !== undefined ? data.Userscore : '0';
+				const btime = data.Usertime !== undefined ? formatGameTime(parseFloat(data.Usertime)) : '00:00';
+				
+				UserRankBrickElement.textContent = `${brank}`
+				UserScoreBrickElement.textContent = `${bscore}`
+				UserTimeBrickElement.textContent = `${btime}`
+			}
+		} catch  (error) {
+			console.log('Error updatethree:', error);
+		}
 	}
 
 	async function user_is_online(user) {

@@ -13,7 +13,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/');
+			history.pushState(null, '', '/settings');
 			loadPage('/settings');
 		});
 
@@ -34,12 +34,6 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 			history.pushState(null, '', '/menu');
 			loadPage('/menu');
 		});
-
-		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		// brickbreakerLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/brickbreaker');
-		// 	loadPage('/brickbreaker');
-		// });
 	}
 
 	tourbrickbreakerEvent();
@@ -58,7 +52,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 		let paddleHeight = 10;
 		let paddleSpeed = 2;
 
-		let lives = 999;
+		let lives = 5;
 		let playerScore = 0;
 		let guestScore = 0;
 
@@ -537,8 +531,8 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 					if (participants.length > 1) {
 						playerScore = 0;
 						guestScore = 0;
-						player.lives = 3;
-						guest.lives = 3;
+						player.lives = 5;
+						guest.lives = 5;
 						resetGame(true, false);
 						document.getElementById('playerScore').textContent = playerScore;
 						document.getElementById('guestScore').textContent = guestScore;
@@ -570,7 +564,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 					const levelData = rows.map(row => row.split(',').map(Number));
 					callback(levelData);
 				})
-				.catch(error => console.error('Error loading level:', error));
+				.catch(error => console.log('Error loading level:', error));
 		}
 
 		function generateBricksFromCSV(levelData) {
@@ -820,7 +814,7 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 				document.getElementById('guestScore').textContent = guestScore;
 			}
 		
-			if (playerScore + guestScore === 74100) // TODO calc max score
+			if (playerScore + guestScore === 8710)
 				isGameOver = true;
 		
 			context.clearRect(brick.x, brick.y, brick.width, brick.height);
@@ -969,4 +963,68 @@ document.addEventListener('tourbrickbreaker_event', async()=>{
 	}
 
 	initBrickbreaker();
+
+	function logout() {
+		fetch('/srclogin/logout/', {
+			method: 'POST',
+			headers: {
+				'X-CSRFToken': getCSRFToken()
+			},
+		})
+		.then(response => {
+			if (response.ok) {
+				history.pushState(null, '', '/login');
+				loadPage('/login');
+			} else {
+				console.log("Erreur lors de la déconnexion.");
+			}
+		})
+		.catch(error => console.log("Erreur réseau : ", error));
+	}
+
+	langModule();
+	
+	async function langModule() {
+		await loadLanguage(await getLangPlayer());
+		async function loadLanguage(lang) {
+			try {
+			const response = await fetch(`/static/lang/${lang}.json`);
+			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
+			const translations = await response.json();
+			applyTranslations(translations);
+			} catch (error) {
+			console.log("Erreur :", error);
+			}
+		};
+
+		function applyTranslations(translations) {
+			document.querySelectorAll("[data-translate]").forEach((element) => {
+			const key = element.getAttribute("data-translate");
+			if (translations[key]) {
+				element.textContent = translations[key];
+			}
+			});
+		};
+	}
+
+	async function getLangPlayer() {
+		try {
+			const response = await fetch('/api/getUserLang/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				if (data.lang) {
+					return data.lang;
+				}
+			}
+		} catch (error) {
+			console.log('Error getLangPlayer:', error);
+		}
+	}
 });

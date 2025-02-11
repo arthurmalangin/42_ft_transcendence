@@ -6,62 +6,58 @@
 		<p>COPYRIGHT 2075-2077 ROBCO INDUSTRIES</p>
 	</header>
 	<main class="main-content">
-		<!-- Navigation -->
 		<nav class="nav">
 			<div id="btn_home" class="nav-item">
-				<span data-translate="title.main.home">&gt; HOME</span>
+				<span data-translate="title.main.home"></span>
 			</div>
 			<div id="btn_game" class="nav-item active">
-				<span data-translate="title.main.pong">&gt; PLAY</span>
+				<span data-translate="title.main.pong"></span>
 			</div>
-			<!-- <div id="btn_brickbreaker" class="nav-item">
-				<span data-translate="title.main.brickbreaker">&gt; PLAY BRICKBREAKER</span>
-			</div> -->
 			<div id="btn_friends" class="nav-item">
-				<span data-translate="title.main.friends">&gt; FRIENDS</span>
+				<span data-translate="title.main.friends"></span>
 			</div>
 			<div id="btn_leaderboard" class="nav-item">
-				<span data-translate="title.main.leaderboard">&gt; LEADERBOARD</span>
+				<span data-translate="title.main.leaderboard"></span>
 			</div>
 			<div id="btn_mystats" class="nav-item">
-				<span data-translate="title.main.mystats">&gt; MY STATS</span>
+				<span data-translate="title.main.mystats"></span>
 			</div>
 			<div id="btn_settings" class="nav-item">
-				<span data-translate="title.main.settings">&gt; SETTINGS</span>
+				<span data-translate="title.main.settings"></span>
 			</div>
 			<div id="btn_logout" class="nav-item">
-				<span data-translate="title.main.logout">&gt; LOG OUT</span>
+				<span data-translate="title.main.logout"></span>
 			</div>
 		</nav>
 		
 		<div class="panel">
-			<h2 class="panel-header">&gt; PONG (4 PLAYERS)</h2>
+			<h2 class="panel-header" data-translate="multipong.title"></h2>
 
 			<div class="game-container">
 				<canvas id="board"></canvas>
-			
+
 				<nav class="nav right-nav card">
 					<div id="btnPause" class="nav-item">
-						<span>&gt; PAUSE (SPACE)</span>
+						<span data-translate="multipong.pause"></span>
 					</div>
 					<div id="btnSettingsPong" class="nav-item">
-						<span>&gt; SETTINGS (ESC)</span>
+						<span data-translate="multipong.settings"></span>
 					</div>
 					<div class="game-info">
-						<h3>INSTRUCTIONS</h3>
-						<p>FIRST PLAYER TO SCORE 7 POINTS WINS</p>
+						<h3 data-translate="multipong.instructions.title"></h3>
+						<p data-translate="multipong.instructions.text"></p>
 					</div>
 					<div class="game-info">
-						<h3>CONTROLS</h3>
-						<p>PLAYER 1: W/S  |  PLAYER 2: C/V</p>
-						<p>PLAYER 3: &lt;/>  |  PLAYER 4: ↑/↓</p>
+						<h3 data-translate="multipong.controls.title"></h3>
+						<p>PLAYER1: W/S  |  PLAYER2: C/V</p>
+						<p>PLAYER3: ←/→ |  PLAYER4: ↑/↓</p>
 					</div>
 					<div class="game-info">
-						<h3>GAMESTATS</h3>
-						<p>PLAYER 1: <span id="player1Score">0</span></p>
-						<p>PLAYER 2: <span id="player2Score">0</span></p>
-						<p>PLAYER 3: <span id="player3Score">0</span></p>
-						<p>PLAYER 4: <span id="player4Score">0</span></p>
+						<h3 data-translate="multipong.gamestats.title"></h3>
+						<p>PLAYER1: <span id="player1Score">0</span></p>
+						<p>PLAYER2: <span id="player2Score">0</span></p>
+						<p>PLAYER3: <span id="player3Score">0</span></p>
+						<p>PLAYER4: <span id="player4Score">0</span></p>
 					</div>
 				</nav>
 			</div>
@@ -72,8 +68,8 @@
 		<div class="overlay-content phosphor">
 			<button class="popup-close" id="btnCloseSettingsPong">×</button>
 			<div class="popup-header">
-				<h2>GAME SETTINGS</h2>
-				<p>WARNING: OPENING THE GAME SETTINGS DURING A GAME WILL RESET CURRENT POINT!</p>
+				<h2 data-translate="multipong.settings.title"></h2>
+				<p data-translate="multipong.settings.warning"></p>
 			</div>
 			<div class="form-group">
 				<label>BALL SPEED</label>
@@ -96,15 +92,15 @@
 	<div id="gameResultOverlay" class="overlay">
 		<div class="overlay-content phosphor">
 			<div class="popup-header">
-				<h2 id="gameResultMessage">GAME OVER! FINAL SCORES:</h2>
+				<h2 id="gameResultMessage" data-translate="multipong.result.message"></h2>
 				<p>PLAYER1: <span id="player1FinalScore">0</span></p>
 				<p>PLAYER2: <span id="player2FinalScore">0</span></p>
 				<p>PLAYER3: <span id="player3FinalScore">0</span></p>
 				<p>PLAYER4: <span id="player4FinalScore">0</span></p>
 			</div>
 			<div class="form-group">
-				<button id="btnPlayAgain" class="btn">PLAY AGAIN</button>
-				<button id="btnQuit" class="btn">QUIT</button>
+				<button id="btnPlayAgain" class="btn" data-translate="multipong.result.play_again"></button>
+				<button id="btnQuit" class="btn" data-translate="multipong.result.quit"></button>
 			</div>
 		</div>
 	</div>

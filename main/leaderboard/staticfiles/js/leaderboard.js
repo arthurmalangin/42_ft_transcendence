@@ -65,7 +65,7 @@ document.addEventListener('leaderboard_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -96,7 +96,7 @@ document.addEventListener('leaderboard_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 	
@@ -123,7 +123,7 @@ document.addEventListener('leaderboard_event', async()=>{
 				BestNumberElement.textContent = `${matches}`;
 			}
 		} catch  (error) {
-			console.error('Error updateKing:', error);
+			console.log('Error updateKing:', error);
 		}
 	}
 
@@ -157,7 +157,7 @@ document.addEventListener('leaderboard_event', async()=>{
 				});
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 
@@ -185,7 +185,7 @@ document.addEventListener('leaderboard_event', async()=>{
 				BestNumberElement.textContent = `${matches}`;
 			}
 		} catch  (error) {
-			console.error('Error updateKing:', error);
+			console.log('Error updateKing:', error);
 		}
 	}
 
@@ -212,7 +212,7 @@ document.addEventListener('leaderboard_event', async()=>{
 				});
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 
@@ -225,12 +225,13 @@ document.addEventListener('leaderboard_event', async()=>{
 		})
 		.then(response => {
 			if (response.ok) {
-				window.location.href = '/login/';
+				history.pushState(null, '', '/login');
+				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 

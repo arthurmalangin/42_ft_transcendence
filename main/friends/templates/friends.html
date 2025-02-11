@@ -22,7 +22,7 @@
 				<span data-translate="title.main.leaderboard"></span>
 			</div>
 			<div id="btn_mystats" class="nav-item">
-				<span data-translate="title.main.mystats">&gt; MY STATS</span>
+				<span data-translate="title.main.mystats"></span>
 			</div>
 			<div id="btn_settings" class="nav-item">
 				<span data-translate="title.main.settings"></span>
@@ -68,6 +68,55 @@
 					data-translate-placeholder="friends.popup.search_players">
 		</div>
 		<div id="searchResults" class="search-results">
+		</div>
+	</div>
+</div>
+
+<div class="popup-overlay" id="friendProfilePopup">
+	<div class="popup phosphor">
+		<button class="popup-close" id="closeProfilePopup">×</button>
+		<div class="popup-header">
+			<h2>... STATS</h2>
+			<h3 data-translate="mystats.pong.title"></h3>
+			<table class="table">
+				<tbody>
+					<tr>
+						<td data-translate="mystats.pong.rank"></td>
+						<td id="userrank">...</td>
+					</tr>
+					<tr>
+						<td data-translate="mystats.pong.win"></td>
+						<td id="userwin">...</td>
+					</tr>
+					<tr>
+						<td data-translate="mystats.pong.lose"></td>
+						<td id="userlose">...</td>
+					</tr>
+					<tr>
+						<td data-translate="mystats.pong.actual_win_rate"></td>
+						<td id="userActualRate">...</td>
+					</tr>
+					<tr>
+						<td data-translate="mystats.pong.total_matches"></td>
+						<td id="usermatches">...</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3 data-translate="mystats.brickbreaker.title"></h3>
+			<table class="table">
+				<thead>
+					<td data-translate="mystats.brickbreaker.rank"></td>
+					<td data-translate="mystats.brickbreaker.best_score"></td>
+					<td data-translate="mystats.brickbreaker.best_time"></td>
+				</thead>
+				<tbody>
+					<tr>
+						<td id="userrankb">...</td>
+						<td id="userScore">...</td>
+						<td id="userTime">...</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

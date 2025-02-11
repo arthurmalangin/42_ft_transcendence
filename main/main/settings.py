@@ -116,7 +116,7 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://181.214.189.28',
+    'https://127.0.0.1',
     'https://127.0.0.1',
     'http://127.0.0.1',
     'https://localhost',

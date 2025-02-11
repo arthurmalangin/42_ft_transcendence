@@ -148,7 +148,7 @@ input[type="range"] {
 }
 
 /* Terminal effects */
-.scanline {
+/* .scanline {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -195,7 +195,7 @@ input[type="range"] {
 	background-size: 100% 2px, 3px 100%;
 	pointer-events: none;
 	z-index: 2;
-}
+} */
 
 /* Status indicators */
 .status-indicator {
@@ -324,4 +324,17 @@ input[type="range"] {
 	text-align: center;
 	padding: 1rem;
 	opacity: 0.7;
+}
+
+/* Tables */
+.table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table th,
+.table td {
+	padding: 0.75rem;
+	border: 1px solid rgba(0, 255, 0, 0.3);
+	text-align: left;
 }

@@ -93,7 +93,7 @@ body {
 }
 
 /* Terminal effects */
-.scanline {
+/* .scanline {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -140,7 +140,7 @@ body {
 	background-size: 100% 2px, 3px 100%;
 	pointer-events: none;
 	z-index: 2;
-}
+} */
 
 /* Stats and indicators */
 .status-indicator {

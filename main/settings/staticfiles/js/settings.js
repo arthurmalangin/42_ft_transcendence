@@ -15,7 +15,7 @@ document.addEventListener('settings_event', async()=>{
 
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/');
+			history.pushState(null, '', '/settings');
 			loadPage('/settings');
 		});
 
@@ -42,12 +42,6 @@ document.addEventListener('settings_event', async()=>{
 			history.pushState(null, '', '/mystats');
 			loadPage('/mystats');
 		});
-		
-		// const brickbreakerLabel = document.getElementById('btn_brickbreaker');
-		// brickbreakerLabel.addEventListener('click', () => {
-		// 	history.pushState(null, '', '/brickbreaker');
-		// 	loadPage('/brickbreaker');
-		// });
 
 		const btn_username = document.getElementById('btn_username');
 		btn_username.addEventListener('click', async () => {
@@ -127,7 +121,7 @@ document.addEventListener('settings_event', async()=>{
 				const translations = await response.json();
 				applyTranslations(translations);
 			} catch (error) {
-				console.error("Erreur :", error);
+				console.log("Erreur :", error);
 			}
 		};
 
@@ -158,7 +152,7 @@ document.addEventListener('settings_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 	
@@ -184,7 +178,7 @@ document.addEventListener('settings_event', async()=>{
 				console.log(data.error)
 			}
 		} catch (error) {
-			console.error('Error setLangPlayer:', error);
+			console.log('Error setLangPlayer:', error);
 		}
 	}
 
@@ -205,7 +199,7 @@ document.addEventListener('settings_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updateLangPlayer:', error);
+			console.log('Error updateLangPlayer:', error);
 		}
 	}
 
@@ -228,11 +222,11 @@ document.addEventListener('settings_event', async()=>{
 				console.log('Avatar upload success:', data.success);
 				alert('Avatar Update success !');
 			} else {
-				console.error('Error Download Avatar:', data.error);
+				console.log('Error Download Avatar:', data.error);
 				alert('Error update avatar.');
 			}
 		} catch (error) {
-			console.error('Error:', error);
+			console.log('Error:', error);
 			alert('Error update avatar');
 		}
 	}
@@ -256,11 +250,11 @@ document.addEventListener('settings_event', async()=>{
 				console.log('Username update success:', data.success);
 				alert('Username update success !');
 			} else {
-				console.error('Error updateUsername:', data.error);
+				console.log('Error updateUsername:', data.error);
 				alert('Erreur updateUsername.');
 			}
 		} catch (error) {
-			console.error('Erreur request:', error);
+			console.log('Erreur request:', error);
 			alert('Update Username Error.');
 		}
 	}
@@ -276,8 +270,7 @@ document.addEventListener('settings_event', async()=>{
 				avatarDisplay.src = `data:image/png;base64,${data.avatar_base64}`;
 			}
 		} catch (error) {
-			console.error('Error get avatar img:', error);
-			// avatarDisplay.src = '{% static "default_avatar.png" %}';
+			console.log('switch to default img');
 		}
 	}
 
@@ -301,11 +294,11 @@ document.addEventListener('settings_event', async()=>{
 				console.log('Password update success:', data.success);
 				alert('Password Update Success !');
 			} else {
-				console.error('Error updatePassword:', data.error);
+				console.log('Error updatePassword:', data.error);
 				alert('Error updatePassword.');
 			}
 		} catch (error) {
-			console.error('Erreur request:', error);
+			console.log('Erreur request:', error);
 			alert('Update Password Error.');
 		}
 	}
@@ -327,7 +320,7 @@ document.addEventListener('settings_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating welcome message:', error);
+			console.log('Error updating welcome message:', error);
 		}
 	}
 
@@ -343,10 +336,10 @@ document.addEventListener('settings_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 	async function user_is_42() {
@@ -372,7 +365,6 @@ document.addEventListener('settings_event', async()=>{
 			console.log("Error user_is_42 : " + data.error);
 		}
 	}
-
 
 	function getCSRFToken() {
 		const csrfCookie = document.cookie

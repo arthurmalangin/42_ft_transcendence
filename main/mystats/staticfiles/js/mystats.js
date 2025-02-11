@@ -18,7 +18,7 @@ document.addEventListener('mystats_event', async()=>{
 		
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/');
+			history.pushState(null, '', '/settings');
 			loadPage('/settings');
 		});
 		
@@ -87,7 +87,7 @@ document.addEventListener('mystats_event', async()=>{
 				drawCanva(Win, Lose, "pongChart");
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 	
@@ -123,12 +123,11 @@ document.addEventListener('mystats_event', async()=>{
 				myTimeBrickElement.textContent = `${btime}`
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 	
 	async function updateRecentGames(){
-		console.log("recent games!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 		try{
 			const response = await fetch('/api/get_LastGames/', {
 				method: 'GET',
@@ -151,7 +150,7 @@ document.addEventListener('mystats_event', async()=>{
 				});
 			}  
 		} catch (error) {
-			console.error('Error updating games:', error);
+			console.log('Error updating games:', error);
 		}
 	}
 
@@ -181,4 +180,67 @@ document.addEventListener('mystats_event', async()=>{
 		});
 	}
 	
+	function logout() {
+		fetch('/srclogin/logout/', {
+			method: 'POST',
+			headers: {
+				'X-CSRFToken': getCSRFToken()
+			},
+		})
+		.then(response => {
+			if (response.ok) {
+				history.pushState(null, '', '/login');
+				loadPage('/login');
+			} else {
+				console.log("Erreur lors de la déconnexion.");
+			}
+		})
+		.catch(error => console.log("Erreur réseau : ", error));
+	}
+
+	langModule();
+	
+	async function langModule() {
+		await loadLanguage(await getLangPlayer());
+		async function loadLanguage(lang) {
+			try {
+			const response = await fetch(`/static/lang/${lang}.json`);
+			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
+			const translations = await response.json();
+			applyTranslations(translations);
+			} catch (error) {
+			console.log("Erreur :", error);
+			}
+		};
+
+		function applyTranslations(translations) {
+			document.querySelectorAll("[data-translate]").forEach((element) => {
+			const key = element.getAttribute("data-translate");
+			if (translations[key]) {
+				element.textContent = translations[key];
+			}
+			});
+		};
+	}
+
+	async function getLangPlayer() {
+		try {
+			const response = await fetch('/api/getUserLang/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				if (data.lang) {
+					return data.lang;
+				}
+			}
+		} catch (error) {
+			console.log('Error getLangPlayer:', error);
+		}
+	}
 })

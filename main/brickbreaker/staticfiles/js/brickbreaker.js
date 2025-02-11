@@ -13,7 +13,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 
 		const settingsLabel = document.getElementById('btn_settings');
 		settingsLabel.addEventListener('click', () => {
-			history.pushState(null, '', '/');
+			history.pushState(null, '', '/settings');
 			loadPage('/settings');
 		});
 
@@ -306,6 +306,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				lives = 0;
 				document.getElementById('lives').textContent = lives;
 				isGameOver = true;
+				console.log("game over - no more lives");
 				return;
 			}
 			document.getElementById('lives').textContent = lives;
@@ -330,19 +331,21 @@ document.addEventListener('brickbreaker_event', async()=>{
 		}
 
 		function cleanupGame(fullCleanup = true) {
-			resetToDefaultSettings();
+			console.log("cleaning up game");
 			lives++;
 			resetGame();
 			removeAllEventListeners();
-
+			
 			if (!isPaused)
 				pauseGame();
-
+			
 			if (!fullCleanup)
 				gameOver();
+			resetToDefaultSettings();
 		}
 
 		function gameOver() {
+			console.log("entering gameOver function");
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			const finalScore = document.getElementById('finalScore');
@@ -351,6 +354,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const livesScore = document.getElementById('livesScore');
 			const powerUpScore = document.getElementById('powerUpScore');
 			if (gameResultOverlay && gameResultMessage && finalScore && brickScore && timeScore && livesScore) {
+				console.log("all elements loaded");
 				let scoreFromBricks = score;
 				let scoreFromTime = lives === 0 ? 0 : Math.max(0, 10000 - Math.floor(totalTime) * 10);
 				let scoreFromLives = lives * 1000;
@@ -393,7 +397,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 					const levelData = rows.map(row => row.split(',').map(Number));
 					callback(levelData);
 				})
-				.catch(error => console.error('Error loading level:', error));
+				.catch(error => console.log('Error loading level:', error));
 		}
 
 		function generateBricksFromCSV(levelData) {
@@ -704,6 +708,70 @@ document.addEventListener('brickbreaker_event', async()=>{
 	}
 
 	initBrickbreaker();
+
+	function logout() {
+		fetch('/srclogin/logout/', {
+			method: 'POST',
+			headers: {
+				'X-CSRFToken': getCSRFToken()
+			},
+		})
+		.then(response => {
+			if (response.ok) {
+				history.pushState(null, '', '/login');
+				loadPage('/login');
+			} else {
+				console.log("Erreur lors de la déconnexion.");
+			}
+		})
+		.catch(error => console.log("Erreur réseau : ", error));
+	}
+
+	langModule();
+	
+	async function langModule() {
+		await loadLanguage(await getLangPlayer());
+		async function loadLanguage(lang) {
+			try {
+			const response = await fetch(`/static/lang/${lang}.json`);
+			if (!response.ok) throw new Error("Erreur lors du chargement du fichier JSON");
+			const translations = await response.json();
+			applyTranslations(translations);
+			} catch (error) {
+			console.log("Erreur :", error);
+			}
+		};
+
+		function applyTranslations(translations) {
+			document.querySelectorAll("[data-translate]").forEach((element) => {
+			const key = element.getAttribute("data-translate");
+			if (translations[key]) {
+				element.textContent = translations[key];
+			}
+			});
+		};
+	}
+
+	async function getLangPlayer() {
+		try {
+			const response = await fetch('/api/getUserLang/', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				}
+			});
+			
+			if (response.ok) {
+				const data = await response.json();
+				if (data.lang) {
+					return data.lang;
+				}
+			}
+		} catch (error) {
+			console.log('Error getLangPlayer:', error);
+		}
+	}
 });
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -711,8 +779,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 	async function updateData(scoreFromAll, totalTime){
-		saveParty(scoreFromAll, totalTime);
-		updateRankBrick();
+		await saveParty(scoreFromAll, totalTime);
+		await updateRankBrick();
 	}
 
 	async function updateRankBrick(){
@@ -728,7 +796,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	}
 
@@ -749,6 +817,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error("Erreur réseau :", error);
+			console.log("Erreur réseau :", error);
 		}
 	}

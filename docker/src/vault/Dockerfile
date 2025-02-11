@@ -1,6 +1,6 @@
 FROM hashicorp/vault:latest
 
-RUN mkdir -p /vault/config/ /vault/init/ /vault/policy/
+RUN mkdir -p /vault/config/ /vault/init/ /vault/policy/ /vault/cert/
 
 # Install dependencies
 RUN apk update
@@ -8,6 +8,13 @@ RUN apk add --no-cache curl openssl openssl-dev jq
 
 # Copy custom Vault configuration file
 COPY ./docker/src/vault/vault-config.hcl /vault/config/vault-config.hcl
+
+RUN chmod 700 /vault/cert
+
+# Generate SSL certificate
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -subj "/C=FR/ST=NouvelleAquitaine/L=Angouleme/O=42/OU=ft_transcendence/CN=127.0.0.1" \
+    -keyout /vault/cert/cert.key -out /vault/cert/cert.crt
 
 # Copy the initialization script
 COPY ./docker/src/vault/vault_init.sh /vault/init/vault_init.sh

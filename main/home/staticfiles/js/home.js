@@ -72,7 +72,7 @@ document.addEventListener('home_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -103,7 +103,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 	
@@ -127,7 +127,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating welcome message:', error);
+			console.log('Error updating welcome message:', error);
 		}
 	}
 
@@ -150,7 +150,7 @@ document.addEventListener('home_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	}
 
@@ -167,7 +167,7 @@ document.addEventListener('home_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	}
 
@@ -191,7 +191,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating rank:', error);
+			console.log('Error updating rank:', error);
 		}
 	}
 
@@ -216,7 +216,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating winrate:', error);
+			console.log('Error updating winrate:', error);
 		}
 	}
 
@@ -240,7 +240,7 @@ document.addEventListener('home_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error updating matches:', error);
+			console.log('Error updating matches:', error);
 		}
 	}
 
@@ -267,7 +267,7 @@ document.addEventListener('home_event', async()=>{
 				});
 			}  
 		} catch (error) {
-			console.error('Error updating last matches:', error);
+			console.log('Error updating last matches:', error);
 		}
 }
 	
@@ -284,10 +284,10 @@ document.addEventListener('home_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 
