@@ -11,6 +11,31 @@ from settings.models import BrickData
 import requests
 import base64
 from django.contrib.auth.hashers import make_password
+<<<<<<< Updated upstream
+=======
+from requests.exceptions import ConnectionError, RequestException
+
+
+# Initialise environ
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+# settup the vault client
+client = hvac.Client(
+    url='https://vault:8200',
+    token= env('VAULT_DEV_ROOT_TOKEN_ID'),
+)
+
+# Function to get secret from Vault
+def get_vault_secret(path, key):
+    try:
+        secret = client.secrets.kv.v2.read_secret_version(path=path)
+        return secret['data']['data'][key]
+    except (ConnectionError, RequestException) as e:
+        print(f'Failed to connect to Vault server: {e}')
+        return None
+>>>>>>> Stashed changes
 
 def index(request):
 	print("login render html call !")

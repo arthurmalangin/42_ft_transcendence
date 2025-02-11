@@ -2,8 +2,14 @@ FROM hashicorp/vault:latest
 
 RUN mkdir -p /vault/config/ /vault/init/ /vault/policy/
 
+<<<<<<< Updated upstream
 # Install curl
 RUN apk add --no-cache curl
+=======
+# Install dependencies
+RUN apk update
+RUN apk add --no-cache curl openssl openssl-dev jq
+>>>>>>> Stashed changes
 
 # Copy custom Vault configuration file
 COPY ./docker/src/vault/vault-config.hcl /vault/config/vault-config.hcl
@@ -24,10 +30,10 @@ EXPOSE 8200
 ARG VAULT_ADDR
 ENV VAULT_ADDR=${VAULT_ADDR}
 
-# Command to run the initialization script and start Vault in dev mode
+# Command to run the initialization script and start Vault
 # CMD ["vault", "server", "-dev"]
 # CMD ["vault", "server", "-config=/vault/config/vault-config.hcl"]
-CMD ["/bin/sh", "-c", "sh /vault/init/vault_init.sh && vault server -dev"]
+# CMD ["/bin/sh", "-c", "sh /vault/init/vault_init.sh && vault server -dev"]
 # CMD ["/bin/sh", "-c", "sh /vault/init/vault_init.sh && vault server -config=/vault/config/vault-config.hcl"]
 # CMD vault server -dev -config=/vault/config/vault-config.hcl & \
-CMD vault server -dev & sleep 1 && sh /vault/init/vault_init.sh && tail -f /dev/null
+CMD vault server -config=/vault/config/vault-config.hcl & sleep 1 && sh /vault/init/vault_init.sh && tail -f /dev/null

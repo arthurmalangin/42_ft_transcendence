@@ -25,7 +25,7 @@ env = environ.Env(
 
 # settup the vault client
 client = hvac.Client(
-    url='http://vault:8200',
+    url='https://vault:8200',
     token= env('VAULT_DEV_ROOT_TOKEN_ID'),
 )
 
