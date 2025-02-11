@@ -150,7 +150,7 @@ input[type="range"] {
 }
 
 /* Terminal effects */
-.scanline {
+/* .scanline {
   position: fixed;
   top: 0;
   left: 0;
@@ -197,7 +197,7 @@ input[type="range"] {
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
   z-index: 2;
-}
+} */
 
 /* Status indicators */
 .status-indicator {

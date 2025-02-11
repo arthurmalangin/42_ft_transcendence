@@ -43,4 +43,5 @@ urlpatterns = [
 	path("get_myBrickStat/", views.get_myBrickStat, name="get_myBrickStat"),
 	path("get_UserStat/", views.get_UserStat, name="get_UserStat"),
 	path("get_UserBrickStat/", views.get_UserBrickStat, name="get_UserBrickStat"),
+	path("updateUserRank/", views.updateUserRank, name="updateUserRank"),
 ]

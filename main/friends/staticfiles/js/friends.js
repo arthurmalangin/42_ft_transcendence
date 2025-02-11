@@ -256,8 +256,7 @@ document.addEventListener('friends_event', async()=>{
 					function triggerOverlay(username) {
 						const overlay = document.getElementById('friendProfilePopup');
 						overlay.querySelector('.popup-header h2').innerText = `${username} STATS`;
-						updateUserStat(username);
-						updateUserBrickStat(username);
+						updateAll(username);
 						overlay.style.display = 'flex';
 					}
 				}
@@ -429,6 +428,33 @@ document.addEventListener('friends_event', async()=>{
 		let m = Math.floor(seconds / 60);
 		let s = Math.floor(seconds % 60);
 		return [m, s].map(unit => String(unit).padStart(2, '0')).join(':');
+	}
+
+	async function updateAll(username){
+		await updateUserRank(username);
+		await updateUserStat(username);
+		await updateUserBrickStat(username);
+	}
+
+	async function updateUserRank(username){
+		try{
+			const response = await fetch('/api/updateUserRank/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+				body: JSON.stringify({
+					name: username
+				})
+			});
+
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
 	}
 
 	async function updateUserStat(username){

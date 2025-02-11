@@ -779,8 +779,8 @@ document.addEventListener('brickbreaker_event', async()=>{
 	//////////////////////////////////////////////////////////////////////////////////
 
 	async function updateData(scoreFromAll, totalTime){
-		saveParty(scoreFromAll, totalTime);
-		updateRankBrick();
+		await saveParty(scoreFromAll, totalTime);
+		await updateRankBrick();
 	}
 
 	async function updateRankBrick(){
