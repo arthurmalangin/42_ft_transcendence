@@ -10,22 +10,44 @@ from settings.models import MatchData
 from settings.models import BrickData
 import requests
 import base64
-import environ
 import os
 import hvac
 from django.contrib.auth.hashers import make_password
 from requests.exceptions import ConnectionError, RequestException
 
+import warnings
+import urllib3
 
-# Initialise environ
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+# Désactiver les avertissements de type SSL
+warnings.filterwarnings("ignore", category=urllib3.exceptions.InsecureRequestWarning)
 
-# settup the vault client
+token_file_path = '/shared-volume/token.txt'
+
+def get_token(file_path):
+    try:
+        with open(file_path, 'r') as f:
+            token = f.read().strip()
+        if not token:
+            print("Token is empty in the file.")
+            return None
+        return token
+    except FileNotFoundError:
+        print(f"Token file not found at {file_path}.")
+        return None
+    except Exception as e:
+        print(f"Error when reading file: {str(e)}")
+        return None
+
+token = get_token(token_file_path)
+
+if not token:
+    print("No valid token found. Exiting.")
+    exit(1)
+
 client = hvac.Client(
     url='https://vault:8200',
-    token= env('VAULT_DEV_ROOT_TOKEN_ID'),
+    token=token,
+	verify=False,
 )
 
 # Function to get secret from Vault
@@ -49,13 +71,7 @@ def register(request):
 def reqlogout(request):
     logout(request)
     return HttpResponse("success")
-	# return redirect('login')
 
-# if username and password:
-# 	if Credential.objects.filter(user_name=username).exists():
-# 		return HttpResponse("user deja pris.", status=400)
-# 	crednetial = Credential(user_name=username, password=password)
-# 	crednetial.save()
 @csrf_exempt
 @api_view(['POST'])
 def reqregister(request):

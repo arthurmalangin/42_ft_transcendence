@@ -12,7 +12,15 @@ while ! nc -z redis 6379; do
 	sleep 0.5
 done
 
-echo "Redis is up and running - executing command"
+echo "Redis is up and running - Next Step"
+
+sleep 3
+while ! nc -z vault 8200; do
+  echo "Waiting for Vault to be ready..."
+  sleep 0.5
+done
+echo "Vault is up and running - executing command"
+
 
 python manage.py makemigrations login
 python manage.py makemigrations settings

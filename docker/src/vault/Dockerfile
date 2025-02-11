@@ -11,15 +11,17 @@ COPY ./docker/src/vault/vault-config.hcl /vault/config/vault-config.hcl
 
 RUN chmod 700 /vault/cert
 
-# Generate SSL certificate
+# Copy SSL configuration file
+COPY ./docker/src/vault/openssl.cnf /vault/cert/openssl.cnf
+
+# Generate SSL certificate with SANs
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-    -subj "/C=FR/ST=NouvelleAquitaine/L=Angouleme/O=42/OU=ft_transcendence/CN=127.0.0.1" \
-    -keyout /vault/cert/cert.key -out /vault/cert/cert.crt
+    -keyout /vault/cert/cert.key -out /vault/cert/cert.crt \
+    -config /vault/cert/openssl.cnf
 
 # Copy the initialization script
 COPY ./docker/src/vault/vault_init.sh /vault/init/vault_init.sh
 
-run ls -l /vault/init/
 
 # Make the initialization script executable
 RUN chmod +x /vault/init/vault_init.sh
@@ -31,6 +33,7 @@ EXPOSE 8200
 # Retrieve the VAULT_ADDR environment variable from .env file
 ARG VAULT_ADDR
 ENV VAULT_ADDR=${VAULT_ADDR}
+ENV VAULT_SKIP_VERIFY=true
 
 # Command to run the initialization script and start Vault
 # CMD ["vault", "server", "-dev"]

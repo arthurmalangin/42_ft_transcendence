@@ -13,6 +13,8 @@ storage "file" {
   path = "/vault/data"
 }
 
+log_level = "warn"
+
 # Enable the UI
 ui = true
 

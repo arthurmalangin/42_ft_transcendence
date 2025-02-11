@@ -7,25 +7,13 @@ services:
     container_name: vault
     ports:
       - "8200:8200"
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN_ID}
-      VAULT_DEV_LISTEN_ADDRESS: ${VAULT_DEV_LISTEN_ADDRESS}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      DJ_SECRET_KEY: ${DJ_SECRET_KEY}
-      CLIENT_42_ID: ${CLIENT_42_ID}
-      CLIENT_42_SC: ${CLIENT_42_SC}
-      API_42_SC: ${API_42_SC}
+    env_file:
+      - .env
     volumes:
       - vault_data:/vault/data
+      - shared-volume:/shared-volume
     networks:
       - backend_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8200/v1/sys/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   nginx:
     build:
@@ -55,14 +43,13 @@ services:
     #   - "6379:6379"
     volumes:
       - ./main:/app/main
-      # - ./main/staticfiles:/app/main/staticfiles
+      - shared-volume:/shared-volume
     environment:
-      - VAULT_DEV_ROOT_TOKEN_ID=${VAULT_DEV_ROOT_TOKEN_ID}
       - DEBUG=${WEB_DEBUG}
     depends_on:
+      - vault
       - db
       - redis
-      - vault
     networks:
       - backend_network
       
@@ -83,6 +70,8 @@ services:
 volumes:
   postgres_data:
   vault_data:
+  shared-volume:
+    driver: local
 
 networks:
   backend_network:
