@@ -103,7 +103,7 @@ def reqlogin(request):
 
 @api_view(['GET'])
 def reqlogin42(request):
-	token = _getToken("https://181.214.189.28/srclogin/reqlogin42/", request.query_params["code"])
+	token = _getToken("https://127.0.0.1/srclogin/reqlogin42/", request.query_params["code"])
 	# print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasaaaaaaaaaaaa : " + request.query_params["code"])
 	user_info = _get42Info(token)
  
@@ -120,7 +120,7 @@ def reqlogin42(request):
 	if user:
 		print("yes")
 		login(request, user)
-		return (redirect('https://181.214.189.28/'))
+		return (redirect('https://127.0.0.1/'))
 	else:
 		print("Error: user not set.")
 		return HttpResponse("Error: user not set.")
