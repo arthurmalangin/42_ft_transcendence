@@ -88,10 +88,10 @@ document.addEventListener('menuplay_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 	langModule();
@@ -105,7 +105,7 @@ document.addEventListener('menuplay_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -136,7 +136,7 @@ document.addEventListener('menuplay_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}	
 });

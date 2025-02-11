@@ -397,7 +397,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 					const levelData = rows.map(row => row.split(',').map(Number));
 					callback(levelData);
 				})
-				.catch(error => console.error('Error loading level:', error));
+				.catch(error => console.log('Error loading level:', error));
 		}
 
 		function generateBricksFromCSV(levelData) {
@@ -721,10 +721,10 @@ document.addEventListener('brickbreaker_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 	langModule();
@@ -738,7 +738,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -769,7 +769,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 });
@@ -796,7 +796,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	}
 
@@ -817,6 +817,6 @@ document.addEventListener('brickbreaker_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error("Erreur réseau :", error);
+			console.log("Erreur réseau :", error);
 		}
 	}

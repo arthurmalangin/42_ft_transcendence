@@ -64,7 +64,7 @@ document.addEventListener('friends_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -95,7 +95,7 @@ document.addEventListener('friends_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 	
@@ -138,7 +138,7 @@ document.addEventListener('friends_event', async()=>{
 				if (response.ok && data.user_exist)
 					displayResults(searchTerm);
 			} catch (error) {
-				console.error('Erreur request:', error);
+				console.log('Erreur request:', error);
 				alert('Error: ');
 			}
 		});
@@ -159,7 +159,6 @@ document.addEventListener('friends_event', async()=>{
 		}
 
 		async function addFriend(user) {
-			// alert(`TODO: send request friend to ${user}`);
 			try {
 				const response = await fetch('/api/sendRequestFriends/', {
 					method: 'POST',
@@ -178,7 +177,7 @@ document.addEventListener('friends_event', async()=>{
 					console.log("Error sendRequestFriends : " + data.error);
 				}
 			} catch (error) {
-				console.error('Erreur request:', error);
+				console.log('Erreur request:', error);
 				alert('Error: ');
 			}
 			popup.classList.remove('active');
@@ -267,7 +266,7 @@ document.addEventListener('friends_event', async()=>{
 				console.log("response.ok && data.requestFriendsList not passed !");
 			}
 		} catch (error) {
-			console.error('Erreur request:', error);
+			console.log('Erreur request:', error);
 			alert('Error: ');
 		}
 
@@ -362,7 +361,7 @@ document.addEventListener('friends_event', async()=>{
 								console.log("Error acceptFriendsRequest : " + data.error);
 							}
 						} catch (error) {
-							console.error('Erreur request:', error);
+							console.log('Erreur request:', error);
 							alert('Error: ');
 						}
 					} else {
@@ -387,7 +386,7 @@ document.addEventListener('friends_event', async()=>{
 								console.log("Error acceptFriendsRequest : " + data.error);
 							}
 						} catch (error) {
-							console.error('Erreur request:', error);
+							console.log('Erreur request:', error);
 							alert('Error: ');
 						}
 					}
@@ -399,7 +398,7 @@ document.addEventListener('friends_event', async()=>{
 				console.log("response.ok && data.requestFriendsList not passed !");
 			}
 		} catch (error) {
-			console.error('Erreur request:', error);
+			console.log('Erreur request:', error);
 			alert('Error: ');
 		}
 
@@ -418,10 +417,10 @@ document.addEventListener('friends_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 	function formatGameTime(seconds) {
@@ -464,7 +463,7 @@ document.addEventListener('friends_event', async()=>{
 				UserMatchElement.textContent = `${Match}`
 			}
 		} catch  (error) {
-			console.error('Error updateUserstat:', error);
+			console.log('Error updateUserstat:', error);
 		}
 	}
 
@@ -493,7 +492,7 @@ document.addEventListener('friends_event', async()=>{
 				UserTimeBrickElement.textContent = `${btime}`
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 

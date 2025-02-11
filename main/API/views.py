@@ -184,7 +184,7 @@ def sendRequestFriends(request):
                         user_profile.requestFriendsList += "," + request.user.username
                         user_profile.save()
                     else:
-                        return JsonResponse({"error": "Request Already Send"}, status=400)
+                        return JsonResponse({"error": "Request Already Send"}, status=200)
                 else:
                     user_profile.requestFriendsList = request.user.username
                     user_profile.save()

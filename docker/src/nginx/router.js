@@ -132,7 +132,7 @@ async function is_auth() {
             return (false)
         }
     } catch (error) {
-        console.error('Error checking authentication status:', error);
+        console.log('Error checking authentication status:', error);
     }
 }
 

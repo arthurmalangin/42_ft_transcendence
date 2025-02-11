@@ -87,7 +87,7 @@ document.addEventListener('mystats_event', async()=>{
 				drawCanva(Win, Lose, "pongChart");
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 	
@@ -123,7 +123,7 @@ document.addEventListener('mystats_event', async()=>{
 				myTimeBrickElement.textContent = `${btime}`
 			}
 		} catch  (error) {
-			console.error('Error updatethree:', error);
+			console.log('Error updatethree:', error);
 		}
 	}
 	
@@ -150,7 +150,7 @@ document.addEventListener('mystats_event', async()=>{
 				});
 			}  
 		} catch (error) {
-			console.error('Error updating games:', error);
+			console.log('Error updating games:', error);
 		}
 	}
 
@@ -192,10 +192,10 @@ document.addEventListener('mystats_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 	langModule();
@@ -209,7 +209,7 @@ document.addEventListener('mystats_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -240,7 +240,7 @@ document.addEventListener('mystats_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 })

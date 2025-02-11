@@ -764,10 +764,10 @@ document.addEventListener('game_event', async()=>{
 				history.pushState(null, '', '/login');
 				loadPage('/login');
 			} else {
-				console.error("Erreur lors de la déconnexion.");
+				console.log("Erreur lors de la déconnexion.");
 			}
 		})
-		.catch(error => console.error("Erreur réseau : ", error));
+		.catch(error => console.log("Erreur réseau : ", error));
 	}
 
 	langModule();
@@ -781,7 +781,7 @@ document.addEventListener('game_event', async()=>{
 			const translations = await response.json();
 			applyTranslations(translations);
 			} catch (error) {
-			console.error("Erreur :", error);
+			console.log("Erreur :", error);
 			}
 		};
 
@@ -812,7 +812,7 @@ document.addEventListener('game_event', async()=>{
 				}
 			}
 		} catch (error) {
-			console.error('Error getLangPlayer:', error);
+			console.log('Error getLangPlayer:', error);
 		}
 	}
 })
@@ -846,7 +846,7 @@ async function saveMatches(playerScore, opponentScore, versus){
 			throw new Error(`Erreur API : ${response.statusText}`);
 		}
 	} catch (error) {
-		console.error("Erreur réseau :", error);
+		console.log("Erreur réseau :", error);
 	}
 }
 
@@ -864,7 +864,7 @@ async function updateMatches(playerScore){
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	else
 		try{
@@ -879,7 +879,7 @@ async function updateMatches(playerScore){
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 }
 
@@ -896,7 +896,7 @@ async function updateData(){
 			throw new Error(`Erreur API : ${response.statusText}`);
 		}
 	} catch (error) {
-		console.error('Erreur lors de l’appel API :', error);
+		console.log('Erreur lors de l’appel API :', error);
 	}
 }
 
@@ -913,6 +913,6 @@ async function updateRank(){
 			throw new Error(`Erreur API : ${response.statusText}`);
 		}
 	} catch (error) {
-		console.error('Erreur lors de l’appel API :', error);
+		console.log('Erreur lors de l’appel API :', error);
 	}
 }

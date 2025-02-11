@@ -66,7 +66,7 @@ def reqregister(request):
 		if User.objects.filter(username=username).exists():
 			print("User déjà pris.")
 			return HttpResponse("User déjà pris.")
-		user = User.objects.create_user(username=username, password=password)
+		user = User.objects.create_user(username=username, password=password) #  hash auto en sha256
 		user.save()
 		player_data = PlayerData.objects.create(username=user.username, email=email)
 		player_data.is_42 = False
