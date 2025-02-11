@@ -79,8 +79,15 @@ def reqlogin(request):
 @api_view(['GET'])
 def reqlogin42(request):
 	token = _getToken("https://181.214.189.28/srclogin/reqlogin42/", request.query_params["code"])
-	# print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa : " + request.query_params["code"])
+	# print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasaaaaaaaaaaaa : " + request.query_params["code"])
 	user_info = _get42Info(token)
+ 
+	# print("DEBUG reqlogin42: user_info:", user_info)
+
+	if 'login' not in user_info:
+		print("Error: login is not in user_info")
+		return HttpResponse("Error: login is not in user_info", status=500)
+
 	username = user_info['login']
 	print(user_info)
 	print("logsin 42 is :" + username)
@@ -138,13 +145,13 @@ def _getToken(reurl, code):
     # POST https://api.intra.42.fr/oauth/token
     # in body:
     # 	grant_type = client_credentials
-    #	client_id = u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174
-    #	client_secret = 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
+    #	client_id = api uuid
+    #	client_secret = api secret
     # return access_token
     body = {
         "grant_type": "authorization_code",
         "client_id": "u-s4t2ud-53158e8ed2199eb8c7fd7bfa6e9909286f03eebc6c40f2868592dc4af0c69174",
-        "client_secret": "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",
+        "client_secret": "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",
         "code": code,
         "redirect_uri": reurl
     }
