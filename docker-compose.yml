@@ -16,6 +16,7 @@ services:
       DJ_SECRET_KEY: ${DJ_SECRET_KEY}
       CLIENT_42_ID: ${CLIENT_42_ID}
       CLIENT_42_SC: ${CLIENT_42_SC}
+      API_42_SC: ${API_42_SC}
     volumes:
       - vault_data:/vault/data
     networks:

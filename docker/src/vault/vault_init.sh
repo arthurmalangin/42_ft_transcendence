@@ -16,7 +16,7 @@ vault secrets enable -path=secret kv-v2
 # Store the PostgreSQL credentials in Vault
 vault kv put secret/database/credentials username="$POSTGRES_USER" password="$POSTGRES_PASSWORD" dbname="$POSTGRES_DB"
 vault kv put secret/django/secret secret_key="$DJ_SECRET_KEY"
-vault kv put secret/42_API/credentials client_id="$CLIENT_42_ID" client_secret="$CLIENT_42_SC"
+vault kv put secret/42_API/credentials client_id="$CLIENT_42_ID" client_secret="$CLIENT_42_SC" API_secret="$API_42_SC"
 
 # Create a key for encrypting the Django secret key
 vault write -f transit/keys/django-secret-key

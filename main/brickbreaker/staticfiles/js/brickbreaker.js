@@ -306,6 +306,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 				lives = 0;
 				document.getElementById('lives').textContent = lives;
 				isGameOver = true;
+				console.log("game over - no more lives");
 				return;
 			}
 			document.getElementById('lives').textContent = lives;
@@ -330,19 +331,21 @@ document.addEventListener('brickbreaker_event', async()=>{
 		}
 
 		function cleanupGame(fullCleanup = true) {
-			resetToDefaultSettings();
+			console.log("cleaning up game");
 			lives++;
 			resetGame();
 			removeAllEventListeners();
-
+			
 			if (!isPaused)
 				pauseGame();
-
+			
 			if (!fullCleanup)
 				gameOver();
+			resetToDefaultSettings();
 		}
 
 		function gameOver() {
+			console.log("entering gameOver function");
 			const gameResultOverlay = document.getElementById('gameResultOverlay');
 			const gameResultMessage = document.getElementById('gameResultMessage');
 			const finalScore = document.getElementById('finalScore');
@@ -351,6 +354,7 @@ document.addEventListener('brickbreaker_event', async()=>{
 			const livesScore = document.getElementById('livesScore');
 			const powerUpScore = document.getElementById('powerUpScore');
 			if (gameResultOverlay && gameResultMessage && finalScore && brickScore && timeScore && livesScore) {
+				console.log("all elements loaded");
 				let scoreFromBricks = score;
 				let scoreFromTime = lives === 0 ? 0 : Math.max(0, 10000 - Math.floor(totalTime) * 10);
 				let scoreFromLives = lives * 1000;
