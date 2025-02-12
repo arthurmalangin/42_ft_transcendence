@@ -431,8 +431,30 @@ document.addEventListener('friends_event', async()=>{
 
 	async function updateAll(username){
 		await updateUserRank(username);
+		await updateUserRankBrick(username);
 		await updateUserStat(username);
 		await updateUserBrickStat(username);
+	}
+
+	async function updateUserRankBrick(username){
+		try{
+			const response = await fetch('/api/updateUserRankBrick/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': getCSRFToken()
+				},
+				body: JSON.stringify({
+					name: username
+				})
+			});
+
+			if (!response.ok) {
+				throw new Error(`Erreur API : ${response.statusText}`);
+			}
+		} catch (error) {
+			console.error('Erreur lors de l’appel API :', error);
+		}
 	}
 
 	async function updateUserRank(username){
