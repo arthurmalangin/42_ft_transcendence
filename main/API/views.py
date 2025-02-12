@@ -445,7 +445,7 @@ def setUserLang(request):
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
 
-def updateUserRank(request):
+def updateUserRankBrick(request):
     if request.method == 'POST':
         try:
             if not request.body:
@@ -463,7 +463,23 @@ def updateUserRank(request):
         except Exception as e:
             return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
 
-
+def updateUserRank(request):
+    if request.method == 'POST':
+        try:
+            if not request.body:
+                return JsonResponse({"error": "Request body is empty"}, status=400)
+            data = json.loads(request.body.decode('utf-8'))
+            username = data.get('name', None)
+            if not username:
+                return JsonResponse({"error": "Can't find username"})
+            user_profile = PlayerData.objects.get(username=username)
+            score = PlayerData.objects.all().order_by('-win_rate')
+            position = next((i + 1 for i, player in enumerate(score) if player.id == user_profile.id), None)
+            user_profile.position = position
+            user_profile.save()
+            return JsonResponse({'Rank': user_profile.position})
+        except Exception as e:
+            return JsonResponse({"error": f"blbl: {str(e)}"}, status=400)
 
 def create_match(request):
     if request.user.is_authenticated and request.method == 'POST':
