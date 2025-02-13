@@ -453,7 +453,7 @@ document.addEventListener('friends_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	}
 
@@ -474,7 +474,7 @@ document.addEventListener('friends_event', async()=>{
 				throw new Error(`Erreur API : ${response.statusText}`);
 			}
 		} catch (error) {
-			console.error('Erreur lors de l’appel API :', error);
+			console.log('Erreur lors de l’appel API :', error);
 		}
 	}
 
