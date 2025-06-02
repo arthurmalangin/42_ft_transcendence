@@ -16,12 +16,13 @@ make
 ```
 
 ## Services Architecture
+In Coming
 
 ## Databases Diagram
+In Coming
 
 ## Default Ports
-
-
+In Coming
 
 # Setup Django
 Installation python3 et pip :
