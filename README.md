@@ -1,5 +1,25 @@
-# 42_ft_transcendence
-Surprise.
+# Transcendence
+Transcendence is a project at 42 School aimed at familiarizing us with web development by creating a competitive multiplayer version of Pong.
+
+# Usage
+Download the project from git:
+```shell
+git clone "https://github.com/arthurmalangin/42_ft_transcendence.git" transcendence
+cd transcendence
+```
+
+Build and run the project ( add "silent" flag for run in background ):
+```shell
+make
+```
+
+# Services Architecture
+
+# Databases Diagram
+
+# Default Ports
+
+
 
 # Setup Django
 Installation python3 et pip :
