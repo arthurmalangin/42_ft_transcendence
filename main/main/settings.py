@@ -64,6 +64,13 @@ POSTGRES_PASSWORD = get_vault_secret('database/credentials', 'password')
 POSTGRES_DB = get_vault_secret('database/credentials', 'dbname')
 SECRET_KEY = get_vault_secret('django/secret', 'secret_key')
 
+# POSTGRES_USER = 'ft_user'
+# POSTGRES_PASSWORD = 'ft_password'
+# POSTGRES_DB = 'ft_transcendence'
+# SECRET_KEY = 'django-insecure-5&-vxf7+fuz*mhb-y*ag@kk-l8k69_apx5238x%h4b82%vuh=3'
+
+# CZXs+TG1ScQJ7JF2VVZcpoQlF6Mak8n8CpbvR4VmG6AuivDP9aaeMfByWi3PaT/FxWud2WbK72J9hJknGT1cmB4vcLpE2KYWI7DMVJ54Q7RsC6pFW1/r81VqFwAtRvtF7vaIVcmUZesnbnY61VHZn4DzLTStxz8eAKTbBMKGKea4DKoO0MfcQCObuUrab4sT7SVgQQBZaHQEXmuaGOpW5atg7zjt
+
 # try:
 #     # Generate a new secret key using the transit secrets engine
 #     generate_response = client.secrets.transit.generate_data_key(
@@ -142,6 +149,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
     'http://localhost',
     'https://vault:8200',
+    'https://lesbonnesbouches.fr',
     
 
 ]

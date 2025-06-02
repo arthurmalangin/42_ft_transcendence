@@ -1,8 +1,8 @@
-FROM nginx:alpine
+FROM nginx:1.27.4-alpine
 
 # Install dependencies
 RUN apk update && \
-    apk add --no-cache openssl pcre pcre-dev zlib zlib-dev openssl-dev build-base git wget autoconf automake libtool linux-headers curl
+    apk add --no-cache openssl pcre pcre-dev zlib zlib-dev openssl-dev build-base git wget autoconf automake libtool linux-headers curl curl-dev yajl-dev libxml2-dev lmdb-dev geoip-dev lua-dev pcre2-dev
 
 # Create necessary directories
 RUN mkdir -p /etc/nginx/ssl /var/www/html /usr/local/src /etc/nginx/modsec
