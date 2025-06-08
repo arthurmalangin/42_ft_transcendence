@@ -1,5 +1,5 @@
 # Transcendence
-Transcendence is a project at 42 School aimed at familiarizing us with web development by creating a competitive multiplayer version of Pong.
+Comprehensive web application featuring a real-time multiplayer Pong game, user authentication, chat system, friend management, and tournament organization. Built with modern web technologies.
 
 https://github.com/user-attachments/assets/0d01403e-de12-4484-b5dc-8ecb663be657
 
